@@ -1,0 +1,25 @@
+# docker-compose.yml
+
+version: '2'
+services:
+  db:
+    image: mongo
+    volumes:
+      - db_data:/data/db
+# Only uncomment these if you need to run the initialization script.
+#    ports:
+#      - "27017:27017"
+
+  node:
+    depends_on:
+      - db
+    links:
+      - db
+    build: .
+    ports:
+      - "8080:8080"
+
+# This volume is used to persist data in the mongodb inbetween re-building the
+# containers (deploying a new version of the API)
+volumes:
+  db_data:
