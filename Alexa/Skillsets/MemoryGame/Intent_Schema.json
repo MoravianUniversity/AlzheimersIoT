@@ -1,0 +1,33 @@
+{
+
+    "intents": [{
+
+        "intent": "YesIntent"
+
+    }, {
+
+        "intent": "AnswerIntent",
+
+        "slots": [{
+
+            "name": "first",
+
+            "type": "AMAZON.NUMBER"
+
+        }, {
+
+            "name": "second",
+
+            "type": "AMAZON.NUMBER"
+
+        }, {
+
+            "name": "third",
+
+            "type": "AMAZON.NUMBER"
+
+        }]
+
+    }]
+
+}
