@@ -12,7 +12,7 @@ router.use(middlewareCtrl.customMiddleware)
 
 // on routes that end in /wemo
 // ----------------------------------------------------
-router.route('*')
+router.route('/')
 
     // create a wemo (accessed at POST http://localhost:8080/api/wemo)
     .post(function(req, res) {
@@ -43,7 +43,7 @@ router.route('*')
 
 // on routes that end in /wemo/:wemo_id
 // ----------------------------------------------------
-router.route('*/:wemo_id')
+router.route('/:wemo_id')
 
     // get the wemo with that id (accessed at GET http://localhost:8080/api/wemo/:wemo_id)
     .get(function(req, res) {

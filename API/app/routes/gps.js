@@ -12,7 +12,7 @@ router.use(middlewareCtrl.customMiddleware)
 
 // on routes that end in /gps
 // ----------------------------------------------------
-router.route('*')
+router.route('/')
 
     // create a gps entry (accessed at POST http://localhost:8080/api/gps)
     .post(function(req, res) {
@@ -44,7 +44,7 @@ router.route('*')
 
 // on routes that end in /gps/:gps_id
 // ----------------------------------------------------
-router.route('*/:gps_id')
+router.route('/:gps_id')
 
     // get the gps with that id (accessed at GET http://localhost:8080/api/gps/:gps_id)
     .get(function(req, res) {
