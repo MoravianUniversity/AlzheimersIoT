@@ -40,6 +40,7 @@ app.use('/api', router);
 app.use('/api/bears', require('./app/routes/bears.js'))
 app.use('/api/wemo', require('./app/routes/wemo.js'))
 app.use('/api/gps', require('./app/routes/gps.js'))
+app.use('/api/memoryGame', require('./app/routes/memoryGame.js'))
 
 
 // START THE SERVER
