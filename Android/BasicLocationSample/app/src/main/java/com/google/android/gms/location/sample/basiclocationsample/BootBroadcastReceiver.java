@@ -44,7 +44,7 @@ public class BootBroadcastReceiver extends WakefulBroadcastReceiver {
         showNotification();
 
         // Launch the specified service when this message is received
-        Intent startServiceIntent = new Intent(context, com.google.android.gms.location.sample.basiclocationsample.BootService.class);
+        Intent startServiceIntent = new Intent(context, com.google.android.gms.location.sample.basiclocationsample.NetworkService.class);
         startWakefulService(context, startServiceIntent);
     }
 

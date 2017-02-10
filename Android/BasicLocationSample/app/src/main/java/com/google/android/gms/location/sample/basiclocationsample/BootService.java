@@ -9,8 +9,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
+
 /**
  * Created by tyler on 2/8/17.
+ *
+ * HAS BEEN DEPRECATED AND IS NO LONGER IN USE
  */
 
 // Service for Networking and Location Updates
