@@ -52,20 +52,15 @@ public class MainActivity extends AppCompatActivity implements
      */
     protected GoogleApiClient mGoogleApiClient;
 
-    /**
-     * Represents a geographical location.
-     */
-    protected Location mLastLocation;
-
     // Variables
     protected String mLatitudeLabel;
     protected String mLongitudeLabel;
     protected TextView mLatitudeText;
     protected TextView mLongitudeText;
     protected Button btnGetLoc;
-
-    // Get Context
     protected Context ctx;
+    // Represents Physical Location
+    protected Location mLastLocation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,14 +75,18 @@ public class MainActivity extends AppCompatActivity implements
         // Initialize Google API Client
         buildGoogleApiClient();
 
-        // Start Boot Service
-        // onCreate Triggered Intent Service
-        //Intent i = new Intent(this, com.google.android.gms.location.sample.basiclocationsample.BootService.class);
+        // Start Network Service
+        //Intent i = new Intent(this, com.google.android.gms.location.sample.basiclocationsample.NetworkService.class);
         //startService(i);
+
+        // Start Alarm Service
+        //Intent i2 = new Intent(this, com.google.android.gms.location.sample.basiclocationsample.AlarmService.class);
+        //startService(i2);
 
         // Get reference to btnGetLoc
         findViewById(R.id.btnGetLoc).setOnClickListener(getLoc_OnClickListener);
 
+        // Get Context
         ctx = this.getApplicationContext();
 
         // DEBUG

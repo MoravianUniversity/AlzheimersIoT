@@ -1,6 +1,5 @@
 package com.google.android.gms.location.sample.basiclocationsample;
 
-// Imports
 import android.app.IntentService;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -9,26 +8,23 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
-
 /**
- * Created by tyler on 2/8/17.
- *
- * HAS BEEN DEPRECATED AND IS NO LONGER IN USE
+ * Created by tyler on 2/10/17.
  */
 
 // Service for Networking and Location Updates
-public class BootService extends IntentService {
+public class AlarmService extends IntentService {
 
     // Get TAG
-    final static String TAG = "BootService";
+    final static String TAG = "AlarmService";
 
     // Must create a default constructor
-    public BootService() {
+    public AlarmService() {
         // Used to name the worker thread, important only for debugging.
-        super("boot-service");
+        super("alarm-service");
 
         // DEBUG
-        Log.e(TAG, "BootService Constructor.");
+        Log.e(TAG, "AlarmService Constructor.");
     }
 
     // Constructor
@@ -38,7 +34,7 @@ public class BootService extends IntentService {
         // If a Context object is needed, call getApplicationContext() here.
 
         // DEBUG
-        Log.e(TAG, "BootService onCreate.");
+        Log.e(TAG, "AlarmService onCreate.");
     }
 
     @Override

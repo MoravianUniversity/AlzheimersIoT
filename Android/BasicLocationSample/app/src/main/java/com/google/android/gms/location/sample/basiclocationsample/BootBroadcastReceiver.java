@@ -28,14 +28,12 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 // during the startup of the service
 public class BootBroadcastReceiver extends WakefulBroadcastReceiver {
 
+    // Variables
     protected static final String TAG = "BootBroadcastReceiver";
     Context cont;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        // DEBUG
-        Log.e(TAG, "BootBroadcastReceiver onReceive. #$%^ ");
 
         // Get context
         cont = context;
@@ -43,11 +41,16 @@ public class BootBroadcastReceiver extends WakefulBroadcastReceiver {
         // Notification to inform user of BOOT_COMPLETED
         showNotification();
 
-        // Launch the specified service when this message is received
-        Intent startServiceIntent = new Intent(context, com.google.android.gms.location.sample.basiclocationsample.NetworkService.class);
-        startWakefulService(context, startServiceIntent);
+        // Launch NetworkService when this message is received
+        Intent startNetworkServiceIntent = new Intent(context, com.google.android.gms.location.sample.basiclocationsample.NetworkService.class);
+        startWakefulService(context, startNetworkServiceIntent);
+
+        // Launch AlarmService when this message is received
+        Intent startAlarmServiceIntent = new Intent(context, com.google.android.gms.location.sample.basiclocationsample.AlarmService.class);
+        startWakefulService(context, startAlarmServiceIntent);
     }
 
+    // Method to display monitoring notification
     public void showNotification() {
         // getContext
         Context ctx = cont;

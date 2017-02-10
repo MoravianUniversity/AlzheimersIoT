@@ -60,10 +60,6 @@ limitations under the License.
         </receiver>
 
         <!-- Service -->
-        <service
-            android:name="com.google.android.gms.location.sample.basiclocationsample.BootService"
-            android:enabled="true"
-            android:exported="false" />
 
     </application>
 </manifest>

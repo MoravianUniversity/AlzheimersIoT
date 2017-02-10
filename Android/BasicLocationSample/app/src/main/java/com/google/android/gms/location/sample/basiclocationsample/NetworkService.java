@@ -55,7 +55,7 @@ public abstract class NetworkService extends IntentService {
     // Must create a default constructor
     public NetworkService() {
         // Used to name the worker thread, important only for debugging.
-        super("boot-service");
+        super("network-service");
 
         // DEBUG
         Log.e(TAG, "NetworkService Constructor.");
