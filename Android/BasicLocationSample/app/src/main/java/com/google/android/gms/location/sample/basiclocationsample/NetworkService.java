@@ -22,6 +22,7 @@ import java.net.URL;
 public abstract class NetworkService extends IntentService {
 
     // POST Request to server
+    // Need URL encoded
     private StringBuffer request(String urlString) {
         // TODO Auto-generated method stub
 
@@ -45,7 +46,6 @@ public abstract class NetworkService extends IntentService {
             // Writing exception to log
             e.printStackTrace();
         }
-        strBuff.append("asdgfjhgadshfalsdhfkjbrgkhagsyva");
         return strBuff;
     }
 
@@ -57,8 +57,6 @@ public abstract class NetworkService extends IntentService {
         // Used to name the worker thread, important only for debugging.
         super("network-service");
 
-        // DEBUG
-        Log.e(TAG, "NetworkService Constructor.");
     }
 
     // Constructor
@@ -67,8 +65,6 @@ public abstract class NetworkService extends IntentService {
         super.onCreate(); // if you override onCreate(), make sure to call super().
         // If a Context object is needed, call getApplicationContext() here.
 
-        // DEBUG
-        Log.e(TAG, "NetworkService onCreate.");
     }
 
     @Override

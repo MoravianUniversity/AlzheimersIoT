@@ -8,6 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by tyler on 2/10/17.
  */
@@ -23,8 +26,15 @@ public class AlarmService extends IntentService {
         // Used to name the worker thread, important only for debugging.
         super("alarm-service");
 
-        // DEBUG
-        Log.e(TAG, "AlarmService Constructor.");
+        // Do something every 5 minutes
+        Timer myTimer = new Timer();
+        myTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+            }
+        }, 0, 300000);
+
     }
 
     // Constructor
@@ -33,8 +43,6 @@ public class AlarmService extends IntentService {
         super.onCreate(); // if you override onCreate(), make sure to call super().
         // If a Context object is needed, call getApplicationContext() here.
 
-        // DEBUG
-        Log.e(TAG, "AlarmService onCreate.");
     }
 
     @Override
