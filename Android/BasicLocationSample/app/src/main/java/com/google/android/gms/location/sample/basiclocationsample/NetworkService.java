@@ -10,6 +10,7 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,30 +24,51 @@ public abstract class NetworkService extends IntentService {
 
     // POST Request to server
     // Need URL encoded
-    private StringBuffer request(String urlString) {
+    private StringBuffer request(String lon, String lat, String time) {
         // TODO Auto-generated method stub
 
-        StringBuffer strBuff = new StringBuffer("");
+        StringBuffer response = new StringBuffer();
         try {
-            URL url = new URL(urlString);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestProperty("User-Agent", "");
-            connection.setRequestMethod("POST");
-            connection.setDoInput(true);
-            connection.connect();
+            String url = "http://8887eddd.ngrok.io/api/gps";
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-            InputStream inputStream = connection.getInputStream();
+            // Setting basic post request
+            con.setRequestMethod("POST");
+            //con.setRequestProperty("User-Agent", USER_AGENT);
+            con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+            con.setRequestProperty("Content-Type","application/json");
 
-            BufferedReader rd = new BufferedReader(new InputStreamReader(inputStream));
-            String line = "";
-            while ((line = rd.readLine()) != null) {
-                strBuff.append(line);
+            String postJsonData = "{\"_id\":\"\",\"address\":\"Address Feature Not Yet Supported\",\"lon\":" + lon + ",\"lat\":" + lat + ",\"time\":\"" + time + "\",\"__v\":0}";
+
+            // Send post request
+            con.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            wr.writeBytes(postJsonData);
+            wr.flush();
+            wr.close();
+
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'POST' request to URL : " + url);
+            System.out.println("Post Data : " + postJsonData);
+            System.out.println("Response Code : " + responseCode);
+
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String output;
+
+            while ((output = in.readLine()) != null) {
+                response.append(output);
             }
+            in.close();
+
+            //printing result from response
+            System.out.println(response.toString());
         } catch (IOException e) {
             // Writing exception to log
             e.printStackTrace();
         }
-        return strBuff;
+        return response;
     }
 
     // Get TAG
