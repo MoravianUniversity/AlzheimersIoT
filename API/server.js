@@ -4,7 +4,8 @@
 // =============================================================================
 
 // call the packages we need
-var express    = require('express');        // call express
+var express    = require('express'); // call express
+var stormpath  = require('express-stormpath');
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 
@@ -18,7 +19,18 @@ var mongoose   = require('mongoose');
 mongoose.connect('mongodb://node:password@db:27017/node');
 
 // Set the port for the app
-var port = process.env.PORT || 8080;        // set our port
+var port = process.env.PORT || 8080;   // set our port
+
+
+//Set path to stormpath config
+app.use(stormpath.init(app, {
+  expand: {
+    customData: true,
+  },
+  web: {
+    produces: ['application/json']
+  }
+}))
 
 // TEST ROUTES FOR OUR API
 // =============================================================================
@@ -37,7 +49,7 @@ router.get('/', function(req, res) {
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes should be prefixed with /api
 app.use('/api', router);
-app.use('/api/bears', require('./app/routes/bears.js'))
+app.use('/api/bears', require('./app/routes/bears.js'));
 app.use('/api/wemo', require('./app/routes/wemo.js'))
 app.use('/api/gps', require('./app/routes/gps.js'))
 app.use('/api/memoryGame', require('./app/routes/memoryGame.js'))
