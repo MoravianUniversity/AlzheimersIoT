@@ -6,7 +6,7 @@ services:
     image: mongo
     volumes:
       - db_data:/data/db
-# Only uncomment these if you need to run the initialization script.
+# Only uncomment these if you need direct access to the MongoDB.
 #    ports:
 #      - "27017:27017"
 

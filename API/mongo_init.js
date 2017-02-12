@@ -1,11 +1,10 @@
 // init_mongo_users.js
 //
-// Run this script upon initial creation of the mongodb container + volume to
-// set up the correct authorization method and a user for the node database.
+// This script sets up the correct authorization method and a user for the
+// node API.
 //
-// Note: This must be run from the host computer, i.e. the mongodb ports must be
-//       accessible to the host in docker-compose.yml so you can run the command
-//       `mongo < init_mongo_users.js`
+// Note: This script should not be ran from the host computer,
+// run initialize_database.sh instead.
 
 use admin;
 
