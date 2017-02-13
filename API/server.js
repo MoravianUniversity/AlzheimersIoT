@@ -3,19 +3,6 @@
 // BASE SETUP
 // =============================================================================
 
-// HTTPS Packages + Setup
-var fs = require('fs');
-var http = require('http');
-var https = require('https');
-
-var hskey = fs.readFileSync('./hscerts/api-key.pem');
-var hscert = fs.readFileSync('./hscerts/api-cert.pem')
-
-var httpsCredentials = {
-    key: hskey,
-    cert: hscert
-};
-
 // call the packages we need
 var express    = require('express'); // call express
 var stormpath  = require('express-stormpath');
@@ -31,7 +18,11 @@ app.use(bodyParser.json());
 var mongoose   = require('mongoose');
 mongoose.connect('mongodb://node:password@db:27017/node');
 
-// Set path to stormpath config
+// Set the port for the app
+var port = process.env.PORT || 8080;   // set our port
+
+
+//Set path to stormpath config
 app.use(stormpath.init(app, {
   expand: {
     customData: true,
@@ -40,7 +31,6 @@ app.use(stormpath.init(app, {
     produces: ['application/json']
   }
 }))
-
 
 // TEST ROUTES FOR OUR API
 // =============================================================================
@@ -67,15 +57,5 @@ app.use('/api/memoryGame', require('./app/routes/memoryGame.js'))
 
 // START THE SERVER
 // =============================================================================
-// Set the http and https ports for the app
-var httpPort = process.env.HTTP_PORT || 8080;
-var httpsPort = process.env.HTTPS_PORT || 8443;
-
-var httpServer = http.createServer(app);
-var httpsServer = https.createServer(httpsCredentials, app);
-
-httpServer.listen(httpPort);
-httpsServer.listen(httpsPort);
-
-console.log('HTTP Magic happens on port ' + httpPort);
-console.log('HTTPS Magic happens on port ' + httpsPort);
+app.listen(port);
+console.log('Magic happens on port ' + port);

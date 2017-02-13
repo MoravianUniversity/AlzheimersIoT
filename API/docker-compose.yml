@@ -18,11 +18,10 @@ services:
     build: .
     ports:
       - "8080:8080"
-      - "8443:8443"
     environment:
       - STORMPATH_CLIENT_APIKEY_ID=M91U8TEZ9UQ61WC8AK6R6F24X
       - STORMPATH_CLIENT_APIKEY_SECRET=RGoHjhnCrR0uwTZfvevVm1QbZQSOkRTPc9HN4k0NnO4
-      - STORMPATH_APPLICATION_HREF=https://api.stormpath.com/v1/applications/6oeIuI3qHzggIEwaft0M9p
+      - STORMPATH_APPLICATION_HREF=https://api.stormpath.com/v1/applications/6oeIuI3qHzggIEwaft0M9p  
 
 # This volume is used to persist data in the mongodb inbetween re-building the
 # containers (deploying a new version of the API)
