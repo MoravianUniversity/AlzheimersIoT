@@ -41,13 +41,19 @@ public class BootBroadcastReceiver extends WakefulBroadcastReceiver {
         // Notification to inform user of BOOT_COMPLETED
         showNotification();
 
+        // Launch Services
+
         // Launch NetworkService when this message is received
         Intent startNetworkServiceIntent = new Intent(context, com.google.android.gms.location.sample.locationaddress.NetworkService.class);
         startWakefulService(context, startNetworkServiceIntent);
 
+        // Launch LocationService when this message is received
+        Intent startLocationServiceIntent = new Intent(context, com.google.android.gms.location.sample.locationaddress.LocationService.class);
+        startWakefulService(context, startNetworkServiceIntent);
+
         // Launch AlarmService when this message is received
-        Intent startAlarmServiceIntent = new Intent(context, com.google.android.gms.location.sample.locationaddress.AlarmService.class);
-        startWakefulService(context, startAlarmServiceIntent);
+        //Intent startAlarmServiceIntent = new Intent(context, com.google.android.gms.location.sample.locationaddress.AlarmService.class);
+        //startWakefulService(context, startAlarmServiceIntent);
     }
 
     // Method to display monitoring notification

@@ -1,83 +1,48 @@
-/**
- * Copyright 2014 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.google.android.gms.location.sample.locationaddress;
 
+import android.app.IntentService;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.ResultReceiver;
-import android.support.v7.app.ActionBarActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.location.LocationServices;
 
-/**
- * Getting the Location Address.
- *
- * Demonstrates how to use the {@link android.location.Geocoder} API and reverse geocoding to
- * display a device's location as an address. Uses an IntentService to fetch the location address,
- * and a ResultReceiver to process results sent by the IntentService.
- *
- * Android has two location request settings:
- * {@code ACCESS_COARSE_LOCATION} and {@code ACCESS_FINE_LOCATION}. These settings control
- * the accuracy of the current location. This sample uses ACCESS_FINE_LOCATION, as defined in
- * the AndroidManifest.xml.
- *
- * For a starter example that displays the last known location of a device using a longitude and latitude,
- * see https://github.com/googlesamples/android-play-location/tree/master/BasicLocation.
- *
- * For an example that shows location updates using the Fused Location Provider API, see
- * https://github.com/googlesamples/android-play-location/tree/master/LocationUpdates.
- *
- * This sample uses Google Play services (GoogleApiClient) but does not need to authenticate a user.
- * For an example that uses authentication, see
- * https://github.com/googlesamples/android-google-accounts/tree/master/QuickStart.
- */
-public class MainActivity extends ActionBarActivity implements
-        ConnectionCallbacks, OnConnectionFailedListener {
+import java.util.Timer;
+import java.util.TimerTask;
 
+/**
+ * Created by tyler on 2/13/17.
+ */
+
+public abstract class LocationService extends IntentService implements
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     // Variables
     protected String mLatitudeLabel;
     protected String mLongitudeLabel;
-    protected TextView mLatitudeText;
-    protected TextView mLongitudeText;
-    protected Button btnGetLoc;
     protected Context ctx;
-    protected LocationService mBoundService;
-    protected boolean mIsBound;
-    protected static final String TAG = "main-activity";
+    protected static final String TAG = "LocationService";
     protected static final String ADDRESS_REQUESTED_KEY = "address-request-pending";
     protected static final String LOCATION_ADDRESS_KEY = "location-address";
+
+    // Public Location Variables
+    public String mLatitudeText;
+    public String mLongitudeText;
 
     /**
      * Provides the entry point to Google Play services.
@@ -107,81 +72,75 @@ public class MainActivity extends ActionBarActivity implements
     /**
      * Receiver registered with this activity to get the response from FetchAddressIntentService.
      */
-    private AddressResultReceiver mResultReceiver;
+    private LocationService.AddressResultReceiver mResultReceiver;
 
     /**
-     * Displays the location address.
+     * Creates an IntentService.  Invoked by your subclass's constructor.
+     *
+     * @param name Used to name the worker thread, important only for debugging.
      */
-    protected TextView mLocationAddressTextView;
+    public LocationService(String name) {
+        super(name);
+    }
 
-    /**
-     * Visible while the address is being fetched.
-     */
-    ProgressBar mProgressBar;
-
-    /**
-     * Kicks off the request to fetch an address when pressed.
-     */
-    Button mFetchAddressButton;
-
+    // Also Constructor
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
-
+    public void onCreate() {
+        super.onCreate(); // if you override onCreate(), make sure to call super().
+        // If a Context object is needed, call getApplicationContext() here.
         mLatitudeLabel = getResources().getString(R.string.latitude_label);
         mLongitudeLabel = getResources().getString(R.string.longitude_label);
-        mLatitudeText = (TextView) findViewById((R.id.latitude_text));
-        mLongitudeText = (TextView) findViewById((R.id.longitude_text));
 
-
-        mResultReceiver = new AddressResultReceiver(new Handler());
-
-        mLocationAddressTextView = (TextView) findViewById(R.id.location_address_view);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        mFetchAddressButton = (Button) findViewById(R.id.fetch_address_button);
+        mResultReceiver = new LocationService.AddressResultReceiver(new Handler());
 
         // Set defaults, then update using values stored in the Bundle.
         mAddressRequested = false;
         mAddressOutput = "";
-        updateValuesFromBundle(savedInstanceState);
 
-        updateUIWidgets();
+        //updateUIWidgets();
         buildGoogleApiClient();
-
-        // Bind to LocationService
-        doBindService();
-
-        // Start Location Service
-        Intent i = new Intent(this, com.google.android.gms.location.sample.locationaddress.LocationService.class);
-        startService(i);
-
-        // Start Network Service
-        Intent i2 = new Intent(this, com.google.android.gms.location.sample.locationaddress.NetworkService.class);
-        startService(i2);
-
-        // Start Alarm Service
-        //Intent i3 = new Intent(this, com.google.android.gms.location.sample.locationaddress.AlarmService.class);
-        //startService(i3);
-
-        // Get reference to btnGetLoc
-        findViewById(R.id.btnGetLoc).setOnClickListener(getLoc_OnClickListener);
 
         // Get Context
         ctx = this.getApplicationContext();
 
+        mGoogleApiClient.connect();
+
         // DEBUG
-        Log.e(TAG, "onCreate successful.");
+        Log.e(TAG, "onCreate successful, starting timer.");
+
+        // Automatically refresh location every 5 minutes
+        Timer myTimer = new Timer();
+        myTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                getLocation();
+            }
+        }, 0, 300000);
     }
 
-    //On click listener for btnGetLoc
-    final View.OnClickListener getLoc_OnClickListener = new View.OnClickListener() {
-        public void onClick(final View v) {
-            //Inform the user the button has been clicked
-            //Toast.makeText(ctx, "Button clicked.", Toast.LENGTH_SHORT).show();
-            getLocation();
+    public class LocalBinder extends Binder {
+        LocationService getService() {
+            return LocationService.this;
         }
-    };
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mBinder;
+    }
+
+    // This is the object that receives interactions from clients.  See
+    // RemoteService for a more complete example.
+    private final IBinder mBinder = new LocalBinder();
+
+    // Get Methods
+    public String getLat() {
+        return mLatitudeText;
+    }
+
+    public String getLon() {
+        return mLongitudeText;
+    }
 
     /**
      * Updates fields based on data stored in the bundle.
@@ -196,7 +155,7 @@ public class MainActivity extends ActionBarActivity implements
             // and stored in the Bundle. If it was found, display the address string in the UI.
             if (savedInstanceState.keySet().contains(LOCATION_ADDRESS_KEY)) {
                 mAddressOutput = savedInstanceState.getString(LOCATION_ADDRESS_KEY);
-                displayAddressOutput();
+                //displayAddressOutput();
             }
         }
     }
@@ -226,21 +185,7 @@ public class MainActivity extends ActionBarActivity implements
         // fetch the address. As far as the user is concerned, pressing the Fetch Address button
         // immediately kicks off the process of getting the address.
         mAddressRequested = true;
-        updateUIWidgets();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
+        //updateUIWidgets();
     }
 
     /**
@@ -254,9 +199,9 @@ public class MainActivity extends ActionBarActivity implements
         // in rare cases when a location is not available.
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
-            mLatitudeText.setText(String.format("%s: %f", mLatitudeLabel,
+            mLatitudeText = (String.format("%s: %f", mLatitudeLabel,
                     mLastLocation.getLatitude()));
-            mLongitudeText.setText(String.format("%s: %f", mLongitudeLabel,
+            mLongitudeText = (String.format("%s: %f", mLongitudeLabel,
                     mLastLocation.getLongitude()));
         } else {
             Toast.makeText(this, R.string.no_location_detected, Toast.LENGTH_LONG).show();
@@ -286,9 +231,9 @@ public class MainActivity extends ActionBarActivity implements
     public void getLocation() {
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
-            mLatitudeText.setText(String.format("%s: %f", mLatitudeLabel,
+            mLatitudeText = (String.format("%s: %f", mLatitudeLabel,
                     mLastLocation.getLatitude()));
-            mLongitudeText.setText(String.format("%s: %f", mLongitudeLabel,
+            mLongitudeText = (String.format("%s: %f", mLongitudeLabel,
                     mLastLocation.getLongitude()));
         } else {
             // Error
@@ -333,41 +278,12 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     * Updates the address in the UI.
-     */
-    protected void displayAddressOutput() {
-        mLocationAddressTextView.setText(mAddressOutput);
-    }
-
-    /**
-     * Toggles the visibility of the progress bar. Enables or disables the Fetch Address button.
-     */
-    private void updateUIWidgets() {
-        if (mAddressRequested) {
-            mProgressBar.setVisibility(ProgressBar.VISIBLE);
-            mFetchAddressButton.setEnabled(false);
-        } else {
-            mProgressBar.setVisibility(ProgressBar.GONE);
-            mFetchAddressButton.setEnabled(true);
-        }
-    }
-
-    /**
      * Shows a toast with the given text.
      */
     protected void showToast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save whether the address has been requested.
-        savedInstanceState.putBoolean(ADDRESS_REQUESTED_KEY, mAddressRequested);
-
-        // Save the address string.
-        savedInstanceState.putString(LOCATION_ADDRESS_KEY, mAddressOutput);
-        super.onSaveInstanceState(savedInstanceState);
-    }
 
     /**
      * Receiver for data sent from FetchAddressIntentService.
@@ -385,7 +301,7 @@ public class MainActivity extends ActionBarActivity implements
 
             // Display the address string or an error message sent from the intent service.
             mAddressOutput = resultData.getString(Constants.RESULT_DATA_KEY);
-            displayAddressOutput();
+            //displayAddressOutput();
 
             // Show a toast message if an address was found.
             if (resultCode == Constants.SUCCESS_RESULT) {
@@ -394,50 +310,34 @@ public class MainActivity extends ActionBarActivity implements
 
             // Reset. Enable the Fetch Address button and stop showing the progress bar.
             mAddressRequested = false;
-            updateUIWidgets();
+            //updateUIWidgets();
         }
     }
 
-    // Binder Stuff to bind to LocationService
-    private ServiceConnection mConnection = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            // This is called when the connection with the service has been
-            // established, giving us the service object we can use to
-            // interact with the service.  Because we have bound to a explicit
-            // service that we know is running in our own process, we can
-            // cast its IBinder to a concrete class and directly access it.
-            mBoundService = ((LocationService.LocalBinder)service).getService();
-
-            // Tell the user about this for our demo.
-            showToast("LocationService Connected");
-        }
-
-        public void onServiceDisconnected(ComponentName className) {
-            // This is called when the connection with the service has been
-            // unexpectedly disconnected -- that is, its process crashed.
-            // Because it is running in our same process, we should never
-            // see this happen.
-            mBoundService = null;
-            showToast("LocationService Disconnected");
-        }
-    };
-
-    void doBindService() {
-        // Establish a connection with the service.  We use an explicit
-        // class name because we want a specific service implementation that
-        // we know will be running in our own process (and thus won't be
-        // supporting component replacement by other applications).
-        bindService(new Intent(this,
-                LocationService.class), mConnection, Context.BIND_AUTO_CREATE);
-        mIsBound = true;
-        Log.e(TAG, "doBindService");
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        // This describes what will happen when service is triggered
+        WakefulBroadcastReceiver.completeWakefulIntent(intent);
     }
 
-    void doUnbindService() {
-        if (mIsBound) {
-            // Detach our existing connection.
-            unbindService(mConnection);
-            mIsBound = false;
+    @Override
+    public ComponentName startService(Intent service) {
+        return super.startService(service);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i("LocalService", "Received start id " + startId + ": " + intent);
+        return START_NOT_STICKY;
+        //return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
         }
     }
+
 }
