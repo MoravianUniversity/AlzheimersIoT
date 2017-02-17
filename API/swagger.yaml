@@ -1,0 +1,114 @@
+# Example YAML to get you started quickly.
+# Be aware that YAML has indentation based scoping.
+# Code completion support is available so start typing for available options.
+swagger: '2.0'
+
+# This is your document metadata
+info:
+  version: "1.0.0"
+  title: Alzheimer's IOT
+
+# Describe your paths here
+paths:
+  # This is a path endpoint. Change it.
+  /memoryGame:
+    # This is a HTTP operation
+    post:
+      # Describe this verb here. Note: you can use markdown
+      description: Starts a game that tests a user's memory capability
+      # This is array of GET operation parameters:
+      parameters:
+        # An example parameter that is in query and is required
+        - name: user
+          in: query
+          description: Name of the user of the skill
+          required: true
+          type: string
+        - name: score
+          in: query
+          description: The score of the current game
+          required: true
+          type: integer
+          format: int32
+        - name: time
+          in: query
+          description: Time of the game being completed
+          required: true
+          type: string
+          format: date
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+        404:
+          description: Not Found - (Cannot Post)
+  /gps:
+    post:
+      description: Keeps track of where patient needs to be
+      parameters:
+        # An example parameter that is in query and is required
+        - name: time
+          in: query
+          description: Time of update
+          required: true
+          type: string
+          format: date
+        - name: lat
+          in: query
+          description: Latitude of user's location
+          required: true
+          type: number
+          format: double
+        - name: lon
+          in: query
+          description: Longitude of user's location
+          required: true
+          type: number
+          format: double
+        - name: address
+          in: query
+          description: Address of user's location
+          required: true
+          type: string
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+        404:
+          description: Not Found - (Cannot Post)
+  /wemo:
+    post:
+      description: Keeps track of electrical usage of sockets
+      parameters:
+        # An example parameter that is in query and is required
+        - name: date
+          in: query
+          description: Day of update
+          required: true
+          type: string
+        - name: time
+          in: query
+          description: Time of update
+          required: true
+          type: string
+        - name: status
+          in: query
+          description: Whether device is currently on or not
+          required: true
+          type: boolean
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+        404:
+          description: Not Found - (Cannot Post)
+  
