@@ -22,6 +22,7 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * Created by tyler on 2/8/17.
+ * Recognizes device boot and starts services accordingly.
  */
 
 // WakefulBroadcastReceiver ensures the device does not go back to sleep
@@ -47,13 +48,6 @@ public class BootBroadcastReceiver extends WakefulBroadcastReceiver {
         Intent startNetworkServiceIntent = new Intent(context, com.google.android.gms.location.sample.locationaddress.NetworkService.class);
         startWakefulService(context, startNetworkServiceIntent);
 
-        // Launch LocationService when this message is received
-        Intent startLocationServiceIntent = new Intent(context, com.google.android.gms.location.sample.locationaddress.LocationService.class);
-        startWakefulService(context, startNetworkServiceIntent);
-
-        // Launch AlarmService when this message is received
-        //Intent startAlarmServiceIntent = new Intent(context, com.google.android.gms.location.sample.locationaddress.AlarmService.class);
-        //startWakefulService(context, startAlarmServiceIntent);
     }
 
     // Method to display monitoring notification

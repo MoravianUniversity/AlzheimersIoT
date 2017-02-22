@@ -65,7 +65,6 @@ import com.google.android.gms.location.LocationServices;
 public class MainActivity extends ActionBarActivity implements
         ConnectionCallbacks, OnConnectionFailedListener {
 
-
     // Variables
     protected String mLatitudeLabel;
     protected String mLongitudeLabel;
@@ -73,9 +72,13 @@ public class MainActivity extends ActionBarActivity implements
     protected TextView mLongitudeText;
     protected Button btnGetLoc;
     protected Context ctx;
-    protected LocationService mBoundService;
-    protected boolean mIsBound;
-    protected static final String TAG = "main-activity";
+
+    // Bindings
+    protected NetworkService mBoundNetworkService;
+    protected boolean mIsNetworkBound;
+
+    // Tags and other Strings
+    protected static final String TAG = "MainActivity";
     protected static final String ADDRESS_REQUESTED_KEY = "address-request-pending";
     protected static final String LOCATION_ADDRESS_KEY = "location-address";
 
@@ -134,7 +137,6 @@ public class MainActivity extends ActionBarActivity implements
         mLatitudeText = (TextView) findViewById((R.id.latitude_text));
         mLongitudeText = (TextView) findViewById((R.id.longitude_text));
 
-
         mResultReceiver = new AddressResultReceiver(new Handler());
 
         mLocationAddressTextView = (TextView) findViewById(R.id.location_address_view);
@@ -144,31 +146,21 @@ public class MainActivity extends ActionBarActivity implements
         // Set defaults, then update using values stored in the Bundle.
         mAddressRequested = false;
         mAddressOutput = "";
+
         updateValuesFromBundle(savedInstanceState);
 
         updateUIWidgets();
         buildGoogleApiClient();
-
-        // Bind to LocationService
-        doBindService();
-
-        // Start Location Service
-        Intent i = new Intent(this, com.google.android.gms.location.sample.locationaddress.LocationService.class);
-        startService(i);
-
-        // Start Network Service
-        Intent i2 = new Intent(this, com.google.android.gms.location.sample.locationaddress.NetworkService.class);
-        startService(i2);
-
-        // Start Alarm Service
-        //Intent i3 = new Intent(this, com.google.android.gms.location.sample.locationaddress.AlarmService.class);
-        //startService(i3);
 
         // Get reference to btnGetLoc
         findViewById(R.id.btnGetLoc).setOnClickListener(getLoc_OnClickListener);
 
         // Get Context
         ctx = this.getApplicationContext();
+
+        // Bind TimeServer
+        Intent mIntent = new Intent(this, NetworkService.class);
+        bindService(mIntent, mNetworkConnection, BIND_AUTO_CREATE);
 
         // DEBUG
         Log.e(TAG, "onCreate successful.");
@@ -398,18 +390,24 @@ public class MainActivity extends ActionBarActivity implements
         }
     }
 
-    // Binder Stuff to bind to LocationService
-    private ServiceConnection mConnection = new ServiceConnection() {
+    // Binder ServiceConnection For interracting with NetworkService
+    private ServiceConnection mNetworkConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             // This is called when the connection with the service has been
             // established, giving us the service object we can use to
             // interact with the service.  Because we have bound to a explicit
             // service that we know is running in our own process, we can
             // cast its IBinder to a concrete class and directly access it.
-            mBoundService = ((LocationService.LocalBinder)service).getService();
+            mBoundNetworkService = ((NetworkService.LocalBinder)service).getService();
 
-            // Tell the user about this for our demo.
-            showToast("LocationService Connected");
+            if(mBoundNetworkService != null) {
+                // Tell the user about this for our demo.
+                showToast("NetworkService Connected");
+                Log.e(TAG,"NetworkService Connected");
+
+                // Do Stuff
+                //mBoundNetworkService.postRequest();
+            }
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -417,27 +415,10 @@ public class MainActivity extends ActionBarActivity implements
             // unexpectedly disconnected -- that is, its process crashed.
             // Because it is running in our same process, we should never
             // see this happen.
-            mBoundService = null;
-            showToast("LocationService Disconnected");
+            mBoundNetworkService = null;
+            showToast("NetworkService Disconnected");
+            Log.e(TAG,"NetworkService Disconnected");
         }
     };
 
-    void doBindService() {
-        // Establish a connection with the service.  We use an explicit
-        // class name because we want a specific service implementation that
-        // we know will be running in our own process (and thus won't be
-        // supporting component replacement by other applications).
-        bindService(new Intent(this,
-                LocationService.class), mConnection, Context.BIND_AUTO_CREATE);
-        mIsBound = true;
-        Log.e(TAG, "doBindService");
-    }
-
-    void doUnbindService() {
-        if (mIsBound) {
-            // Detach our existing connection.
-            unbindService(mConnection);
-            mIsBound = false;
-        }
-    }
 }
