@@ -70,10 +70,9 @@ public class MainActivity extends ActionBarActivity implements
     protected String mLongitudeLabel;
     protected TextView mLatitudeText;
     protected TextView mLongitudeText;
-    protected Button btnGetLoc;
     protected Context ctx;
 
-    // Bindings
+    // Bindings for NetworkService
     protected NetworkService mBoundNetworkService;
     protected boolean mIsNetworkBound;
 
@@ -169,8 +168,7 @@ public class MainActivity extends ActionBarActivity implements
     //On click listener for btnGetLoc
     final View.OnClickListener getLoc_OnClickListener = new View.OnClickListener() {
         public void onClick(final View v) {
-            //Inform the user the button has been clicked
-            //Toast.makeText(ctx, "Button clicked.", Toast.LENGTH_SHORT).show();
+            // Get Location
             getLocation();
         }
     };
@@ -390,7 +388,7 @@ public class MainActivity extends ActionBarActivity implements
         }
     }
 
-    // Bind ServiceConnection for interracting with NetworkService
+    // Bind ServiceConnection for interacting with NetworkService
     private ServiceConnection mNetworkConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             // This is called when the connection with the service has been
@@ -404,9 +402,6 @@ public class MainActivity extends ActionBarActivity implements
                 // Tell the user about this for our demo.
                 showToast("NetworkService Connected");
                 Log.e(TAG,"NetworkService Connected");
-
-                // Do Stuff
-                //mBoundNetworkService.postRequest();
             }
         }
 

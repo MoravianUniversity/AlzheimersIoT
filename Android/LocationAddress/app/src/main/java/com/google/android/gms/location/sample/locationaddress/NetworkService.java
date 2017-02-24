@@ -16,11 +16,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
+// LocationTracker
 import fr.quentinklein.slt.LocationTracker;
 
 /**
@@ -56,43 +55,52 @@ public class NetworkService extends Service {
     @Override
     public void onCreate() {
         super.onCreate(); // if you override onCreate(), make sure to call super().
-        // If a Context object is needed, call getApplicationContext() here.
 
         // Get Context
         ctx = this.getApplicationContext();
 
+        showToast("NetworkService Created Successfully.");
+
+        // Start LocationTracker
         createLocationTracker();
 
         Log.e(TAG, "onCreate successful");
     }
 
+    // Create Location Tracker
     public void createLocationTracker() {
         tracker = new LocationTracker(ctx) {
+
             // Every time device location changes, onLocationFound is called
             @Override
             public void onLocationFound(Location location) {
-                // Do some stuff
-                Log.e(TAG, location.toString());
+                // Log Location Data
+                Log.e(TAG + " CurLoc: ", location.toString());
+
+                // Get time of location data acquisition
                 curTime = location.getTime();
 
                 // Cast from epoch to UTC
                 Date date = new Date(curTime); // 'epoch' in long
                 final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+                // Cast to Variables
                 StrTime = sdf.format(date);
-
-                Log.e(TAG + "Time: ", StrTime);
-
                 StrLat = String.valueOf(location.getLatitude());
                 StrLon = String.valueOf(location.getLongitude());
+
+                // Create Thread for POST Request
                 Thread t = new Thread(new Runnable() {
                     public void run() {
                         // Thread request as it contains Networking which cannot be run on the main thread.
                         request(StrLon, StrLat, StrTime);
                     }
                 });
-
+                // Start Thread
                 t.start();
             }
+
+            // On suspension of Service...
             @Override
                     public void onTimeout() {
                 tracker.stopListening();
@@ -102,10 +110,8 @@ public class NetworkService extends Service {
     }
 
     // POST Request to server
-    // Need URL encoded
+    // TODO: Check for repeated/duplicate GPS entries
     private StringBuffer request(String lon, String lat, String time) {
-        // TODO Auto-generated method stub
-
 
         StringBuffer response = new StringBuffer();
         try {
@@ -113,7 +119,7 @@ public class NetworkService extends Service {
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-            // Setting basic post request
+            // Setting Language and Content Type for POST request
             con.setRequestMethod("POST");
             //con.setRequestProperty("User-Agent", USER_AGENT);
             con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
