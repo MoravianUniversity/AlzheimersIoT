@@ -30,13 +30,13 @@ import fr.quentinklein.slt.LocationTracker;
 public class NetworkService extends Service {
 
     // Networking Variables
-    private Double rawLat;
-    private Double rawLon;
     private String StrLat;
     private String StrLon;
-    private String curTime;
+    private long curTime;
+    private String StrTime;
     private Context ctx;
 
+    // LocationTracker
     public LocationTracker tracker;
 
     // Get TAG
@@ -49,7 +49,7 @@ public class NetworkService extends Service {
 
     // Must create a default constructor
     public NetworkService() {
-
+        // Do Constructor Stuff
     }
 
     // Constructor
@@ -68,19 +68,26 @@ public class NetworkService extends Service {
 
     public void createLocationTracker() {
         tracker = new LocationTracker(ctx) {
-
             // Every time device location changes, onLocationFound is called
             @Override
             public void onLocationFound(Location location) {
                 // Do some stuff
                 Log.e(TAG, location.toString());
-                curTime = String.valueOf(location.getTime());
+                curTime = location.getTime();
+
+                // Cast from epoch to UTC
+                Date date = new Date(curTime); // 'epoch' in long
+                final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                StrTime = sdf.format(date);
+
+                Log.e(TAG + "Time: ", StrTime);
+
                 StrLat = String.valueOf(location.getLatitude());
                 StrLon = String.valueOf(location.getLongitude());
                 Thread t = new Thread(new Runnable() {
                     public void run() {
                         // Thread request as it contains Networking which cannot be run on the main thread.
-                        request(StrLon, StrLat, curTime);
+                        request(StrLon, StrLat, StrTime);
                     }
                 });
 
@@ -153,15 +160,6 @@ public class NetworkService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
-    }
-
-    // Function to get current time
-    public void getCurTime() {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
-        String currentDateTimeString = df.getDateTimeInstance().format(new Date());
-
-        // textView is the TextView view that should display it
-        curTime = (currentDateTimeString);
     }
 
     /**
