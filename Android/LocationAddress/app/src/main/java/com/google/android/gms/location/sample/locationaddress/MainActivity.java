@@ -158,8 +158,8 @@ public class MainActivity extends ActionBarActivity implements
         // Get Context
         ctx = this.getApplicationContext();
 
-        // Bind TimeServer
-        Intent mIntent = new Intent(this, NetworkService.class);
+        // Bind NetworkService
+        Intent mIntent = new Intent(ctx, NetworkService.class);
         bindService(mIntent, mNetworkConnection, BIND_AUTO_CREATE);
 
         // DEBUG
@@ -390,7 +390,7 @@ public class MainActivity extends ActionBarActivity implements
         }
     }
 
-    // Binder ServiceConnection For interracting with NetworkService
+    // Bind ServiceConnection for interracting with NetworkService
     private ServiceConnection mNetworkConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             // This is called when the connection with the service has been

@@ -60,8 +60,5 @@ limitations under the License.
         <service
             android:name=".NetworkService"
             android:exported="false"/>
-        <service
-            android:name=".TimeServer"
-            android:exported="false"/>
     </application>
 </manifest>
