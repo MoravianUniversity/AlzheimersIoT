@@ -4,6 +4,7 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var GPSSchema   = new Schema({
+    deviceID: String,
     time: Date, // This is a ISO 8601 UTC date, e.g. "1994-11-05T13:15:30Z"
     lat: Number,
     lon: Number,
