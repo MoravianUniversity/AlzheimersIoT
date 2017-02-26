@@ -184,8 +184,8 @@ public class NetworkService extends Service {
             //con.setRequestProperty("User-Agent", USER_AGENT);
             con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
             con.setRequestProperty("Content-Type","application/json");
-
-            String postJsonData = "{\"_id\":\"\",\"address\":\"Address Feature Not Yet Supported\",\"lon\":" + lon + ",\"lat\":" + lat + ",\"time\":\"" + time + ",\"deviceID\":\"" + deviceID + "\",\"__v\":0}";
+            
+            String postJsonData = "{\"_id\":\"\",\"address\":\"Address Feature Not Yet Supported\",\"lon\":" + lon + ",\"lat\":" + lat + ",\"time\":\"" + time + "\",\"deviceID\":\"" + deviceID + "\",\"__v\":0}";
 
             // Send post request
             con.setDoOutput(true);
