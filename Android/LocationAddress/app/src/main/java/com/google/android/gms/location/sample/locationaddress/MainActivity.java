@@ -157,9 +157,15 @@ public class MainActivity extends ActionBarActivity implements
         // Get Context
         ctx = this.getApplicationContext();
 
-        // Bind NetworkService
-        Intent mIntent = new Intent(ctx, NetworkService.class);
-        bindService(mIntent, mNetworkConnection, BIND_AUTO_CREATE);
+        // Check if NetworkService is bound
+        if (mBoundNetworkService==null) {
+            // Bind NetworkService
+            Intent mIntent = new Intent(ctx, NetworkService.class);
+            bindService(mIntent, mNetworkConnection, BIND_AUTO_CREATE);
+        }
+        else {
+            // Service is already bound
+        }
 
         // DEBUG
         Log.e(TAG, "onCreate successful.");
