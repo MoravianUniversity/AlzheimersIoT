@@ -21,6 +21,7 @@ import java.util.Date;
 
 // LocationTracker
 import fr.quentinklein.slt.LocationTracker;
+import fr.quentinklein.slt.TrackerSettings;
 
 /**
  * Created by tyler on 2/10/17.
@@ -37,6 +38,7 @@ public class NetworkService extends Service {
 
     // LocationTracker
     public LocationTracker tracker;
+    public Location lastLocation;
 
     // Get TAG
     final static String TAG = "NetworkService";
@@ -69,41 +71,90 @@ public class NetworkService extends Service {
 
     // Create Location Tracker
     public void createLocationTracker() {
-        tracker = new LocationTracker(ctx) {
+
+        // Create Settings for LocationTracker
+        TrackerSettings settings = new TrackerSettings()
+                // Every 5 minutes
+                .setTimeBetweenUpdates(5 * 60 * 1000);
+
+        // Define Tracker
+        tracker = new LocationTracker(ctx, settings) {
 
             // Every time device location changes, onLocationFound is called
             @Override
             public void onLocationFound(Location location) {
-                // Log Location Data
-                Log.e(TAG + " CurLoc: ", location.toString());
 
-                // Get time of location data acquisition
-                curTime = location.getTime();
+                // First Location Acquisition
+                if (lastLocation==null) {
+                    // Log Location Data
+                    Log.e(TAG + " CurLoc: ", location.toString());
 
-                // Cast from epoch to UTC
-                Date date = new Date(curTime); // 'epoch' in long
-                final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                    // Get time of location data acquisition
+                    curTime = location.getTime();
 
-                // Cast to Variables
-                StrTime = sdf.format(date);
-                StrLat = String.valueOf(location.getLatitude());
-                StrLon = String.valueOf(location.getLongitude());
+                    // Cast from epoch to UTC
+                    Date date = new Date(curTime); // 'epoch' in long
+                    final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-                // Create Thread for POST Request
-                Thread t = new Thread(new Runnable() {
-                    public void run() {
-                        // Thread request as it contains Networking which cannot be run on the main thread.
-                        request(StrLon, StrLat, StrTime);
-                    }
-                });
-                // Start Thread
-                t.start();
+                    // Cast to Variables
+                    StrTime = sdf.format(date);
+                    StrLat = String.valueOf(location.getLatitude());
+                    StrLon = String.valueOf(location.getLongitude());
+
+                    lastLocation = location;
+
+                    // Create Thread for POST Request
+                    Thread t = new Thread(new Runnable() {
+                        public void run() {
+                            // Thread request as it contains Networking which cannot be run on the main thread.
+                            request(StrLon, StrLat, StrTime);
+                        }
+                    });
+                    // Start Thread
+                    t.start();
+                }
+
+                // Location is the same as lastLocation, don't bother POSTing
+                else if (lastLocation==location) {
+                    // Keep listening
+                }
+
+                // location is unique to lastLocation
+                else {
+                    // Log Location Data
+                    Log.e(TAG + " CurLoc: ", location.toString());
+
+                    // Get time of location data acquisition
+                    curTime = location.getTime();
+
+                    // Cast from epoch to UTC
+                    Date date = new Date(curTime); // 'epoch' in long
+                    final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+                    // Cast to Variables
+                    StrTime = sdf.format(date);
+                    StrLat = String.valueOf(location.getLatitude());
+                    StrLon = String.valueOf(location.getLongitude());
+
+                    lastLocation = location;
+
+                    // Create Thread for POST Request
+                    Thread t = new Thread(new Runnable() {
+                        public void run() {
+                            // Thread request as it contains Networking which cannot be run on the main thread.
+                            request(StrLon, StrLat, StrTime);
+                        }
+                    });
+                    // Start Thread
+                    t.start();
+                }
             }
 
             // On suspension of Service...
             @Override
-                    public void onTimeout() {
-                tracker.stopListening();
+            public void onTimeout() {
+                //tracker.stopListening();
+                Log.e(TAG + "LocTrack.", "Timeout!");
             }
         };
         tracker.startListening();
@@ -177,6 +228,9 @@ public class NetworkService extends Service {
 
     @Override
     public void onDestroy() {
+        if(tracker!=null){
+            tracker.stopListening();
+        }
         super.onDestroy();
     }
 
@@ -187,6 +241,8 @@ public class NetworkService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
+        // Keep service running even when killed
+        return START_STICKY;
+        //return super.onStartCommand(intent, flags, startId);
     }
 }
