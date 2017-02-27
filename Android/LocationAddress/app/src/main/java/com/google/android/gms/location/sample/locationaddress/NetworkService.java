@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Binder;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 import java.io.BufferedReader;
@@ -22,6 +23,9 @@ import java.util.Date;
 // LocationTracker
 import fr.quentinklein.slt.LocationTracker;
 import fr.quentinklein.slt.TrackerSettings;
+
+import static java.security.AccessController.getContext;
+import android.provider.Settings.Secure;
 
 /**
  * Created by tyler on 2/10/17.
@@ -47,6 +51,8 @@ public class NetworkService extends Service {
     // RemoteService for a more complete example.
     private final IBinder mBinder = new LocalBinder();
 
+    // String for ANDROID_ID
+    private String android_id;
 
     // Must create a default constructor
     public NetworkService() {
@@ -61,11 +67,14 @@ public class NetworkService extends Service {
         // Get Context
         ctx = this.getApplicationContext();
 
-        showToast("NetworkService Created Successfully.");
+        // Get ANDROID_ID for unique identifier in database
+        android_id = Secure.getString(ctx.getContentResolver(),
+                Secure.ANDROID_ID);
 
         // Start LocationTracker
         createLocationTracker();
 
+        showToast("NetworkService Created Successfully.");
         Log.e(TAG, "onCreate successful");
     }
 
@@ -107,7 +116,7 @@ public class NetworkService extends Service {
                     Thread t = new Thread(new Runnable() {
                         public void run() {
                             // Thread request as it contains Networking which cannot be run on the main thread.
-                            request(StrLon, StrLat, StrTime);
+                            request(StrLon, StrLat, StrTime, android_id);
                         }
                     });
                     // Start Thread
@@ -142,7 +151,7 @@ public class NetworkService extends Service {
                     Thread t = new Thread(new Runnable() {
                         public void run() {
                             // Thread request as it contains Networking which cannot be run on the main thread.
-                            request(StrLon, StrLat, StrTime);
+                            request(StrLon, StrLat, StrTime, android_id);
                         }
                     });
                     // Start Thread
@@ -162,7 +171,7 @@ public class NetworkService extends Service {
 
     // POST Request to server
     // TODO: Check for repeated/duplicate GPS entries
-    private StringBuffer request(String lon, String lat, String time) {
+    private StringBuffer request(String lon, String lat, String time, String deviceID) {
 
         StringBuffer response = new StringBuffer();
         try {
@@ -175,8 +184,8 @@ public class NetworkService extends Service {
             //con.setRequestProperty("User-Agent", USER_AGENT);
             con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
             con.setRequestProperty("Content-Type","application/json");
-
-            String postJsonData = "{\"_id\":\"\",\"address\":\"Address Feature Not Yet Supported\",\"lon\":" + lon + ",\"lat\":" + lat + ",\"time\":\"" + time + "\",\"__v\":0}";
+            
+            String postJsonData = "{\"_id\":\"\",\"address\":\"Address Feature Not Yet Supported\",\"lon\":" + lon + ",\"lat\":" + lat + ",\"time\":\"" + time + "\",\"deviceID\":\"" + deviceID + "\",\"__v\":0}";
 
             // Send post request
             con.setDoOutput(true);
