@@ -16,6 +16,8 @@ router.route('/')
 
     // create a memoryGame entry (accessed at POST http://localhost:8080/api/memoryGame)
     .post(function(req, res) {
+        if (parametersAreMissingOrInvalid(req))
+            res.status(400).json({error: 'There are missing or invalid parameters in the request.'});
 
         var memoryGame = new MemoryGame();      // create a new instance of the MemoryGame model
         memoryGame.user = req.body.user;
@@ -68,3 +70,17 @@ router.route('/:memoryGame_id')
     });
 
 module.exports = router;
+
+// helper methods for paramter linting
+function parametersAreMissingOrInvalid(req) {
+    // Check for missing parameters
+    if (req.body.user == null || req.body.score == null || req.body.time == null)
+        return true;
+
+    // Check for invlaid user and score paramters
+    if (typeof req.body.user != "string" || isNaN(req.body.score) || Number.isNaN(Date.parse(req.body.time)))
+        return true;
+
+    return false;
+}
+
