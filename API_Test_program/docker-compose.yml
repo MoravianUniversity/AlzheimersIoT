@@ -1,0 +1,6 @@
+# docker-compose.yml
+
+version: '2'
+services:
+  api_test:
+    build: .
