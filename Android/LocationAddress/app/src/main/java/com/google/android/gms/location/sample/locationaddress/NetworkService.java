@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Binder;
 import android.os.IBinder;
-import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 import java.io.BufferedReader;
@@ -19,13 +18,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import android.provider.Settings.Secure;
 
 // LocationTracker
 import fr.quentinklein.slt.LocationTracker;
 import fr.quentinklein.slt.TrackerSettings;
-
-import static java.security.AccessController.getContext;
-import android.provider.Settings.Secure;
 
 /**
  * Created by tyler on 2/10/17.
@@ -124,7 +121,7 @@ public class NetworkService extends Service {
                 }
 
                 // Location is the same as lastLocation, don't bother POSTing
-                else if (lastLocation==location) {
+                else if (lastLocation.getLongitude()==location.getLongitude() & lastLocation.getLatitude()==location.getLatitude()) {
                     // Keep listening
                 }
 
@@ -184,7 +181,7 @@ public class NetworkService extends Service {
             //con.setRequestProperty("User-Agent", USER_AGENT);
             con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
             con.setRequestProperty("Content-Type","application/json");
-            
+
             String postJsonData = "{\"_id\":\"\",\"address\":\"Address Feature Not Yet Supported\",\"lon\":" + lon + ",\"lat\":" + lat + ",\"time\":\"" + time + "\",\"deviceID\":\"" + deviceID + "\",\"__v\":0}";
 
             // Send post request
