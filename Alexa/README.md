@@ -1,117 +1,88 @@
-Alexa Develop Skill Set Documentation
-=====================================
+#Alexa Develop Skill Set Documentation
+This documentation defines how to create an Alexa Skill on Amazon's Developer site, and how to test/use your skill on a particular computer whether it is connected to an Amazon Echo or not.
 
-##1.) Set Up a Development Account with Amazon
-- First, if you wish to have your own developer account with amazon where you can link and test your skillsets.
-  To set up a Amazon developer account simply go to https://developer.amazon.com. This step is only necessary if you
-  wish to develop a skill set linked to a account specific to you, if that is not your goal please proceed to next 
-  step.
 
-##2.) Setup Flask-Ask
-- For our development puposes we are using Flask-Ask for skill development. to install Flask-Ask follow these steps:
-  On linux/raspian python comes preinstalled so simply run the command:
-```
-$pip install flask-ask
-```
+##Starting Up
 
-- On MacOS first ensure that python is installed, if python is not installed follow this link 
-  https://docs.python.org/3/using/mac.html and then ensure pip is working correctly. Once this is done you can run the 
-  command:
-```
-$pip install flask-ask
-```
+####Setting Up a Development Account with Amazon
+If you want your own account with Amazon where you can link and test your skill, you can set up an Amazon Developer account [here](https://developer.amazon.com).  
 
-- On Windows if python is not installed follow these instructions 
-  http://docs.python-guide.org/en/latest/starting/install/win/. 
-  Once that is complete run the command:
-```
-$pip install flask-ask
-```
+This step is only necessary if you want to develop a skill linked to an account specific to you.
 
-- Flask-Ask is python based therefore all skill will have to be developed using python. Here a example imports
-  you will be using in you python Alexa skill:
+####Installing Flask-Ask
+Assuming Python is installed, you can run the command:
+	
+	$pip install flask-ask
+
+If you are using a Mac and Python isn't installed follow the instructions [here](https://docs.python.org/3/using/mac.html), if you are using Windows follow the instructions linked [here](http://docs.python-guide.org/en/latest/starting/install/win/).
+
+In your Python file where you develop your skill you must import Flask-Ask like this:
 ```
 from flask import Flask, render_template
 from flask_ask import Ask, statement, question, session
 ```
+For more detailed information on using Python's Flask-Ask library, a link to documentation can be found [here](https://developer.amazon.com/blogs/post/Tx14R0IYYGH3SKT/flask-ask-a-new-python-framework-for-rapid-alexa-skills-kit-development).
 
-##3.)Install Ngrok 
-- Please go to the site here for instructions to download and use Ngrok: 
-  https://ngrok.com. Then after Ngrok is installed open a new terminal window and cd to where
-  Ngrok is stored then run the command:
+####Installing Ngrok 
+Instructions to download and use Ngrok can be found on their website linked [here](https://ngrok.com).
 
-- On Mac/Linux:
-```
-$./ngrok http 5000
-```
+##Developing Your Skill
+###Defining a Skill on Amazon Developer
+Log into [Amazon Developer](https://developer.amazon.com), click on the "Alexa" tab, then under Alexa Skills Kit click "Get Started."
 
-- On Windows:
-```
-$ngrok.exe http 5000
-```
+In the top right click the "Add a New Skill" button, from here you can start creating your skill.
 
-- Once that is running copy the last forwarding IP it should look like this:
-```
-https://20ba2c6f.ngrok.io
-```
+####Skill Information
+For "Skill Type" choose "Custom Interaction Model," from here put your skill's name under "Name" and "Invocation Name," these two fields can be the same.
+You do not need to change anything in the section labeled "Global Fields," from here Save your skill and then hit the Next button.
 
-##4.) Skill Set File Structure
-Your file structure should include:
+####Interaction Model 
+The Intent Schema must be in JSON format.  Your skills intents--the things that your skill does--are defined under a header titled "intents," you should have a section for each intent you create.  Each intent should have a name, defined under "intent."  If your intent takes input, such as a location or a person's name, in a section titled "slots," located on the same level as the name of your intent in the JSON. 
 
-- app_name.py: this is where the logic behind your skill is coded
+If you're intent using a data type not already defined by Alexa (such as a patient's name), you can define that data type by clicking "Add Slot Type" under the Custom Slot Type section. 
+From here you can define the name of your slot type, make sure it is the same name as what you said your slot's type was in your Intent Schema, from here you can define valid values for your slot type under "Enter Values."
+
+Under Sample Utterances you can define the questions that you plan on asking Alexa in order to activate your skill.  Sample Utterances consist of the name of the intent you want to use followed by the question you would ask Alexa.  When you actually ask Alexa these Sample Utterances you will say her name in place of the name of your the intent, so do not write the Sample Utterances with the plan of speaking the intent's name in the question.  If the Sample Utterance you are writing requires slot input, you define this by putting the slot's name that you defined in the Intent Schema (different than the slot's type), in squiggly brackets ({}) for each required Sample Utterance.
+
+Examples of intent schemas, custom data types, and sample utterances for the skills Caregiver and Memory Game can be found in their respective folders in the GitHub respository. 
+
+After all of this, Save your skill and hit the Next button.
+
+####Configuration
+Under "Endpoint" choose HTTPS as your "Service Endpoint Type" and for your geographical location choose North America.
+
+If you are on the Machine you are choosing to host your skill on, you can define where that skill is hosted using `ngrok`.  If you don't have `ngrok` you can get it [here](https://ngrok.com/download).
+
+In the Terminal, navigate to the directory where you created the Python file that uses `Flask-Ask` to develop your skill.  In this directory, run `ngrok` in the Terminal with the command
+
+Mac/Linux:
+	
+	./ngrok http 5000
+
+Windows:
     
-- Intent_Schema.json: this is a json file in which the structure of how your conversation show go. For example,
-  "Alexa" -> play game->"Alexa: are you ready" ->"yes intent"->Alexa: asks question ->"Answer Intent".
-  So its basically the order of how a customer should respond to alexa.
-      
-- Sample_Utterances.json: this is a json file containing the expected responses for each intent, and allows a 
-  developer to set custom key words/responses for intents. For example:
-  "YesIntent yes,yep,sure,okay"
-  This tells the Alexa API to accept these responses as alternate ways to say yes.
-      
-- templates.yaml - these contain the questions or item you wish to be vocalized by alexa when someone interacts
-  with your skill.
-  
-- These must be together in your skill file for your skill to work properly. If one is missing Alexa my still 
-  attempt to run however it will either error out or corrupt the answer data.
-  
-##5.) Once your app is complete
-- Once you have completely finish creating all your necessary files you may begin testing your skill set. To do so 
-  first $cd into you app's file where app_name.py is living. Then run:
-```
-python app_name.py
-```
-- It will then tell you the skill is running on localhost at a specific host. Next you need to launch Ngrok with 
-  the same port as you python file.
-- On Mac and Linux:
-```
-./ngrok http 5000
-```
-- On Windows:
-```
-ngrok.exe http 5000
-```
-- Once that is running copy the last forwarding IP it should look like this:
-```
-https://20ba2c6f.ngrok.io
-```
+    ngrok.exe http 5000
 
-##Setting up with Amazon Alexa Developer
-- Log into your amazon developer account. Then select Alexa->develop new skill. After that follow the 
-  step by step guide up until you reach get certification and publish to the public, you do not need to 
-  go any further due to the fact that as long as your Amazon Alexa is link to the same account
-  your skill can now be used and tested.
+Copy the URL corresponding to the second `Forwarding` field under `Session Status`.  From here return to Amazon's Developer into the field underneath "North America" on Amazon's Developer site.
 
-- An Intent Schema.json and an Sample Utterances.json should be copied and pasted into the corresponding categories
-  in the Alexa Developer UI
+Keep the "Account Linking" section as is, from here Save and hit "Next."
 
-##Running the skill
-- Once you have set your developer account up and linked your skill to it simply,
-  log into to your amazon echo with the same account and you can then begin testing your skill
-  on your echo device
+####SSL Certificate
+Under "Certificate for NA Endpoint" click the bubble next to *"My development endpoint is a sub-domain of a domain that has a wildcard certificate from a certificate authority."*  After this, Save your progress and hit "Next."
 
+####Test
+If you defined a valid endpoint in the "Configuration" section, you are able to click the "Enable" button that allows you to enable the skill for testing on your account.  
 
+After this, save your progress.  Assuming your skill was developed with Flask-Ask, your work on Amazon's Developer site is complete.  From here you can move forward and try out your new skill.
 
-    
-      
-      
+##**Testing & Running The Alexa Skill**
+
+To try out your skill, first make sure Ngrok is running from the skill's directory in the Terminal. 
+Next create a new tab in the Terminal, here you can start your Flask-Ask Python program that defines the skill. 
+You can test out your newly created skill by interacting with the Amazon Echo connected to the computer running these programs. 
+If there is no Amazon Echo available, you can still test your skill using a virtual Amazon Echo located [here](https://echosim.io/welcome?next=%2F).
+
+You can start your skill by asking the Amazon Echo: 
+***"Alexa, start \<skill name\>."***
+
+From here you can use your skill by getting Alexa to respond to the Sample Utterances you defined when creating the skill.
