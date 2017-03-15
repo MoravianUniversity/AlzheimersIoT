@@ -1,15 +1,15 @@
-#Alexa Develop Skill Set Documentation
+# Alexa Develop Skill Set Documentation  
 This documentation defines how to create an Alexa Skill on Amazon's Developer site, and how to test/use your skill on a particular computer whether it is connected to an Amazon Echo or not.
 
 
-##Starting Up
+## Starting Up
 
-####Setting Up a Development Account with Amazon
+#### Setting Up a Development Account with Amazon  
 If you want your own account with Amazon where you can link and test your skill, you can set up an Amazon Developer account [here](https://developer.amazon.com).  
 
 This step is only necessary if you want to develop a skill linked to an account specific to you.
 
-####Installing Flask-Ask
+#### Installing Flask-Ask  
 Assuming Python is installed, you can run the command:
 	
 	$pip install flask-ask
@@ -23,16 +23,16 @@ from flask_ask import Ask, statement, question, session
 ```
 For more detailed information on using Python's Flask-Ask library, a link to documentation can be found [here](https://developer.amazon.com/blogs/post/Tx14R0IYYGH3SKT/flask-ask-a-new-python-framework-for-rapid-alexa-skills-kit-development).
 
-####Installing Ngrok 
+####Installing Ngrok  
 Instructions to download and use Ngrok can be found on their website linked [here](https://ngrok.com).
 
-##Developing Your Skill
-###Defining a Skill on Amazon Developer
+##Developing Your Skill  
+###Defining a Skill on Amazon Developer  
 Log into [Amazon Developer](https://developer.amazon.com), click on the "Alexa" tab, then under Alexa Skills Kit click "Get Started."
 
 In the top right click the "Add a New Skill" button, from here you can start creating your skill.
 
-####Skill Information
+####Skill Information  
 For "Skill Type" choose "Custom Interaction Model," from here put your skill's name under "Name" and "Invocation Name," these two fields can be the same.
 You do not need to change anything in the section labeled "Global Fields," from here Save your skill and then hit the Next button.
 
@@ -48,7 +48,7 @@ Examples of intent schemas, custom data types, and sample utterances for the ski
 
 After all of this, Save your skill and hit the Next button.
 
-####Configuration
+####Configuration  
 Under "Endpoint" choose HTTPS as your "Service Endpoint Type" and for your geographical location choose North America.
 
 If you are on the Machine you are choosing to host your skill on, you can define where that skill is hosted using `ngrok`.  If you don't have `ngrok` you can get it [here](https://ngrok.com/download).
@@ -67,15 +67,15 @@ Copy the URL corresponding to the second `Forwarding` field under `Session Statu
 
 Keep the "Account Linking" section as is, from here Save and hit "Next."
 
-####SSL Certificate
+####SSL Certificate  
 Under "Certificate for NA Endpoint" click the bubble next to *"My development endpoint is a sub-domain of a domain that has a wildcard certificate from a certificate authority."*  After this, Save your progress and hit "Next."
 
-####Test
-If you defined a valid endpoint in the "Configuration" section, you are able to click the "Enable" button that allows you to enable the skill for testing on your account.  
+####Test  
+If you defined a valid endpoint in the "Configuration" section, you are able to click the "Enable" button that allows you to enable the skill for testing on your account.
 
 After this, save your progress.  Assuming your skill was developed with Flask-Ask, your work on Amazon's Developer site is complete.  From here you can move forward and try out your new skill.
 
-##**Testing & Running The Alexa Skill**
+##**Testing & Running The Alexa Skill**  
 
 To try out your skill, first make sure Ngrok is running from the skill's directory in the Terminal. 
 Next create a new tab in the Terminal, here you can start your Flask-Ask Python program that defines the skill. 
