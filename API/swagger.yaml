@@ -11,7 +11,7 @@ info:
 # Describe your paths here
 paths:
   # This is a path endpoint. Change it.
-  /memoryGame:
+  /api/memoryGame:
     # This is a HTTP operation
     post:
       # Describe this verb here. Note: you can use markdown
@@ -45,11 +45,16 @@ paths:
           # Use JSON Schema format
         404:
           description: Not Found - (Cannot Post)
-  /gps:
+  /api/gps:
     post:
       description: Keeps track of where patient needs to be
       parameters:
         # An example parameter that is in query and is required
+        - name: deviceID
+          in: query
+          description: ID of device
+          required: true
+          type: string
         - name: time
           in: query
           description: Time of update
@@ -82,19 +87,19 @@ paths:
           # Use JSON Schema format
         404:
           description: Not Found - (Cannot Post)
-  /wemo:
+  /api/wemo:
     post:
       description: Keeps track of electrical usage of sockets
       parameters:
         # An example parameter that is in query and is required
         - name: date
           in: query
-          description: Day of update
+          description: Day of update, YYYY-MM-DD
           required: true
           type: string
         - name: time
           in: query
-          description: Time of update
+          description: Time of update, based on military time
           required: true
           type: string
         - name: status
@@ -111,4 +116,30 @@ paths:
           # Use JSON Schema format
         404:
           description: Not Found - (Cannot Post)
+  /api/medicineLogger:
+    post:
+      description: Medicine Logger
+      parameters:
+        - name: user
+          in: query
+          description: Name of user
+          required: true
+          type: string
+        - name: record
+          in: query
+          description: Record of yeh
+          required: true
+          type: string
+        - name: date
+          in: query
+          description: Date of record
+          type: string
+          format: date
+      responses:
+        200:
+          description: Successful response
+        404:
+          description: Not Found - (Cannot Post)
+
+        
   
