@@ -5,7 +5,6 @@ var router = express.Router();
 
 // chai.js for linting
 var expect = require('chai').expect;
-var assert = require('chai').assert;
 
 // Get an instance of our model
 var MedicineLogger = require('../models/medicineLogger.js')
