@@ -3,6 +3,9 @@
 var express = require('express');
 var router = express.Router();
 
+// chai.js for linting
+var expect = require('chai').expect;
+
 // Get an instance of our model
 var MemoryGame = require('../models/memoryGame.js')
 
@@ -71,29 +74,21 @@ router.route('/:memoryGame_id')
 
 module.exports = router;
 
-// helper methods for paramter linting
-function parametersAreMissingOrInvalid(req) {
-    // Check for missing parameters
-    if (req.body.user == null || req.body.score == null || req.body.time == null)
-        return true;
-
-    // Check for invlaid user and score paramters
-    if (typeof req.body.user != "string" || isNaN(req.body.score) || Number.isNaN(Date.parse(req.body.time)))
-        return true;
-
-    return false;
-}
 
 // helper methods for paramter linting
 function postParametersAreMissingOrInvalid(req) {
     try {
         // Check for missing and invalid parameters
         expect(req.body).to.have.property('user').that.is.a('string');
-        expect(req.body).to.have.property('score').that.is.a('number');
+
+        expect(req.body).to.have.property('score');
+        // Check that the score param can parse into a number correctly
+        expect(isNaN(req.body.score)).to.be.false;
 
         expect(req.body).to.have.property('time').that.is.a('string');
         // Check that the time param can be parsed into a Date object correctly
         expect(Date.parse(req.body.time)).to.not.be.NaN;
+
     } catch (AssertionError) {
         return true;
     }
