@@ -18,7 +18,7 @@ router.route('/')
     .post(function(req, res) {
 
         var journal = new Journal();      // create a new instance of the Journal model
-        journal.datetime = Date.parse(req.body.time);
+        journal.datetime = Date.parse(req.body.datetime);
         journal.message = req.body.message;
         journal.activities = req.body.activities;
         journal.medication = req.body.medication;
