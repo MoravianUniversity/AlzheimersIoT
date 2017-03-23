@@ -13,41 +13,85 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def webhook():
 
-    req = request.get_json(silent=True, force=True)
+    request_json = request.get_json(silent=True, force=True)
 
     print("Request:")
-    print(json.dumps(req, indent=4))
+    print(json.dumps(request_json, indent=4))
 
-    res = processRequest(req)
+    response = processRequest(request_json)
 
-    res = json.dumps(res, indent=4)
-    r = make_response(res)
+    response = json.dumps(response, indent=4)
+    r = make_response(response)
     r.headers['Content-Type'] = 'application/json'
     return r
 
-def processRequest(req):
-    write_to_activities_file(req)
-    postToAPI()
-    res = makeWebhookResult("test")
-    return res
+def processRequest(request):
+    intent = request["result"]["metadata"]["intentName"]
+    print(intent)
+    if intent == "Activity Intent":
+        return activity_intent(request)
+    if intent == "Medicine-no Intent":
+        postToAPI(False)
+        res = makeWebhookResult("Okay, thanks for sharing. Please remember to take them today. I'll talk to you tomorrow.")
+        return res
+    if intent == "Medicine-yes Intent":
+        postToAPI(True)
+        res = makeWebhookResult("Thanks for sharing! I'll talk to you tomorrow.")
+        return res
 
-def postToAPI():
+
+def activity_intent(request):
+    write_to_entries_file(request)
+    data = getDataFromFile()
+    activities = data[0]
+    print(activities)
+    taken_meds = takenMeds(activities)
+    if not taken_meds:
+        print("here")
+        res = makeWebhookResult("Did you take your medicine today?")
+        return res
+    else:
+        postToAPI(taken_meds)
+        res = makeWebhookResult("Thanks for sharing! I'll talk to you tomorrow.")
+        return res
+
+
+def getDataFromFile():
     file = open('entries.txt', 'r')
     file_text = file.read()
-    activities = file_text.split(',')
+    file_text = file_text.split('\n')
+    activities_text = file_text[0]
+    activities = activities_text.split(',')
+    user_speech = file_text[1]
+    return activities, user_speech
 
-    #activities_string = "\"" + str(activities) + "\""
+def takenMeds(activities):
+    if "medicine" in activities:
+        return True
+    else:
+        return False
 
-    url = "http://localhost:8080/api/journal"
-    r = requests.post(url, data = {'datetime':str(datetime.datetime.utcnow().isoformat()), 'message':'This is a test journal entry', 'activities':activities, 'medication':'False'})
+
+def postToAPI(taken_meds):
+    data = getDataFromFile()
+    activities = data[0]
+    user_speech = data[1]
+
+    if taken_meds == True and "medicine" not in activities:
+        activities.append("medicine")
+
+    #url = "http://pegasus.cs.moravian.edu:8080/api/journal"
+    url = "http://localhost:8080/api/journal" #use for testing locally
+    requests.post(url, data = {'datetime':str(datetime.datetime.utcnow().isoformat()), 'message':user_speech, 'activities':activities, 'medication':taken_meds})
 
 
+def write_to_entries_file(request):
+    user_speech = request["result"]["resolvedQuery"]
 
-def write_to_activities_file(req):
-    physical_exercise = req["result"]["parameters"]["physical-exercise"]
-    public_activites = req["result"]["parameters"]["public-activities"]
-    home_activities = req["result"]["parameters"]["home-activities"]
-    medical_activities = req["result"]["parameters"]["medical-activities"]
+    physical_exercise = request["result"]["parameters"]["physical-exercise"]
+    public_activites = request["result"]["parameters"]["public-activities"]
+    home_activities = request["result"]["parameters"]["home-activities"]
+    medical_activities = request["result"]["parameters"]["medical-activities"]
 
     activities = []
 
@@ -62,6 +106,8 @@ def write_to_activities_file(req):
 
     file = open('entries.txt', 'w')
     file.write(','.join(activities))
+    file.write('\n')
+    file.write(user_speech)
     file.close()
 
 def makeWebhookResult(speech):
@@ -69,7 +115,6 @@ def makeWebhookResult(speech):
         "speech": speech,
         "displayText": speech,
         "data": {},
-        # "contextOut": [],
         "source": "apiai-journal"
     }
 
