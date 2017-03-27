@@ -16,12 +16,15 @@
 
 package com.google.android.gms.location.sample.locationaddress;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.ResultReceiver;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -62,15 +65,19 @@ import com.google.android.gms.location.LocationServices;
 public class MainActivity extends ActionBarActivity implements
         ConnectionCallbacks, OnConnectionFailedListener {
 
-
     // Variables
     protected String mLatitudeLabel;
     protected String mLongitudeLabel;
     protected TextView mLatitudeText;
     protected TextView mLongitudeText;
-    protected Button btnGetLoc;
     protected Context ctx;
-    protected static final String TAG = "main-activity";
+
+    // Bindings for NetworkService
+    protected NetworkService mBoundNetworkService;
+    protected boolean mIsNetworkBound;
+
+    // Tags and other Strings
+    protected static final String TAG = "MainActivity";
     protected static final String ADDRESS_REQUESTED_KEY = "address-request-pending";
     protected static final String LOCATION_ADDRESS_KEY = "location-address";
 
@@ -129,7 +136,6 @@ public class MainActivity extends ActionBarActivity implements
         mLatitudeText = (TextView) findViewById((R.id.latitude_text));
         mLongitudeText = (TextView) findViewById((R.id.longitude_text));
 
-
         mResultReceiver = new AddressResultReceiver(new Handler());
 
         mLocationAddressTextView = (TextView) findViewById(R.id.location_address_view);
@@ -139,24 +145,27 @@ public class MainActivity extends ActionBarActivity implements
         // Set defaults, then update using values stored in the Bundle.
         mAddressRequested = false;
         mAddressOutput = "";
+
         updateValuesFromBundle(savedInstanceState);
 
         updateUIWidgets();
         buildGoogleApiClient();
-
-        // Start Network Service
-        //Intent i = new Intent(this, com.google.android.gms.location.sample.basiclocationsample.NetworkService.class);
-        //startService(i);
-
-        // Start Alarm Service
-        //Intent i2 = new Intent(this, com.google.android.gms.location.sample.basiclocationsample.AlarmService.class);
-        //startService(i2);
 
         // Get reference to btnGetLoc
         findViewById(R.id.btnGetLoc).setOnClickListener(getLoc_OnClickListener);
 
         // Get Context
         ctx = this.getApplicationContext();
+
+        // Check if NetworkService is bound
+        if (mBoundNetworkService==null) {
+            // Bind NetworkService
+            Intent mIntent = new Intent(ctx, NetworkService.class);
+            bindService(mIntent, mNetworkConnection, BIND_AUTO_CREATE);
+        }
+        else {
+            // Service is already bound
+        }
 
         // DEBUG
         Log.e(TAG, "onCreate successful.");
@@ -165,8 +174,7 @@ public class MainActivity extends ActionBarActivity implements
     //On click listener for btnGetLoc
     final View.OnClickListener getLoc_OnClickListener = new View.OnClickListener() {
         public void onClick(final View v) {
-            //Inform the user the button has been clicked
-            //Toast.makeText(ctx, "Button clicked.", Toast.LENGTH_SHORT).show();
+            // Get Location
             getLocation();
         }
     };
@@ -385,4 +393,33 @@ public class MainActivity extends ActionBarActivity implements
             updateUIWidgets();
         }
     }
+
+    // Bind ServiceConnection for interacting with NetworkService
+    private ServiceConnection mNetworkConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            // This is called when the connection with the service has been
+            // established, giving us the service object we can use to
+            // interact with the service.  Because we have bound to a explicit
+            // service that we know is running in our own process, we can
+            // cast its IBinder to a concrete class and directly access it.
+            mBoundNetworkService = ((NetworkService.LocalBinder)service).getService();
+
+            if(mBoundNetworkService != null) {
+                // Tell the user about this for our demo.
+                showToast("NetworkService Connected");
+                Log.e(TAG,"NetworkService Connected");
+            }
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            // This is called when the connection with the service has been
+            // unexpectedly disconnected -- that is, its process crashed.
+            // Because it is running in our same process, we should never
+            // see this happen.
+            mBoundNetworkService = null;
+            showToast("NetworkService Disconnected");
+            Log.e(TAG,"NetworkService Disconnected");
+        }
+    };
+
 }

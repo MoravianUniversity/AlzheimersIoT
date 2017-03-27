@@ -5,7 +5,7 @@ API Documentation:
 The API leverages Docker to be easily portable and run (essentially) anywhere. Follow the documentation on Docker's website to install Docker on the desired machine: [https://docs.docker.com/engine/installation/](https://docs.docker.com/engine/installation/).
 
 ### Initial Container Build and Database Setup
-To build the base containers and get the API running the first time around, first clone the AlzheimersIoT repository onto the destination machine: 
+To build the base containers and get the API running the first time around, first clone the AlzheimersIoT repository onto the destination machine:
 
 ```
 git clone https://github.com/MoravianCollege/AlzheimersIoT.git
@@ -19,7 +19,7 @@ Now, you can start building the initial containers and ultimately start the API 
 docker-compose up --build
 ```
 
-This process will likely take a few minutes because this initial run has to pull a lot of container images from the internet, however, subsequent execution times will be a lot quicker. Please note that the end of this initial execution of the API will report authentication errors in the MongoDB log, this is expected as we need to initialize the MongoDB for the Node.js app to access it first. 
+This process will likely take a few minutes because this initial run has to pull a lot of container images from the internet, however, subsequent execution times will be a lot quicker. Please note that the end of this initial execution of the API will report authentication errors in the MongoDB log, this is expected as we need to initialize the MongoDB for the Node.js app to access it first.
 
 Once the logs for MongoDB are appearing, open up a new terminal window and execute this script to initialize the MongoDB for the Node API:
 
@@ -27,13 +27,13 @@ Once the logs for MongoDB are appearing, open up a new terminal window and execu
 bash initialize_database.sh
 ```
 
-Go back to the terminal window that's running the `docker-compose` command and halt the process by pressing `Crtl` + `C`. 
+Go back to the terminal window that's running the `docker-compose` command and halt the process by pressing `Crtl` + `C`.
 
 Now, you can restart the API as a background process by running:
 
 ```
 docker-compose up -d
-``` 
+```
 
 
 Finally, make a `curl` request to check that the api is working. Your terminal output should look something like this:
@@ -46,19 +46,19 @@ Finally, make a `curl` request to check that the api is working. Your terminal o
 ### Starting and Stopping the API
 Note: All of these commands *must* be run from the `API` directory!
 
-#####To Check the state of the API:
+##### To Check the state of the API:
 
 ```
 docker-compose ps
 ```
 
-#####To Start the API as a background process:
+##### To Start the API as a background process:
 
 ```
 docker-compose up -d
 ```
 
-#####To Stop the API:
+##### To Stop the API:
 
 ```
 docker-compose stop

@@ -19,6 +19,7 @@ router.route('/')
     .post(stormpath.apiAuthenticationRequired, function(req, res) {
 
         var gps = new GPS();      // create a new instance of the GPS model
+        gps.deviceID = req.body.deviceID;
         gps.time = Date.parse(req.body.time);
         gps.lat = req.body.lat;
         gps.lon = req.body.lon;

@@ -1,0 +1,12 @@
+{
+  "name": "API_Test_Program",
+  "private": true,
+  "dependencies":{
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2",
+    "request": "^2.75.0"
+  },
+  "scripts":{
+    "test": "mocha"
+  }
+}

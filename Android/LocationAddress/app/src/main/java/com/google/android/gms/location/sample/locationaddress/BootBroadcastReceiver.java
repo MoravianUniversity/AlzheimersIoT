@@ -5,23 +5,14 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 import android.support.v4.app.NotificationCompat;
-
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
+import android.widget.Toast;
 
 /**
  * Created by tyler on 2/8/17.
+ * Recognizes device boot and starts services accordingly.
  */
 
 // WakefulBroadcastReceiver ensures the device does not go back to sleep
@@ -30,30 +21,35 @@ public class BootBroadcastReceiver extends WakefulBroadcastReceiver {
 
     // Variables
     protected static final String TAG = "BootBroadcastReceiver";
-    Context cont;
+    private Context ctx;
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
         // Get context
-        cont = context;
+        ctx = context;
 
         // Notification to inform user of BOOT_COMPLETED
         showNotification();
 
-        // Launch NetworkService when this message is received
-        Intent startNetworkServiceIntent = new Intent(context, com.google.android.gms.location.sample.locationaddress.NetworkService.class);
-        startWakefulService(context, startNetworkServiceIntent);
+        // Start NetworkService
+        Intent intent2 = new Intent(context, NetworkService.class);
+        intent2.putExtras(intent);
+        context.startService(intent2);
 
-        // Launch AlarmService when this message is received
-        Intent startAlarmServiceIntent = new Intent(context, com.google.android.gms.location.sample.locationaddress.AlarmService.class);
-        startWakefulService(context, startAlarmServiceIntent);
+        // DEBUG
+        Log.e(TAG, "onReceive Complete.");
+    }
+
+    /**
+     * Shows a toast with the given text.
+     */
+    protected void showToast(String text) {
+        Toast.makeText(ctx, text, Toast.LENGTH_SHORT).show();
     }
 
     // Method to display monitoring notification
     public void showNotification() {
-        // getContext
-        Context ctx = cont;
 
         Intent intent = new Intent(ctx, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

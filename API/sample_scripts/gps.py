@@ -28,7 +28,7 @@ print_response(r)
 
 payload = {'time': str(datetime.datetime.utcnow().isoformat()),
               'lat': random_double(), 'lon': random_double(),
-              'address': 'Test Address'}
+              'address': 'Test Address', 'deviceID': '8037hja62gj'}
 r = requests.post(gps_url, data=payload)
 print_response(r)
 

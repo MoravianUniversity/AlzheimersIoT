@@ -1,0 +1,23 @@
+{
+  "intents": [
+    {
+      "intent": "GetMedicineIntent",
+      "slots": [
+        {
+          "name": "patient",
+          "type": "PATIENT_LIST"
+        }
+      ]
+    },
+    {
+      "intent": "GetWakeTimeIntent",
+      "slots": [
+        {
+          "name": "patient",
+          "type": "PATIENT_LIST"
+        }
+      ]
+    }
+  ]
+}
+

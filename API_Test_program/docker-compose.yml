@@ -1,0 +1,8 @@
+# docker-compose.yml
+
+version: '2'
+services:
+  api_test:
+    build: .
+    environment:
+      - API_URL=http://8887eddd.ngrok.io/api

@@ -1,107 +1,145 @@
----
-swagger: "2.0"
+# Example YAML to get you started quickly.
+# Be aware that YAML has indentation based scoping.
+# Code completion support is available so start typing for available options.
+swagger: '2.0'
+
+# This is your document metadata
 info:
-    description: ""
-    version: ""
-    title: "Alzheimers IoT API"
+  version: "1.0.0"
+  title: Alzheimer's IOT
+
+# Describe your paths here
 paths:
-    /memoryGame:
-        post:
-            tags:
-            - ""
-            description: ""
-            operationId: ""
-            parameters:
-            -   name: "user"
-                in: "body"
-                description: "Patient's name"
-                required: true
-                type: "String"               
-            -   name: "score"
-                in: "body"
-                description: "Patient's score on memory game"
-                required: true
-                type: "Integer"           
-            -   name: "time"
-                in: "body"
-                description: "Timestamp for when memory game was completed, a ISO 8601 UTC date, e.g.: 1994-11-05T13:15:30Z"
-                required: true
-                type: "Date"
-            responses: 
-                200: 
-                    description: "Successful response - (MemoryGame entry created!) /
-                    /- iff all parameters are entered correctly -- Otherwise, as /
-                    / long as you are connected to mongo, you will receive a 200."
-                    schema:
-                        $ref: " "
-                404:
-                    description: "Not Found - (Cannot POST)"
-                    schema:
-                        $ref: " "
-    /gps:
-        post:
-            tags:
-            - ""
-            descrtiption: ""
-            operationID: ""
-            parameters:
-            -   name: "time"
-                in: "body"
-                description: "Timestamp of when location was recorded, a ISO 8601 UTC date, e.g.: 1994-11-05T13:15:30Z"
-                required: "true"
-                type: "Date"
-            -   name: "lat"
-                in: "body"
-                description: "Latitude of location"
-                required: "true"
-                type: "double"
-            -   name: "lon"
-                in: "body"
-                description: "Longitude of location"
-                required: "true"
-                type: "double"
-            -   name: "address"
-                in: "body"
-                description: "Address corresponding to longitude and latitude of location"
-                required: "true"
-                type: "string"
-            responses:
-                200:
-                    description: "At the moment, every response is a successful response - (GPS entry created!)"
-                    schema:
-                        $ref:
-                404:
-                    description: 
-                    schema:
-                        $ref:           
-    /wemo:
-        post:
-            tags:
-            - ""
-            description: ""
-            operationId: ""
-            parameters:
-            -   name: "date"
-                in: "body"
-                description: "String representation of the date the entry was made, of the form: (XXXX(year)-XX(month)-XX(day))"
-                required: true
-                type: "String"
-            -   name: "time"
-                in: "body"
-                description: "String representation of the time the entry was made, of the form: (XX(hours):XX(minutes):XX(seconds))"
-                required: true
-                type: "String"
-            -   name: "status"
-                in: "body"
-                description: "Boolean value as to whether a device is powered on or off"
-                required: true
-                type: "Boolean"
-            responses: 
-                200: 
-                    description: "Successful response - ()"
-                    schema:
-                        $ref: " "
-                404:
-                    description: "Not Found - (Cannot POST)"
-                    schema:
-                        $ref: 
+  # This is a path endpoint. Change it.
+  /api/memoryGame:
+    # This is a HTTP operation
+    post:
+      # Describe this verb here. Note: you can use markdown
+      description: Starts a game that tests a user's memory capability
+      # This is array of GET operation parameters:
+      parameters:
+        # An example parameter that is in query and is required
+        - name: user
+          in: query
+          description: Name of the user of the skill
+          required: true
+          type: string
+        - name: score
+          in: query
+          description: The score of the current game
+          required: true
+          type: integer
+          format: int32
+        - name: time
+          in: query
+          description: Time of the game being completed
+          required: true
+          type: string
+          format: date
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+        404:
+          description: Not Found - (Cannot Post)
+  /api/gps:
+    post:
+      description: Keeps track of where patient needs to be
+      parameters:
+        # An example parameter that is in query and is required
+        - name: deviceID
+          in: query
+          description: ID of device
+          required: true
+          type: string
+        - name: time
+          in: query
+          description: Time of update
+          required: true
+          type: string
+          format: date
+        - name: lat
+          in: query
+          description: Latitude of user's location
+          required: true
+          type: number
+          format: double
+        - name: lon
+          in: query
+          description: Longitude of user's location
+          required: true
+          type: number
+          format: double
+        - name: address
+          in: query
+          description: Address of user's location
+          required: true
+          type: string
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+        404:
+          description: Not Found - (Cannot Post)
+  /api/wemo:
+    post:
+      description: Keeps track of electrical usage of sockets
+      parameters:
+        # An example parameter that is in query and is required
+        - name: date
+          in: query
+          description: Day of update, YYYY-MM-DD
+          required: true
+          type: string
+        - name: time
+          in: query
+          description: Time of update, based on military time
+          required: true
+          type: string
+        - name: status
+          in: query
+          description: Whether device is currently on or not
+          required: true
+          type: boolean
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+        404:
+          description: Not Found - (Cannot Post)
+  /api/medicineLogger:
+    post:
+      description: Medicine Logger
+      parameters:
+        - name: user
+          in: query
+          description: Name of user
+          required: true
+          type: string
+        - name: record
+          in: query
+          description: Record of yeh
+          required: true
+          type: string
+        - name: date
+          in: query
+          description: Date of record
+          type: string
+          format: date
+      responses:
+        200:
+          description: Successful response
+        404:
+          description: Not Found - (Cannot Post)
+
+        
+  
