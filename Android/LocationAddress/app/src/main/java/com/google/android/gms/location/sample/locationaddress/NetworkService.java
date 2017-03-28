@@ -80,6 +80,8 @@ public class NetworkService extends Service {
 
         // Create Settings for LocationTracker
         TrackerSettings settings = new TrackerSettings()
+                .setUseGPS(true)
+                .setUseNetwork(true)
                 // Every 5 minutes
                 .setTimeBetweenUpdates(5 * 60 * 1000);
 
