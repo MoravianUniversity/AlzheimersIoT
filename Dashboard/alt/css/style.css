@@ -1,0 +1,73 @@
+* {
+    font-family: 'Roboto', sans-serif;
+    color: darkslategrey;
+}
+
+body {
+    margin: 0 auto;
+    width: 100vw;
+    height: 100vh;
+}
+
+#title {
+    float: left;
+    text-align: center;
+    width: 100vw;
+    margin-top: 30px;
+    font-size: 70px;
+    font-weight: 300;
+}
+
+.col {
+    float: left;
+    display: flex;
+    flex-direction: column;
+    width: 45vw;
+    margin: 2.5vw;
+}
+
+.col h1 {
+    font-weight: 300;
+}
+
+#map {
+    float: left;
+    width: 100%;
+    height: 450px;
+    margin-bottom: 2vh;
+}
+
+#location, #journal-entry, #mmse-score {
+    float: left;
+    width: 100%;
+    font-size: 50px;
+    font-weight: 500;
+    text-align: center;
+}
+
+#location {
+    font-size: 3.5vw;
+}
+
+.timestamp {
+    float: left;
+    text-align: right;
+    width: 100%;
+    font-weight: 100;
+    font-size: 20px;
+    line-height: 75px;
+}
+
+#mmse-score {
+    color: limegreen;
+    font-size: 4.5vw;
+}
+
+#journal {
+    margin-top: 75px;
+    margin-bottom: 80px;
+}
+
+hr {
+    width: 75vw;
+}

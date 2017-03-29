@@ -1,9 +1,11 @@
-welcome: Welcome to memory game. I'm going to say three numbers for you to repeat backwards. Are you ready?
+welcome: Welcome to memory game. I'm going to ask you several questions. Are you ready?
 
-round: Can you repeat the numbers {{ numbers|join(", ") }} backwards?
+passMessage: You have passed a question, would you like to continue?
 
 win: Good job, are you ready for another question?
 
 lose: That is the wrong answer, are you ready to try again?
 
 quit: Goodbye.
+
+
