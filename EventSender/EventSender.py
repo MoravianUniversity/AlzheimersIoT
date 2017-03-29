@@ -1,47 +1,47 @@
 import time
+from requests import get
 
 class EventSender():
 
     def __init__(self):
         self.email = "emailAddress"
         self.phoneNumber = 8562342250
-        self.url = 'http://pegasus.cs.moravian.edu:8080/api/'
-        self.endpointNames = = ['gps', 'wemo', 'journal', 'medicineLogger', 'memoryGame']
+        self.baseURL = 'http://pegasus.cs.moravian.edu:8080/api/'
+        self.endpointNames = ['gps', 'wemo', 'journal', 'medicineLogger', 'memoryGame']
 
     def loopForever(self):
-    	data = []
         while(True):
-        	for name in endpointNames:
-            	#call MMSE endpoint
-            	#get data dump
-            	data = #dump
-            	writeDataToFile(data)
-            	if(self.hasEndpointChanged()):
-                	self.sendNotifications()
-            	time.sleep(5)
-
-    def getAndWriteEndpointData(name):
-        #Bill's code goes here
-        data = get(self.url+name).content.decode()
-        writeDataToFile(data)
+            for endpointName in self.endpointNames:
+                fileName = "APIFiles/" + endpointName + ".txt"
+                newestAPIGet = get(self.baseURL + endpointName).content.decode()
+                hasAPIChanged = self.readAndCompareDataFile(fileName, newestAPIGet)
+                if(hasAPIChanged):
+                    self.writeDataToFile(fileName, newestAPIGet)
+                    self.sendNotifications(endpointName)
+            time.sleep(5)
         
-    def readAndCompareDataFile(filename):
-		with open(filename, 'r') as f:
-			for line in f:
-				#check to see if it has changed
+    def readAndCompareDataFile(self, fileName, newestAPIGet):
+        with open(fileName, 'r') as file:
+            hasAPIChanged = False
+            oldAPIInfo = file.read()
+            if (oldAPIInfo != newestAPIGet):
+                hasAPIChanged =  True
+        file.close()
+        return hasAPIChanged
         
 
-    def sendNotifications(self):
+    def sendNotifications(self, endpointName):
+        print("there has been an update in " + endpointName)
         #send text message
         #send email
         #make google talk speak
-        
-	def writeDataToFile(data):
-    	for name in endpointNames:
-    		if(name+'.txt' != nil)
-    			file = open(name+'.txt', "w")
-				file.write(data)
-				file.close()
+        return
+
+    def writeDataToFile(self, fileName, newestAPIGet):
+        with open(fileName, "w") as file:
+            file.write(newestAPIGet)
+            file.close()
+        return
 
 
 if __name__ == "__main__":
