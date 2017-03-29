@@ -1,5 +1,6 @@
 import time
 from requests import get
+from sendMessage import sendStringToHome
 
 class EventSender():
 
@@ -31,10 +32,11 @@ class EventSender():
         
 
     def sendNotifications(self, endpointName):
-        print("there has been an update in " + endpointName)
+        message = "there has been an update in " + endpointName
+        print(message)
         #send text message
         #send email
-        #make google talk speak
+        sendStringToHome(message)
         return
 
     def writeDataToFile(self, fileName, newestAPIGet):

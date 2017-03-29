@@ -1,7 +1,7 @@
 import os
 
 def sendStringToHome(message):
-    baseURL = "http://204.186.197.73 "
+    baseURL = "204.186.197.73 "
     scriptName = "googleTalkSend.py "
     scriptCallType = "python3 "
 
