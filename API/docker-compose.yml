@@ -18,6 +18,8 @@ services:
     build: .
     ports:
       - "8080:8080"
+    env_file:
+      - ./stormpath.env
 
 # This volume is used to persist data in the mongodb inbetween re-building the
 # containers (deploying a new version of the API)

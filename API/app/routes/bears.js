@@ -4,6 +4,7 @@
 
 var express = require('express');
 var router = express.Router();
+var stormpath = require('express-stormpath');
 
 // Get an instance of our model
 var Bear = require('../models/bear.js')
@@ -17,7 +18,7 @@ router.use(middlewareCtrl.customMiddleware)
 router.route('/')
 
     // create a bear (accessed at POST http://localhost:8080/api/bears)
-    .post(function(req, res) {
+    .post(stormpath.apiAuthenticationRequired, function(req, res) {
 
         var bear = new Bear();      // create a new instance of the Bear model
         bear.name = req.body.name;  // set the bears name (comes from the request)
@@ -32,7 +33,7 @@ router.route('/')
     })
 
     // get all the bears (accessed at GET http://localhost:8080/api/bears)
-    .get(function(req, res) {
+    .get(stormpath.apiAuthenticationRequired, function(req, res) {
         Bear.find(function(err, bears) {
             if (err)
                 res.send(err);
@@ -46,7 +47,7 @@ router.route('/')
 router.route('/:bear_id')
 
     // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
-    .get(function(req, res) {
+    .get(stormpath.apiAuthenticationRequired, function(req, res) {
         Bear.findById(req.params.bear_id, function(err, bear) {
             if (err)
                 res.send(err);
@@ -55,7 +56,7 @@ router.route('/:bear_id')
     })
 
     // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
-    .put(function(req, res) {
+    .put(stormpath.apiAuthenticationRequired, function(req, res) {
 
         // use our bear model to find the bear we want
         Bear.findById(req.params.bear_id, function(err, bear) {
@@ -77,7 +78,7 @@ router.route('/:bear_id')
     })
 
     // delete the bear with this id (accessed at DELETE http://localhost:8080/api/bears/:bear_id)
-    .delete(function(req, res) {
+    .delete(stormpath.apiAuthenticationRequired, function(req, res) {
         Bear.remove({
             _id: req.params.bear_id
         }, function(err, bear) {
