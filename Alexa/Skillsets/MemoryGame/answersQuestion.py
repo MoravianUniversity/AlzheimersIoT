@@ -7,6 +7,6 @@ answerList = [
     '2017',
     'winter',
     'OK',
-    'No ifs ands or buts',
+    'no ifs ands or buts',
     'airplane'
 ]
