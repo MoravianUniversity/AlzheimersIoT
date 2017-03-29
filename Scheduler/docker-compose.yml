@@ -1,0 +1,9 @@
+# docker-compose.yml
+
+version: '2'
+services:
+  message_scheduler:
+    build: .
+    ports:
+      - "5000:5000"
+
