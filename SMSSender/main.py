@@ -3,12 +3,15 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
+# Twilio Credentials
 ACCOUNT_SID = "AC9edd68eff12cd59f007b719007effc31"
 AUTH_TOKEN = "eea3ef3bf4d3cd9da5e00dcb7a9ca1f2"
 
+# Create REST Client
 client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
 
 
+# Do not change "from_" field. This is the Twilio account number
 @app.route("/sms", methods=['POST'])
 def sms():
     client.messages.create(
@@ -17,7 +20,7 @@ def sms():
         body=request.form["message"],
         # media_url="https://c1.staticflickr.com/3/2899/14341091933_1e92e62d12_b.jpg",
     )
-    return "Text Sent"
+    return "Message Sent"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5050)
