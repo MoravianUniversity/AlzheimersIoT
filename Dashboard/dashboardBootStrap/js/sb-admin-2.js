@@ -1,7 +1,4 @@
 var data;
-var latestGPS;
-var latestMG;
-var latestJournal;
 
 $(function() {
     $('#side-menu').metisMenu();
@@ -67,9 +64,14 @@ $.ajax({
     .done(function(data) {
         console.log("Acquired GPS");
         console.log(data[0]);
-        latestGPS = data[0];
-        // Get GPS coords
-        $(".gpsData").html(latestGPS);
+        var numEntries = data.length;
+        var lati = data[0].lat;
+        var long = data[0].lon;
+        var timeD = data[0].time;
+        $(".gpsLat").html(lati);
+        $(".gpsLon").html(long);
+        $(".gpsTime").html(timeD);
+        $(".gpsEntries").html(numEntries);
     })
     .fail(function(data) {
         console.log("Failed GPS Retrieval");

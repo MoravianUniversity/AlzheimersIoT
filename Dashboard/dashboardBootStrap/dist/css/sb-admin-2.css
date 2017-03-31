@@ -433,8 +433,20 @@ table.dataTable thead .sorting:after {
   }
 }
 
-.gpsData {
-    
+.gpsLat {
+    display: inline;
+}
+
+.gpsLon {
+    display: inline;
+}
+
+.gpsTime {
+    display: inline;
+}
+
+.gpsEntries {
+    display: inline;
 }
 
 .journalData {
