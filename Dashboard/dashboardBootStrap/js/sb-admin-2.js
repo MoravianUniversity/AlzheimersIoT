@@ -1,8 +1,11 @@
+var data;
+var latestGPS;
+var latestMG;
+var latestJournal;
+
 $(function() {
     $('#side-menu').metisMenu();
 });
-
-var data;
 
 //Loads the correct sidebar on window load,
 //collapses the sidebar on window resize.
@@ -53,6 +56,9 @@ $(function() {
     req.setRequestHeader('Accept', 'application/json');
     req.send();
 
+// Request info from API
+    
+// GPS
 $.ajax({
         url: "http://8887eddd.ngrok.io/api/gps",
         dataType: 'json',
@@ -60,11 +66,44 @@ $.ajax({
     })
     .done(function(data) {
         console.log("Finished");
-        console.log(data);
+        console.log(data[0]);
+        latestGPS = data[0];
         
     })
     .fail(function(data) {
-        console.log("Failed");
+        console.log("Failed GPS Retrieval");
+    });
+    
+// MMSE
+$.ajax({
+        url: "http://8887eddd.ngrok.io/api/memoryGame",
+        dataType: 'json',
+        data: data
+    })
+    .done(function(data) {
+        console.log("Finished");
+        console.log(data[0]);
+        latestMG = data[0];
+        
+    })
+    .fail(function(data) {
+        console.log("Failed MMSE Retrieval");
+    });
+    
+// Journal
+$.ajax({
+        url: "http://8887eddd.ngrok.io/api/journal",
+        dataType: 'json',
+        data: data
+    })
+    .done(function(data) {
+        console.log("Finished");
+        console.log(data[0]);
+        latestMG = data[0];
+        
+    })
+    .fail(function(data) {
+        console.log("Failed Journal Retrieval");
     });
 
 });
