@@ -432,3 +432,27 @@ table.dataTable thead .sorting:after {
     border-left-width: 0;
   }
 }
+
+.gpsLat {
+    display: inline;
+}
+
+.gpsLon {
+    display: inline;
+}
+
+.gpsTime {
+    display: inline;
+}
+
+.gpsEntries {
+    display: inline;
+}
+
+.journalData {
+    
+}
+
+.zwaveData {
+    
+}

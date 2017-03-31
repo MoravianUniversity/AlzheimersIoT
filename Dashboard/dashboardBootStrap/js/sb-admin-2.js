@@ -1,8 +1,8 @@
+var data;
+
 $(function() {
     $('#side-menu').metisMenu();
 });
-
-var data;
 
 //Loads the correct sidebar on window load,
 //collapses the sidebar on window resize.
@@ -53,18 +53,60 @@ $(function() {
     req.setRequestHeader('Accept', 'application/json');
     req.send();
 
+// Request info from API
+    
+// GPS
 $.ajax({
         url: "http://8887eddd.ngrok.io/api/gps",
         dataType: 'json',
         data: data
     })
     .done(function(data) {
-        console.log("Finished");
-        console.log(data);
+        console.log("Acquired GPS");
+        console.log(data[0]);
+        var numEntries = data.length;
+        var lati = data[0].lat;
+        var long = data[0].lon;
+        var timeD = data[0].time;
+        $(".gpsLat").html(lati);
+        $(".gpsLon").html(long);
+        $(".gpsTime").html(timeD);
+        $(".gpsEntries").html(numEntries);
+    })
+    .fail(function(data) {
+        console.log("Failed GPS Retrieval");
+    });
+    
+// MMSE
+$.ajax({
+        url: "http://8887eddd.ngrok.io/api/memoryGame",
+        dataType: 'json',
+        data: data
+    })
+    .done(function(data) {
+        console.log("Acquired MMSE");
+        console.log(data[0]);
+        latestMG = data[0];
         
     })
     .fail(function(data) {
-        console.log("Failed");
+        console.log("Failed MMSE Retrieval");
+    });
+    
+// Journal
+$.ajax({
+        url: "http://8887eddd.ngrok.io/api/journal",
+        dataType: 'json',
+        data: data
+    })
+    .done(function(data) {
+        console.log("Acquired Journal");
+        console.log(data[0]);
+        latestMG = data[0];
+        
+    })
+    .fail(function(data) {
+        console.log("Failed Journal Retrieval");
     });
 
 });

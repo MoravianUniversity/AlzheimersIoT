@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>Caregiver - Dashboard</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -26,6 +26,7 @@
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
     <script src="../js/sb-admin-2.js"></script>
 
@@ -51,7 +52,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
+                <a class="navbar-brand" href="index.html">Caretaker Dashboard</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -390,8 +391,10 @@
                                     <i class="fa fa-comments fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">26</div>
-                                    <div>New Comments!</div>
+                                    <div class="huge">
+                                        <div class="gpsEntries">0</div>
+                                    </div>
+                                    <div>New GPS Updates!</div>
                                 </div>
                             </div>
                         </div>
@@ -474,6 +477,43 @@
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-8">
+                   
+                    <!-- Experimental Section -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Latest GPS Stats
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                        Actions
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right" role="menu">
+                                        <li><a href="#">Action</a>
+                                        </li>
+                                        <li><a href="#">Another action</a>
+                                        </li>
+                                        <li><a href="#">Something else here</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li><a href="#">Separated link</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <strong>Lon: </strong><div class="gpsLon"></div>
+                            <br>
+                            <strong>Lat: </strong><div class="gpsLat"></div>
+                            <br>
+                            <strong>Time: </strong><div class="gpsTime"></div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- End experimental section -->
+                    
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
