@@ -6,6 +6,7 @@
 // call the packages we need
 var express    = require('express'); // call express
 var stormpath  = require('express-stormpath');
+var cors       = require('cors');
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 
@@ -31,6 +32,9 @@ app.use(stormpath.init(app, {
     produces: ['application/json']
   }
 }))
+
+// Add cors middleware to the server
+app.use(cors());
 
 // TEST ROUTES FOR OUR API
 // =============================================================================

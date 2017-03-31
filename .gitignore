@@ -100,3 +100,4 @@ typings/
 .Trashes
 ehthumbs.db
 Thumbs.db
+/Dashboard/bootStrapDash/nbproject/private/

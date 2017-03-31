@@ -43,7 +43,7 @@ class MessageScheduler(metaclass=SingletonMetaClass):
         self.__s.add_job(self.__send_SMS, 'date', run_date=self.__get_datetime_conversion(args['time']), kwargs=self.__get_kwargs_args(args))
 
     def __send_SMS(self, dest='UNDEFINED', msg='UNDEFINED'):
-        payload = {}
+        payload = {'recipient': dest, 'message': msg}
         requests.post(os.environ.get('SMS_API_URL'), data=payload)
 
 
@@ -53,7 +53,6 @@ class MessageScheduler(metaclass=SingletonMetaClass):
 
     def __send_Email(self, dest='UNDEFINED', msg='UNDEFINED'):
         payload = {'recipient': dest, 'message': msg}
-        header = {}
         requests.post(os.environ.get('EMAIL_API_URL'), data=payload)
 
 
