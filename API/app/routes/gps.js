@@ -2,7 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
-var stormpath = require('express-stormpath');
+// var stormpath = require('express-stormpath');
 
 // Get an instance of our model
 var GPS = require('../models/gps.js')

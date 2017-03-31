@@ -5,7 +5,7 @@
 
 // call the packages we need
 var express    = require('express'); // call express
-var stormpath  = require('express-stormpath');
+// var stormpath  = require('express-stormpath');
 var cors       = require('cors');
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
@@ -22,16 +22,16 @@ mongoose.connect('mongodb://node:password@db:27017/node');
 // Set the port for the app
 var port = process.env.PORT || 8080;   // set our port
 
-
-//Set path to stormpath config
-app.use(stormpath.init(app, {
-  expand: {
-    customData: true,
-  },
-  web: {
-    produces: ['application/json']
-  }
-}))
+// Diasbling stormpath
+// Set path to stormpath config
+// app.use(stormpath.init(app, {
+//   expand: {
+//     customData: true,
+//   },
+//   web: {
+//     produces: ['application/json']
+//   }
+// }))
 
 // Add cors middleware to the server
 app.use(cors());
