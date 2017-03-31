@@ -1,2 +1,2 @@
-running,walking,medicine
-I took my medicine, ran, and walked around the block.
+walking,shopping
+I walked and went to the store

@@ -13,7 +13,7 @@ logging.getLogger("flask_ask").setLevel(logging.DEBUG)
 def processState(userAnswer):
     global answerTag
     round = counterDictionary.get("roundCounter")
-    if round > len(questionList):
+    if round >= len(questionList):
         message = quitQuiz()
         return message, 1
     if userAnswer == 'yes':
@@ -48,4 +48,4 @@ def mainIntent(Answer):
         return statement(newMessage)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0",debug=True)

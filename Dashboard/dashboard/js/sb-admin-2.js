@@ -2,6 +2,8 @@ $(function() {
     $('#side-menu').metisMenu();
 });
 
+var data;
+
 //Loads the correct sidebar on window load,
 //collapses the sidebar on window resize.
 // Sets the min-height of #page-wrapper to window size
@@ -39,4 +41,30 @@ $(function() {
             break;
         }
     }
+    
+    var req = new XMLHttpRequest();
+
+    req.open('GET', 'http://8887eddd.ngrok.io/api/gps', true);
+    req.onreadystatechange = function() {
+        if (req.readyState === 4) {
+            console.log(req.responseText);
+        }
+    };
+    req.setRequestHeader('Accept', 'application/json');
+    req.send();
+
+$.ajax({
+        url: "http://8887eddd.ngrok.io/api/gps",
+        dataType: 'json',
+        data: data
+    })
+    .done(function(data) {
+        console.log("Finished");
+        console.log(data);
+        
+    })
+    .fail(function(data) {
+        console.log("Failed");
+    });
+
 });

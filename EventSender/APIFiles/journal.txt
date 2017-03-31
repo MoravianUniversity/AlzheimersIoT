@@ -1,0 +1,1 @@
+[{"_id":"58d00796b8d73e1100000001","message":"This is a test journal entry","datetime":"2017-03-20T16:47:13.274Z","__v":0,"activities":["['activity 1', 'activity 2', 'activity 3']"]},{"_id":"58d005290c0cbf11000000db","message":"This is a test journal entry","datetime":"2017-03-20T16:36:52.475Z","__v":0,"activities":["['activity 1', 'activity 2', 'activity 3']"]}]

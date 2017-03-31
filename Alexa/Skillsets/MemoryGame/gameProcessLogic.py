@@ -34,7 +34,7 @@ def answerResponse(userAnswer):
 def quitQuiz():
     user = "test_User_1"
     win = counterDictionary.get('winCounter')
-    authToken = getAuthentication()
+    authToken = "fake token"
     UploadAPI(user, win, authToken)
     message = "The game is over. You answered "\
            + str(counterDictionary.get('roundCounter')) \
@@ -45,6 +45,8 @@ def quitQuiz():
 
 def nextQuestion():
         round = counterDictionary.get("roundCounter")
+        if round >= len(questionList):
+            return "no further questions"
         next_question = currentQuestionList[round]
         return next_question
 
