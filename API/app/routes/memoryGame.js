@@ -39,7 +39,7 @@ router.route('/')
     })
 
     // get all the memoryGame (accessed at GET http://localhost:8080/api/memoryGame)
-    .get(stormpath.apiAuthenticationRequired, function(req, res) {
+    .get(function(req, res) {
         MemoryGame.find().sort({'_id': -1}).exec(function(err, memoryGames) {
             if (err)
                 res.send(err);
@@ -53,7 +53,7 @@ router.route('/')
 router.route('/:memoryGame_id')
 
     // get the memoryGame with that id (accessed at GET http://localhost:8080/api/memoryGame/:memoryGame_id)
-    .get(stormpath.apiAuthenticationRequired, function(req, res) {
+    .get(function(req, res) {
         MemoryGame.findById(req.params.memoryGame_id, function(err, memoryGame) {
             if (err)
                 res.send(err);
@@ -62,7 +62,7 @@ router.route('/:memoryGame_id')
     })
 
     // delete the memoryGame with this id (accessed at DELETE http://localhost:8080/api/memoryGame/:memoryGame_id)
-    .delete(stormpath.apiAuthenticationRequired, function(req, res) {
+    .delete(function(req, res) {
         MemoryGame.remove({
             _id: req.params.memoryGame_id
         }, function(err, memoryGame) {
