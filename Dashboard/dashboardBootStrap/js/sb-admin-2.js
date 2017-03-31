@@ -65,10 +65,11 @@ $.ajax({
         data: data
     })
     .done(function(data) {
-        console.log("Finished");
+        console.log("Acquired GPS");
         console.log(data[0]);
         latestGPS = data[0];
-        
+        // Get GPS coords
+        $(".gpsData").html(latestGPS);
     })
     .fail(function(data) {
         console.log("Failed GPS Retrieval");
@@ -81,7 +82,7 @@ $.ajax({
         data: data
     })
     .done(function(data) {
-        console.log("Finished");
+        console.log("Acquired MMSE");
         console.log(data[0]);
         latestMG = data[0];
         
@@ -97,7 +98,7 @@ $.ajax({
         data: data
     })
     .done(function(data) {
-        console.log("Finished");
+        console.log("Acquired Journal");
         console.log(data[0]);
         latestMG = data[0];
         
