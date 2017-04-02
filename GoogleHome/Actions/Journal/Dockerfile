@@ -8,4 +8,4 @@ WORKDIR /app
 RUN pip install -r requirements.txt
 
 # Run the app
-CMD [ "python", "./main.py" ]
+CMD [ "python", "./journal-webhook.py" ]

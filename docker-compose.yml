@@ -1,0 +1,65 @@
+# docker-compose.yml
+
+version: '2'
+services:
+# Producers
+  journal:
+    build: ./GoogleHome/Actions/Journal
+    links:
+      - api
+
+  memory_game:
+    build: ./Alexa/Skillsets/MemoryGame
+    links:
+      - api
+
+  # wemo:
+  #   build:
+
+
+# Services
+  api:
+    depends_on:
+      - db
+    links:
+      - db
+    build: ./API
+    # ports:
+    #   - "8080:8080"
+    # env_file:
+    #   - ./stormpath.env
+
+  db:
+    image: mongo
+    volumes:
+      - db_data:/data/db
+
+  event_sender:
+    build: ./EventSender
+    depends_on:
+      - api
+    links:
+      - api
+
+  scheduler:
+    build: ./Scheduler
+    env_file:
+      - ./Scheduler/default.env
+
+
+
+# Notifiers
+  sms_sender:
+    build: ./SMSSender
+
+  email_sender:
+    build: ./EmailSender
+
+  google_sender:
+    build: ./GoogleSender
+
+
+# This volume is used to persist data in the mongodb inbetween re-building the
+# containers (deploying a new version of the API)
+volumes:
+  db_data:

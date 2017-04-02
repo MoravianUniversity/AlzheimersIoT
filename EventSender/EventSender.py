@@ -11,7 +11,7 @@ class EventSender():
         self.phoneNumbers = NotificationRecipientContactInfo.phoneNumbers
         self.emailAPIURL = "https://8beafd1d.ngrok.io/email"
         self.SMSAPIURL = "https://dedb1b05.ngrok.io/sms"
-        self.baseURL = 'http://pegasus.cs.moravian.edu:8080/api/'
+        self.baseURL = 'http://api:8080/api/'
         self.endpointNames = ['gps', 'wemo', 'journal', 'medicineLogger', 'memoryGame']
 
     def loopForever(self):
@@ -24,7 +24,7 @@ class EventSender():
                     self.writeDataToFile(fileName, newestAPIGet)
                     self.sendNotifications("there has been an update in " + endpointName)
             time.sleep(5)
-        
+
     def readAndCompareDataFile(self, fileName, newestAPIGet):
         with open(fileName, 'r') as file:
             hasAPIChanged = False

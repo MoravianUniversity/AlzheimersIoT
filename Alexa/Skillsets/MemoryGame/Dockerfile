@@ -10,5 +10,5 @@ RUN pip3 install --upgrade pip
 RUN pip3 install flask-ask
 RUN pip3 install requests
 COPY . /usr/src/MemoryGame
-EXPOSE  5000
+# EXPOSE  5000
 CMD ["python3", "/usr/src/MemoryGame/main.py"]
