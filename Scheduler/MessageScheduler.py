@@ -61,11 +61,8 @@ class MessageScheduler(metaclass=SingletonMetaClass):
         self.__s.add_job(self.__send_Google_Home_TTS, 'date', run_date=self.__get_datetime_conversion(args['time']), kwargs=self.__get_kwargs_args(args))
 
     def __send_Google_Home_TTS(self, dest='UNDEFINED', msg='UNDEFINED'):
-        url = os.environ.get('GOOGLE_HOME_API_URL').split(':')
-        server = {'host': url[0], 'port': int(url[1])}
-
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.sendto(msg.encode(), (server['host'], server['port']))
+        payload = {'message': msg}
+        requests.post(os.environ.get('GOOGLE_HOME_API_URL'), data=payload)
 
 
 
