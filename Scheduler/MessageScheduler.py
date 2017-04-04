@@ -68,6 +68,20 @@ class MessageScheduler(metaclass=SingletonMetaClass):
 
 
     # General Helper Methods
+    def check_time(self, time):
+        try:
+            scheduled_time = self.__get_datetime_conversion(time)
+        except Exception as e:
+            raise Exception('Time \'{}\' is incorrectly formatted.'.format(time))
+
+        current_time = datetime.datetime.now(pytz.utc)
+
+        # if scheduled_time occurs before current time
+        if scheduled_time < current_time:
+            raise Exception('Time \'{}\' occurs in the past.'.format(time))
+
+
+
     def __get_kwargs_args(self, given_args):
         return {'dest': given_args['dest'], 'msg': given_args['msg']}
 
