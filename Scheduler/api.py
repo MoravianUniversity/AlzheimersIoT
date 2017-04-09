@@ -1,9 +1,11 @@
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
+from flask_cors import CORS, cross_origin
 from MessageScheduler import MessageScheduler
 
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
 
 
 class Scheduler(Resource):
