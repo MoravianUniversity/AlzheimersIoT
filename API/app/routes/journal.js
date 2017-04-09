@@ -16,7 +16,10 @@ router.route('/')
 
     // create a journal entry (accessed at POST http://localhost:8080/api/journal)
     .post(function(req, res) {
-
+	if (postParametersAreMissingOrInvalid(req)) {
+            res.status(400).json({error: 'There are missing or invalid parameters in the request.'});
+            return;
+        }
         var journal = new Journal();      // create a new instance of the Journal model
         journal.datetime = Date.parse(req.body.datetime);
         journal.message = req.body.message;
@@ -66,5 +69,29 @@ router.route('/:journal_id')
             res.json({ message: 'Successfully deleted' });
         });
     });
+function postParametersAreMissingOrInvalid(req) {
+    try {
+        // Check for missing and invalid parameters
+        expect(req.body).to.have.property('datetime').that.is.a('string');
+        // Check that the date param can be parsed into a Date object correctly
+        expect(Date.parse(req.body.datetime)).to.not.be.NaN;
+
+        expect(req.body).to.have.property('message').that.is.a('string');
+
+        expect(req.body).to.have.property('activities').that.is.a('array');
+        // Check that every element in activities array is a String
+        var activitiesLength = req.body.activities.length;
+        for(var i = 0; i < activitiesLength; i++){
+            expect(req.body.activities[i]).to.be.a('string');
+        }
+
+        expect(req.body).to.have.property('medication').that.is.a('boolean');
+    } catch (AssertionError) {
+        return true;
+    }
+
+    return false;
+}
+
 
 module.exports = router;
