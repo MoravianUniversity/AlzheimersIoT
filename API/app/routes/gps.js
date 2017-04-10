@@ -17,7 +17,10 @@ router.route('/')
 
     // create a gps entry (accessed at POST http://localhost:8080/api/gps)
     .post(function(req, res) {
-
+	if (postParametersAreMissingOrInvalid(req)) {
+            res.status(400).json({error: 'There are missing or invalid parameters in the request.'});
+            return;
+        }
         var gps = new GPS();      // create a new instance of the GPS model
         gps.deviceID = req.body.deviceID;
         gps.time = Date.parse(req.body.time);
@@ -67,6 +70,31 @@ router.route('/:gps_id')
 
             res.json({ message: 'Successfully deleted' });
         });
-    });
+    }); 
+// helper methods for paramter linting
+function postParametersAreMissingOrInvalid(req) {
+    try {
+        // Check for missing and invalid parameters
+        expect(req.body).to.have.property('deviceID').that.is.a('string');
+
+        expect(req.body).to.have.property('lat');
+        // Check that the score param can parse into a number correctly
+        expect(isNaN(req.body.lat)).to.be.false;
+
+        expect(req.body).to.have.property('lon');
+        // Check that the score param can parse into a number correctly
+        expect(isNaN(req.body.lon)).to.be.false;
+
+        expect(req.body).to.have.property('time').that.is.a('string');
+        // Check that the date param can be parsed into a Date object correctly
+        expect(Date.parse(req.body.date)).to.not.be.NaN;
+
+        expect(req.body).to.have.property('address').that.is.a('string');
+    } catch (AssertionError) {
+        return true;
+    }
+
+    return false;
+}
 
 module.exports = router;

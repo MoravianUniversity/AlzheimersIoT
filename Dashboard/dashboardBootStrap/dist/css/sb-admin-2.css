@@ -433,6 +433,7 @@ table.dataTable thead .sorting:after {
   }
 }
 
+/* API Values */
 .gpsLat {
     display: inline;
 }
@@ -449,10 +450,54 @@ table.dataTable thead .sorting:after {
     display: inline;
 }
 
-.journalData {
-    
+.memScore {
+    display: inline;
 }
 
-.zwaveData {
-    
+.memUser {
+    display: inline;
+}
+
+.memTime {
+    display: inline;
+}
+
+.memEntries {
+    display: inline;
+}
+
+.jMed {
+    display: inline;
+}
+
+.jMessage {
+    display: inline;
+}
+
+.jTime {
+    display: inline;
+}
+
+.jActivities {
+    display: inline;
+}
+
+.jEntries {
+    display: inline;
+}
+
+.wemoEntries {
+    display: inline;
+}
+
+.wemoStatus {
+    display: inline;
+}
+
+.wemoTime {
+    display: inline;
+}
+
+.wemoDate {
+    display: inline;
 }

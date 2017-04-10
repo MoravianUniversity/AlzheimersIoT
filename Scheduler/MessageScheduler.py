@@ -61,16 +61,27 @@ class MessageScheduler(metaclass=SingletonMetaClass):
         self.__s.add_job(self.__send_Google_Home_TTS, 'date', run_date=self.__get_datetime_conversion(args['time']), kwargs=self.__get_kwargs_args(args))
 
     def __send_Google_Home_TTS(self, dest='UNDEFINED', msg='UNDEFINED'):
-        url = os.environ.get('GOOGLE_HOME_API_URL').split(':')
-        server = {'host': url[0], 'port': int(url[1])}
-
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.sendto(msg.encode(), (server['host'], server['port']))
+        payload = {'message': msg}
+        requests.post(os.environ.get('GOOGLE_HOME_API_URL'), data=payload)
 
 
 
 
     # General Helper Methods
+    def check_time(self, time):
+        try:
+            scheduled_time = self.__get_datetime_conversion(time)
+        except Exception as e:
+            raise Exception('Time \'{}\' is incorrectly formatted.'.format(time))
+
+        current_time = datetime.datetime.now(pytz.utc)
+
+        # if scheduled_time occurs before current time
+        if scheduled_time < current_time:
+            raise Exception('Time \'{}\' occurs in the past.'.format(time))
+
+
+
     def __get_kwargs_args(self, given_args):
         return {'dest': given_args['dest'], 'msg': given_args['msg']}
 
