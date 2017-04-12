@@ -2,7 +2,9 @@
 
 var express = require('express');
 var router = express.Router();
-
+// chai.js for linting
+var expect = require('chai').expect;
+var assert = require('chai').assert;
 // Get an instance of our model
 var Journal = require('../models/journal.js')
 
@@ -20,6 +22,7 @@ router.route('/')
             res.status(400).json({error: 'There are missing or invalid parameters in the request.'});
             return;
         }
+
         var journal = new Journal();      // create a new instance of the Journal model
         journal.datetime = Date.parse(req.body.datetime);
         journal.message = req.body.message;
@@ -69,6 +72,10 @@ router.route('/:journal_id')
             res.json({ message: 'Successfully deleted' });
         });
     });
+
+
+module.exports = router;
+
 function postParametersAreMissingOrInvalid(req) {
     try {
         // Check for missing and invalid parameters
@@ -78,14 +85,16 @@ function postParametersAreMissingOrInvalid(req) {
 
         expect(req.body).to.have.property('message').that.is.a('string');
 
-        expect(req.body).to.have.property('activities').that.is.a('array');
+        expect(req.body).to.have.property('Activities');
+        expect(req.body.Activities).to.be.an('array');
         // Check that every element in activities array is a String
-        var activitiesLength = req.body.activities.length;
+        var activitiesLength = req.body.Activities.length;
         for(var i = 0; i < activitiesLength; i++){
-            expect(req.body.activities[i]).to.be.a('string');
+            expect(req.body.Activities[i]).to.be.a('string');
         }
 
-        expect(req.body).to.have.property('medication').that.is.a('boolean');
+        expect(req.body).to.have.property('medication');
+        assert.isBoolean(req.body.medication);
     } catch (AssertionError) {
         return true;
     }
@@ -93,5 +102,3 @@ function postParametersAreMissingOrInvalid(req) {
     return false;
 }
 
-
-module.exports = router;

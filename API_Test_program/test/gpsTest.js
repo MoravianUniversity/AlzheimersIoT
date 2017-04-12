@@ -30,8 +30,8 @@ describe('Test the GPS Endpoint for data post and ensuring corrupt data does not
                 return
             }
             expect(response).to.exist;
-            expect(response.statusCode).to.equal(200);
             assert(response.body.message, 'GPS entry created!');
+            expect(response.statusCode).to.equal(200);
             return done();
         });
     });
@@ -690,8 +690,7 @@ describe('Test the GPS Endpoint for data post and ensuring corrupt data does not
     
     it("should reject for missing lat, lon, and address", function(done){
         var date = new Date();
-        var postData = {"deviceID":"testDevice", "time": date.toISOString(), "lat": Math.random(), "lon":Math.random(),
-            "address": "1200 Main Street, Bethlehem, PA 18018"}
+        var postData = {"deviceID":"testDevice", "time": date.toISOString()}
         var options = {
             method: 'POST',
             body: postData,

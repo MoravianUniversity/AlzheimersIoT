@@ -332,7 +332,7 @@ describe('Test the journal Endpoint for data post and ensuring corrupt data does
      
     it("should reject for missing message and Activities", function(done){
         var date = new Date();
-        var postData = {"datetime": date.toISOString(),"message": "test message", "Activities": ["test array member"], "medication": true}
+        var postData = {"datetime": date.toISOString(), "medication": true}
         var options = {
             method: 'POST',
             body: postData,
