@@ -1,0 +1,51 @@
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="sample.js"></script>
+
+<style type="text/css">
+  responsearea{
+    width: 100%;
+    height: 500px;
+    white-space: pre;
+    font-family: monospace;
+  }
+</style>
+
+</head>
+
+<h1>Scheduler Form</h1>
+<form class="scheduler_form" method="post">
+  API URL:<br>
+  <input type="text" name="url" value="https://6f5b8927.ngrok.io/api/scheduler" size="50">
+  <br><br><br>
+
+  Medium:<br>
+  <select name="medium">
+    <option value="SMS">SMS</option>
+    <option value="Email">Email</option>
+    <option value="Google Home">Google Home</option>
+  </select>
+  <br><br><br>
+
+  Destination:<br>
+  <input type="text" name="dest" size="50" placeholder="someone@example.com or 6101234567">
+  <br><br><br>
+
+  Time:<br>
+  <input type="text" name="time" size="50" placeholder="2017-12-31 16:06:59 -0400">
+  <br><br><br>
+
+  Message:<br>
+  <textarea name="msg" rows="3" cols="50" placeholder="Type your message here..."></textarea>
+  <br>
+</form>
+
+<div>
+<input id = "btnSubmit" type="submit" value="Submit"/>
+</div>
+<br><br>
+
+<h3>Response:</h3>
+<responsearea>
+
+</responsearea>
