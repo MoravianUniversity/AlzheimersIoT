@@ -10,8 +10,9 @@ To build the base containers and get the API running the first time around, firs
 ```
 git clone https://github.com/MoravianCollege/AlzheimersIoT.git
 ```
-
-You will also need to download the `stomrpath.env` file from the [OAUTH Trello Board Ticket](https://trello.com/c/KOVVyVgw/27-oauth-authentication-for-rest-api) and place it in the `API` directory.
+<!---
+You will also need to download the `stormpath.env` file from the [OAUTH Trello Board Ticket](https://trello.com/c/KOVVyVgw/27-oauth-authentication-for-rest-api) and place it in the `API` directory.
+-->
 
 Now, you can start building the initial containers and ultimately start the API by navigating into the `API` directory and running the command:
 
