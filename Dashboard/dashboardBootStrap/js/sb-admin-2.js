@@ -1,5 +1,8 @@
 var data;
 
+var lati;
+var long;
+
 $(function() {
     $('#side-menu').metisMenu();
 });
@@ -54,6 +57,11 @@ $(function() {
     req.send();
 
 // Request info from API
+
+var localGps = localStorage.getItem("gpsEntries");
+var localJourn = localStorage.getItem("journalEntries");
+var localWemo = localStorage.getItem("wemoEntries");
+var localMem = localStorage.getItem("memtestEntries");
     
 // GPS
 $.ajax({
@@ -65,13 +73,21 @@ $.ajax({
         console.log("Acquired GPS");
         console.log(data[0]);
         var numEntries = data.length;
-        var lati = data[0].lat;
-        var long = data[0].lon;
+        lati = data[0].lat;
+        long = data[0].lon;
         var timeD = data[0].time;
         $(".gpsLat").html(lati);
         $(".gpsLon").html(long);
         $(".gpsTime").html(timeD);
         $(".gpsEntries").html(numEntries);
+    
+        if (numEntries>=localGps) {
+            $(".gpsEntries").html(numEntries-localGps);
+            localStorage.setItem("gpsEntries", numEntries);
+        }
+        if (numEntries<localGps) {
+            /*This shouldn't happen*/
+        }
     })
     .fail(function(data) {
         console.log("Failed GPS Retrieval");
@@ -133,6 +149,7 @@ $.ajax({
         console.log("Acquired WeMo");
         console.log(data[0]);
         var numEntries = data.length;
+        var prevEntries = localStorage.getItem("wemoEntries");
         var status = data[0].status;
         var time = data[0].time;
         var date = data[0].date;
@@ -146,3 +163,21 @@ $.ajax({
     });
 
 });
+
+window.onload = function() {
+    console.log("window.onload");
+    var latlon = new google.maps.LatLng(lati, long);
+    var mapholder = document.getElementById('#mapholder');
+    mapholder.style.height = '250px';
+    mapholder.style.width = '500px';
+
+    var myOptions = {
+        center:latlon,zoom:14,
+        mapTypeId:google.maps.MapTypeId.ROADMAP,
+        mapTypeControl:false,
+        navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
+    };
+
+    var map = new google.maps.Map(document.getElementById("mapholder"), myOptions);
+    var marker = new google.maps.Marker({position:latlon,map:map,title:"You are here!"});
+};
