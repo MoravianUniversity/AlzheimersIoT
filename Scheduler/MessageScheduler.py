@@ -1,5 +1,4 @@
-import os, requests, datetime, pytz
-import socket
+import os, requests, datetime, pytz, sys
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -26,6 +25,9 @@ class MessageScheduler(metaclass=SingletonMetaClass):
         self.__s.start()
 
     def add_message(self, args):
+        # Grab a copy of the args to mutate later
+        args = args.copy()
+
         medium = args['medium']
 
         if medium == 'SMS':
@@ -42,8 +44,8 @@ class MessageScheduler(metaclass=SingletonMetaClass):
     def __add_SMS_notification(self, args):
         self.__s.add_job(self.__send_SMS, 'date', run_date=self.__get_datetime_conversion(args['time']), kwargs=self.__get_kwargs_args(args))
 
-    def __send_SMS(self, dest='UNDEFINED', msg='UNDEFINED'):
-        payload = {'recipient': dest, 'message': msg}
+    def __send_SMS(self, dest='UNDEFINED', msg=None, latestEntryOf=None):
+        payload = {'recipient': dest, 'message': self.__generate_message(msg, latestEntryOf)}
         requests.post(os.environ.get('SMS_API_URL'), data=payload)
 
 
@@ -51,8 +53,8 @@ class MessageScheduler(metaclass=SingletonMetaClass):
     def __add_Email_notification(self, args):
         self.__s.add_job(self.__send_Email, 'date', run_date=self.__get_datetime_conversion(args['time']), kwargs=self.__get_kwargs_args(args))
 
-    def __send_Email(self, dest='UNDEFINED', msg='UNDEFINED'):
-        payload = {'recipient': dest, 'message': msg}
+    def __send_Email(self, dest='UNDEFINED', msg=None, latestEntryOf=None):
+        payload = {'recipient': dest, 'message': self.__generate_message(msg, latestEntryOf)}
         requests.post(os.environ.get('EMAIL_API_URL'), data=payload)
 
 
@@ -60,13 +62,33 @@ class MessageScheduler(metaclass=SingletonMetaClass):
     def __add_Google_Home_notification(self, args):
         self.__s.add_job(self.__send_Google_Home_TTS, 'date', run_date=self.__get_datetime_conversion(args['time']), kwargs=self.__get_kwargs_args(args))
 
-    def __send_Google_Home_TTS(self, dest='UNDEFINED', msg='UNDEFINED'):
-        payload = {'message': msg}
+    def __send_Google_Home_TTS(self, dest=None, msg=None, latestEntryOf=None):
+        payload = {'message': self.__generate_message(msg, latestEntryOf)}
         requests.post(os.environ.get('GOOGLE_HOME_API_URL'), data=payload)
 
 
+    # Message Generation Methods
+    def __generate_message(self, msg, latestEntryOf):
+        if msg is not None:
+            return msg
 
 
+        if latestEntryOf == 'GPS':
+            return self.__get_GPS_Message()
+
+    def __get_GPS_Message(self):
+        try:
+            r = requests.get(os.environ.get('API_BASE') + '/api/GPS')
+            r.raise_for_status()
+
+            rdic = r.json()[0]
+
+            return "Latest location was ({}, {}) at {}.".format(rdic['lat'], rdic['lon'], rdic['time'])
+
+        except Exception as e:
+            return e
+
+        
     # General Helper Methods
     def check_time(self, time):
         try:
@@ -83,8 +105,12 @@ class MessageScheduler(metaclass=SingletonMetaClass):
 
 
     def __get_kwargs_args(self, given_args):
-        return {'dest': given_args['dest'], 'msg': given_args['msg']}
+        return {'dest': given_args['dest'], 'msg': given_args['msg'], 'latestEntryOf': given_args['latestEntryOf']}
 
     def __get_datetime_conversion(self, time_str):
         d = datetime.datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S %z")
         return d.astimezone(pytz.utc)
+
+
+
+

@@ -49,7 +49,7 @@ To add a scheduled message, you simply need to send a post request to the bound 
 http://localhost:5000/api/scheduler
 ```
 
-Each post request should contain parameters for a medium (SMS, Google Talk, or Email), dest (email address or a phone number), msg, and time. For example:
+Each post request should contain parameters for a medium (SMS, Google Talk, or Email), dest (email address or a phone number), time, and a msg or latestEntryOf. For example:
 
 ```
 payload = {
@@ -86,6 +86,8 @@ January 31st, 2017, at 15:35:30 EST: "2017-01-31 15:35:30 -0400"
 
 Messages are simply just strings that will be sent to whatever medium is chosen.
 
+`latestEntryOf` is a parameter, mutually exclusive with messages, that specifies an endpoint to query and return the latest relevant stats of. In the current implementation, the only endpoint you can specify is `GPS`.
+
 ### Example Usage
 The following examples use the `Requests` library in Python to schedule various messages.
 
@@ -108,7 +110,7 @@ r = requests.post(scheduler_url, data=payload)
 ```
 
 #### Scheduling an Email
-This example sends a message, `Example Email Message`, to the email `example@domain.com` on December 31st, 2020, at 11pm, EST.
+This example queries the `GPS` endpoint for the latest details and sends it to the email `example@domain.com` on December 31st, 2020, at 11pm, EST.
 
 ```
 import requests
@@ -119,7 +121,7 @@ payload = {
   'medium': 'Email',
   'dest': 'example@domain.com',
   'time': '2020-12-31 23:00:00 -0400',
-  'msg': 'Example Email Message'
+  'latestEntryOf': 'GPS'
 }
 
 r = requests.post(scheduler_url, data=payload)
@@ -128,7 +130,6 @@ r = requests.post(scheduler_url, data=payload)
 #### Scheduling a Google Home TTS
 This example has the Google Home speak the message `Example Google Home Message` on November 22nd, 2017, at 4pm, EST. 
 
-Notice, the destination is still required, but can be left as an empty string.
 
 ```
 import requests
@@ -136,8 +137,7 @@ import requests
 scheduler_url = 'http://localhost:5000/api/scheduler'
 
 payload = {
-  'medium': 'Google Talk',
-  'dest': '',
+  'medium': 'Google Home',
   'time': '2017-11-22 16:00:00 -0400',
   'msg': 'Example Google Home Message'
 }
