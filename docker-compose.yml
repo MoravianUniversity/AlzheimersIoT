@@ -30,8 +30,6 @@ services:
     build: ./API
     ports:
       - "8080:8080"
-    # env_file:
-    #   - ./stormpath.env
 
   db:
     image: mongo
@@ -44,11 +42,19 @@ services:
       - api
     links:
       - api
+      - sms_sender
+      - email_sender
+      - google_sender
 
   scheduler:
     build: ./Scheduler
     ports:
       - "5050:5000"
+    links:
+      - api
+      - sms_sender
+      - email_sender
+      - google_sender
 
 
 

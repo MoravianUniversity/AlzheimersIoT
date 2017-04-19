@@ -9,8 +9,8 @@ class EventSender():
     def __init__(self):
         self.emailAddresses = NotificationRecipientContactInfo.emailAddresses
         self.phoneNumbers = NotificationRecipientContactInfo.phoneNumbers
-        self.emailAPIURL = "https://8beafd1d.ngrok.io/email"
-        self.SMSAPIURL = "https://dedb1b05.ngrok.io/sms"
+        self.emailAPIURL = "http://email_sender:5000/email"
+        self.SMSAPIURL = "http://sms_sender:5000/sms"
         self.baseURL = 'http://api:8080/api/'
         self.endpointNames = ['gps', 'wemo', 'journal', 'medicineLogger', 'memoryGame']
 

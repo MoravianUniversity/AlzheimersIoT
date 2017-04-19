@@ -83,8 +83,8 @@ def postToAPI(taken_meds):
     #url = "http://pegasus.cs.moravian.edu:8080/api/journal"
     #url = "http://localhost:8080/api/journal" #use for testing locally
     url = "http://api:8080/api/journal" #use for docker instances
-    requests.post(url, data = {'datetime':str(datetime.datetime.utcnow().isoformat()), 'message':user_speech, 'activities':activities, 'medication':taken_meds})
-
+    api_post = requests.post(url, data = {'datetime':str(datetime.datetime.utcnow().isoformat()), 'message':user_speech, 'activities':activities, 'medication':taken_meds})
+    print(api_post.text)
 
 def write_to_entries_file(request):
     user_speech = request["result"]["resolvedQuery"]

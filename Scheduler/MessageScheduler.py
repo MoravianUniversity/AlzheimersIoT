@@ -44,25 +44,25 @@ class MessageScheduler(metaclass=SingletonMetaClass):
     def __add_SMS_notification(self, args):
         self.__s.add_job(self.__send_SMS, 'date', run_date=self.__get_datetime_conversion(args['time']), kwargs=self.__get_kwargs_args(args))
 
-    def __send_SMS(self, dest='UNDEFINED', msg='UNDEFINED'):
+    def __send_SMS(self, dest='UNDEFINED', msg=None, latestEntryOf=None):
         payload = {'recipient': dest, 'message': msg}
-        requests.post("http://api:8080/api/sms_sender", data=payload)
+        requests.post("http://sms_sender:5000/sms", data=payload)
 
     # Email Methods
     def __add_Email_notification(self, args):
         self.__s.add_job(self.__send_Email, 'date', run_date=self.__get_datetime_conversion(args['time']), kwargs=self.__get_kwargs_args(args))
 
-    def __send_Email(self, dest='UNDEFINED', msg='UNDEFINED'):
+    def __send_Email(self, dest='UNDEFINED', msg=None, latestEntryOf=None):
         payload = {'recipient': dest, 'message': msg}
-        requests.post("http://api:8080/api/email_sender", data=payload)
+        requests.post("http://email_sender:5000/email", data=payload)
 
     # Google Home Methods
     def __add_Google_Home_notification(self, args):
         self.__s.add_job(self.__send_Google_Home_TTS, 'date', run_date=self.__get_datetime_conversion(args['time']), kwargs=self.__get_kwargs_args(args))
 
-    def __send_Google_Home_TTS(self, dest='UNDEFINED', msg='UNDEFINED'):
+    def __send_Google_Home_TTS(self, dest=None, msg=None, latestEntryOf=None):
         payload = {'message': msg}
-        requests.post("http://api:8080/api/google_sender", data=payload)
+        requests.post("http://google_sender:5000/googleSend", data=payload)
 
     # Message Generation Methods
     def __generate_message(self, msg, latestEntryOf):
