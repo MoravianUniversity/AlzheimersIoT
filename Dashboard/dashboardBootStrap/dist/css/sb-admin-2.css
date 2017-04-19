@@ -454,6 +454,10 @@ table.dataTable thead .sorting:after {
     display: inline;
 }
 
+.gpsDevid {
+    display: inline;
+}
+
 .memScore {
     display: inline;
 }
@@ -518,6 +522,7 @@ table.dataTable thead .sorting:after {
    display: inline; 
 }
 
+/* Google Map Holder */
 #mapholder {
     
 }

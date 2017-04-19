@@ -39,9 +39,11 @@ $.ajax({
         lati = data[0].lat;
         long = data[0].lon;
         var timeD = data[0].time;
+        var devID = data[0].deviceID;
         $(".gpsLat").html(lati);
         $(".gpsLon").html(long);
         $(".gpsTime").html(timeD);
+        $(".gpsDevid").html(devID);
         $(".gpsEntries").html(numEntries);
         $(".gpsTotal").html(numEntries);
     
@@ -155,6 +157,7 @@ $.ajax({
 
 });
 
+// Google Map Loader
 window.onload = function() {
     console.log("window.onload");
     var latlon = new google.maps.LatLng(lati, long);
