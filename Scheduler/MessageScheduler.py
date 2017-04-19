@@ -1,5 +1,4 @@
-import os, requests, datetime, pytz
-import socket
+import os, requests, datetime, pytz, sys
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -26,6 +25,9 @@ class MessageScheduler(metaclass=SingletonMetaClass):
         self.__s.start()
 
     def add_message(self, args):
+        # Grab a copy of the args to mutate later
+        args = args.copy()
+
         medium = args['medium']
 
         if medium == 'SMS':
@@ -46,7 +48,6 @@ class MessageScheduler(metaclass=SingletonMetaClass):
         payload = {'recipient': dest, 'message': msg}
         requests.post("http://api:8080/api/sms_sender", data=payload)
 
-
     # Email Methods
     def __add_Email_notification(self, args):
         self.__s.add_job(self.__send_Email, 'date', run_date=self.__get_datetime_conversion(args['time']), kwargs=self.__get_kwargs_args(args))
@@ -54,7 +55,6 @@ class MessageScheduler(metaclass=SingletonMetaClass):
     def __send_Email(self, dest='UNDEFINED', msg='UNDEFINED'):
         payload = {'recipient': dest, 'message': msg}
         requests.post("http://api:8080/api/email_sender", data=payload)
-
 
     # Google Home Methods
     def __add_Google_Home_notification(self, args):
@@ -64,13 +64,49 @@ class MessageScheduler(metaclass=SingletonMetaClass):
         payload = {'message': msg}
         requests.post("http://api:8080/api/google_sender", data=payload)
 
+    # Message Generation Methods
+    def __generate_message(self, msg, latestEntryOf):
+        if msg is not None:
+            return msg
 
+        if latestEntryOf == 'GPS':
+            return self.__get_GPS_Message()
 
+    def __get_GPS_Message(self):
+        try:
+            r = requests.get(os.environ.get('API_BASE') + '/api/GPS')
+            r.raise_for_status()
 
+            rdic = r.json()[0]
+
+            return "Latest location was ({}, {}) at {}.".format(rdic['lat'], rdic['lon'], rdic['time'])
+
+        except Exception as e:
+            return e
+
+        
     # General Helper Methods
+    def check_time(self, time):
+        try:
+            scheduled_time = self.__get_datetime_conversion(time)
+        except Exception as e:
+            raise Exception('Time \'{}\' is incorrectly formatted.'.format(time))
+
+        current_time = datetime.datetime.now(pytz.utc)
+
+        # if scheduled_time occurs before current time
+        if scheduled_time < current_time:
+            raise Exception('Time \'{}\' occurs in the past.'.format(time))
+
+
+
     def __get_kwargs_args(self, given_args):
-        return {'dest': given_args['dest'], 'msg': given_args['msg']}
+        return {'dest': given_args['dest'], 'msg': given_args['msg'], 'latestEntryOf': given_args['latestEntryOf']}
 
     def __get_datetime_conversion(self, time_str):
         d = datetime.datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S %z")
         return d.astimezone(pytz.utc)
+
+
+
+

@@ -83,7 +83,7 @@ function postParametersAreMissingOrInvalid(req) {
         expect(req.body).to.have.property('user').that.is.a('string');
         expect(req.body).to.have.property('record').that.is.a('string');
 
-        expect(req.body).to.have.property('date')
+        expect(req.body).to.have.property('date').that.is.a('string');
         // Check that the date param can be parsed into a Date object correctly
         expect(Date.parse(req.body.date)).to.not.be.NaN;
     } catch (AssertionError) {

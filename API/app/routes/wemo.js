@@ -3,7 +3,9 @@
 var express = require('express');
 var router = express.Router();
 // var stormpath = require('express-stormpath');
-
+// chai.js for linting
+var expect = require('chai').expect;
+var assert = require('chai').assert;
 // Get an instance of our model
 var Wemo = require('../models/wemo.js')
 
@@ -17,6 +19,10 @@ router.route('/')
 
     // create a wemo (accessed at POST http://localhost:8080/api/wemo)
     .post(function(req, res) {
+        if (postParametersAreMissingOrInvalid(req)) {
+            res.status(400).json({error: 'There are missing or invalid parameters in the request.'});
+            return;
+        }
 
         var wemo = new Wemo();      // create a new instance of the Wemo model
         wemo.date = req.body.date;  // set the wemo's name (comes from the request)
@@ -68,3 +74,22 @@ router.route('/:wemo_id')
     });
 
 module.exports = router;
+
+function postParametersAreMissingOrInvalid(req) {
+    try {
+        // Check for missing and invalid parameters
+        expect(req.body).to.have.property('date').that.is.a('string');
+        // Check that the date param can be parsed into a Date object correctly
+        expect(Date.parse(req.body.date)).to.not.be.NaN;
+
+        expect(req.body).to.have.property('time').that.is.a('string');
+        // Check that the date param can be parsed into a Date object correctly
+
+        expect(req.body).to.have.property('status');
+        assert.isBoolean(req.body.status);
+    } catch (AssertionError) {
+        return true;
+    }
+
+    return false;
+}

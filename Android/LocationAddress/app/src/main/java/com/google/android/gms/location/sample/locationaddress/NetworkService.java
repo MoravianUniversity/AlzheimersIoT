@@ -30,45 +30,36 @@ import fr.quentinklein.slt.TrackerSettings;
  */
 public class NetworkService extends Service {
 
-    // Networking Variables
     private String StrLat;
     private String StrLon;
     private long curTime;
     private String StrTime;
     private Context ctx;
+    private String android_id;
+    final static String TAG = "NetworkService";
 
     // LocationTracker
     public LocationTracker tracker;
     public Location lastLocation;
 
-    // Get TAG
-    final static String TAG = "NetworkService";
-
-    // This is the object that receives interactions from clients.  See
-    // RemoteService for a more complete example.
+    // This is the object that receives interactions from clients
     private final IBinder mBinder = new LocalBinder();
-
-    // String for ANDROID_ID
-    private String android_id;
 
     // Must create a default constructor
     public NetworkService() {
-        // Do Constructor Stuff
+
     }
 
     // Constructor
     @Override
     public void onCreate() {
-        super.onCreate(); // if you override onCreate(), make sure to call super().
+        super.onCreate();
 
-        // Get Context
         ctx = this.getApplicationContext();
 
-        // Get ANDROID_ID for unique identifier in database
         android_id = Secure.getString(ctx.getContentResolver(),
                 Secure.ANDROID_ID);
 
-        // Start LocationTracker
         createLocationTracker();
 
         showToast("NetworkService Created Successfully.");
@@ -85,7 +76,6 @@ public class NetworkService extends Service {
                 // Every 5 minutes
                 .setTimeBetweenUpdates(5 * 60 * 1000);
 
-        // Define Tracker
         tracker = new LocationTracker(ctx, settings) {
 
             // Every time device location changes, onLocationFound is called
@@ -94,7 +84,7 @@ public class NetworkService extends Service {
 
                 // First Location Acquisition
                 if (lastLocation==null) {
-                    // Log Location Data
+                    // DEBUG: Log Location Data
                     Log.e(TAG + " CurLoc: ", location.toString());
 
                     // Get time of location data acquisition
@@ -111,10 +101,9 @@ public class NetworkService extends Service {
 
                     lastLocation = location;
 
-                    // Create Thread for POST Request
+                    // Create thread for POST request as it contains networking, which cannot be run on the main thread.
                     Thread t = new Thread(new Runnable() {
                         public void run() {
-                            // Thread request as it contains Networking which cannot be run on the main thread.
                             request(StrLon, StrLat, StrTime, android_id);
                         }
                     });
@@ -129,7 +118,7 @@ public class NetworkService extends Service {
 
                 // location is unique to lastLocation
                 else {
-                    // Log Location Data
+                    // DEBUG: Log Location Data
                     Log.e(TAG + " CurLoc: ", location.toString());
 
                     // Get time of location data acquisition
@@ -162,7 +151,8 @@ public class NetworkService extends Service {
             @Override
             public void onTimeout() {
                 //tracker.stopListening();
-                Log.e(TAG + "LocTrack.", "Timeout!");
+                // DEBUG: timeout
+                Log.e(TAG + "LocTracker", "Timeout!");
             }
         };
         tracker.startListening();
@@ -174,7 +164,7 @@ public class NetworkService extends Service {
 
         StringBuffer response = new StringBuffer();
         try {
-            String url = "http://8887eddd.ngrok.io/api/gps";
+            String url = "http://accd1036.ngrok.io/api/gps";
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
