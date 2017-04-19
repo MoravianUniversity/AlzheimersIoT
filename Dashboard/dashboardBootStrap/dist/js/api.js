@@ -1,5 +1,7 @@
+// General Use Variables
 var data;
 
+// GPS Variables
 var lati;
 var long;
 
@@ -16,12 +18,13 @@ $(function() {
     req.setRequestHeader('Accept', 'application/json');
     req.send();
 
-// Request info from API
-
+// Local Storage Variables to check whether new entries exist
 var localGps = localStorage.getItem("gpsEntries");
 var localJourn = localStorage.getItem("journalEntries");
 var localWemo = localStorage.getItem("wemoEntries");
 var localMem = localStorage.getItem("memtestEntries");
+    
+// Request info from API
     
 // GPS
 $.ajax({
@@ -40,6 +43,7 @@ $.ajax({
         $(".gpsLon").html(long);
         $(".gpsTime").html(timeD);
         $(".gpsEntries").html(numEntries);
+        $(".gpsTotal").html(numEntries);
     
         if (numEntries>=localGps) {
             $(".gpsEntries").html(numEntries-localGps);
@@ -70,6 +74,15 @@ $.ajax({
         $(".memUser").html(user);
         $(".memTime").html(timeD);
         $(".memEntries").html(numEntries);
+        $(".memTotal").html(numEntries);
+    
+        if (numEntries>=localMem) {
+            $(".memEntries").html(numEntries-localMem);
+            localStorage.setItem("memtestEntries", numEntries);
+        }
+        if (numEntries<localMem) {
+            /*This shouldn't happen*/
+        }
     })
     .fail(function(data) {
         console.log("Failed MMSE Retrieval");
@@ -94,6 +107,15 @@ $.ajax({
         $(".jTime").html(timeD);
         $(".jActivities").html(activities);
         $(".jEntries").html(numEntries);
+        $(".jTotal").html(numEntries);
+    
+        if (numEntries>=localJourn) {
+            $(".jEntries").html(numEntries-localJourn);
+            localStorage.setItem("journalEntries", numEntries);
+        }
+        if (numEntries<localJourn) {
+            /*This shouldn't happen*/
+        }
     })
     .fail(function(data) {
         console.log("Failed Journal Retrieval");
@@ -117,6 +139,15 @@ $.ajax({
         $(".wemoTime").html(time);
         $(".wemoDate").html(date);
         $(".wemoEntries").html(numEntries);
+        $(".wemoTotal").html(numEntries);
+    
+        if (numEntries>=localWemo) {
+            $(".wemoEntries").html(numEntries-localWemo);
+            localStorage.setItem("wemoEntries", numEntries);
+        }
+        if (numEntries<localWemo) {
+            /*This shouldn't happen*/
+        }
     })
     .fail(function(data) {
         console.log("Failed WeMo Retrieval");

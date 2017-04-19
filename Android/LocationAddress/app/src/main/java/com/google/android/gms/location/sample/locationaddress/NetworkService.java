@@ -164,7 +164,7 @@ public class NetworkService extends Service {
 
         StringBuffer response = new StringBuffer();
         try {
-            String url = "http://accd1036.ngrok.io/api/gps";
+            String url = "https://07a83708.ngrok.io/api/gps";
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 

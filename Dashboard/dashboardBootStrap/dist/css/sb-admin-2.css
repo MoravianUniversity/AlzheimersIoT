@@ -450,6 +450,10 @@ table.dataTable thead .sorting:after {
     display: inline;
 }
 
+.gpsTotal {
+    display: inline;
+}
+
 .memScore {
     display: inline;
 }
@@ -463,6 +467,10 @@ table.dataTable thead .sorting:after {
 }
 
 .memEntries {
+    display: inline;
+}
+
+.memTotal {
     display: inline;
 }
 
@@ -486,6 +494,10 @@ table.dataTable thead .sorting:after {
     display: inline;
 }
 
+.jTotal {
+    display: inline;
+}
+
 .wemoEntries {
     display: inline;
 }
@@ -500,6 +512,10 @@ table.dataTable thead .sorting:after {
 
 .wemoDate {
     display: inline;
+}
+
+.wemoTotal {
+   display: inline; 
 }
 
 #mapholder {
