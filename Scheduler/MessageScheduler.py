@@ -44,7 +44,7 @@ class MessageScheduler(metaclass=SingletonMetaClass):
 
     def __send_SMS(self, dest='UNDEFINED', msg='UNDEFINED'):
         payload = {'recipient': dest, 'message': msg}
-        requests.post(os.environ.get('SMS_API_URL'), data=payload)
+        requests.post("http://api:8080/api/sms_sender", data=payload)
 
 
     # Email Methods
@@ -53,7 +53,7 @@ class MessageScheduler(metaclass=SingletonMetaClass):
 
     def __send_Email(self, dest='UNDEFINED', msg='UNDEFINED'):
         payload = {'recipient': dest, 'message': msg}
-        requests.post(os.environ.get('EMAIL_API_URL'), data=payload)
+        requests.post("http://api:8080/api/email_sender", data=payload)
 
 
     # Google Home Methods
@@ -61,11 +61,8 @@ class MessageScheduler(metaclass=SingletonMetaClass):
         self.__s.add_job(self.__send_Google_Home_TTS, 'date', run_date=self.__get_datetime_conversion(args['time']), kwargs=self.__get_kwargs_args(args))
 
     def __send_Google_Home_TTS(self, dest='UNDEFINED', msg='UNDEFINED'):
-        url = os.environ.get('GOOGLE_HOME_API_URL').split(':')
-        server = {'host': url[0], 'port': int(url[1])}
-
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.sendto(msg.encode(), (server['host'], server['port']))
+        payload = {'message': msg}
+        requests.post("http://api:8080/api/google_sender", data=payload)
 
 
 

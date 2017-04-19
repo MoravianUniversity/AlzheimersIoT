@@ -1,7 +1,7 @@
 import requests
 import datetime
 def UploadAPI(User, score,token):
-    base_url = 'http://pegasus.cs.moravian.edu:8080/api/memoryGame'
+    base_url = 'http://api:8080/api/memoryGame'
     authorization_string = "Bearer " + token
     header = {'Authorization' : authorization_string}
     date = datetime.datetime.utcnow().isoformat()

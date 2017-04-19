@@ -7,11 +7,15 @@ services:
     build: ./GoogleHome/Actions/Journal
     links:
       - api
+    ports:
+      - "8000:80"
 
   memory_game:
     build: ./Alexa/Skillsets/MemoryGame
     links:
       - api
+    ports:
+      - "5000:5000"
 
   # wemo:
   #   build:
@@ -24,8 +28,8 @@ services:
     links:
       - db
     build: ./API
-    # ports:
-    #   - "8080:8080"
+    ports:
+      - "8080:8080"
     # env_file:
     #   - ./stormpath.env
 
@@ -43,8 +47,8 @@ services:
 
   scheduler:
     build: ./Scheduler
-    env_file:
-      - ./Scheduler/default.env
+    ports:
+      - "5050:5000"
 
 
 
