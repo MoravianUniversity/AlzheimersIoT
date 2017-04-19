@@ -4,50 +4,10 @@ var lati;
 var long;
 
 $(function() {
-    $('#side-menu').metisMenu();
-});
-
-//Loads the correct sidebar on window load,
-//collapses the sidebar on window resize.
-// Sets the min-height of #page-wrapper to window size
-$(function() {
-    $(window).bind("load resize", function() {
-        var topOffset = 50;
-        var width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
-        if (width < 768) {
-            $('div.navbar-collapse').addClass('collapse');
-            topOffset = 100; // 2-row-menu
-        } else {
-            $('div.navbar-collapse').removeClass('collapse');
-        }
-
-        var height = ((this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height) - 1;
-        height = height - topOffset;
-        if (height < 1) height = 1;
-        if (height > topOffset) {
-            $("#page-wrapper").css("min-height", (height) + "px");
-        }
-    });
-
-    var url = window.location;
-    // var element = $('ul.nav a').filter(function() {
-    //     return this.href == url;
-    // }).addClass('active').parent().parent().addClass('in').parent();
-    var element = $('ul.nav a').filter(function() {
-        return this.href == url;
-    }).addClass('active').parent();
-
-    while (true) {
-        if (element.is('li')) {
-            element = element.parent().addClass('in').parent();
-        } else {
-            break;
-        }
-    }
     
     var req = new XMLHttpRequest();
 
-    req.open('GET', 'http://accd1036.ngrok.io/api/gps', true);
+    req.open('GET', 'https://07a83708.ngrok.io/api/gps', true);
     req.onreadystatechange = function() {
         if (req.readyState === 4) {
             console.log(req.responseText);
@@ -65,7 +25,7 @@ var localMem = localStorage.getItem("memtestEntries");
     
 // GPS
 $.ajax({
-        url: "http://accd1036.ngrok.io/api/gps",
+        url: "https://07a83708.ngrok.io/api/gps",
         dataType: 'json',
         data: data
     })
@@ -95,7 +55,7 @@ $.ajax({
     
 // MMSE
 $.ajax({
-        url: "http://accd1036.ngrok.io/api/memoryGame",
+        url: "https://07a83708.ngrok.io/api/memoryGame",
         dataType: 'json',
         data: data
     })
@@ -117,7 +77,7 @@ $.ajax({
     
 // Journal
 $.ajax({
-        url: "http://accd1036.ngrok.io/api/journal",
+        url: "https://07a83708.ngrok.io/api/journal",
         dataType: 'json',
         data: data
     })
@@ -141,7 +101,7 @@ $.ajax({
 
 // WeMo
 $.ajax({
-        url: "http://accd1036.ngrok.io/api/wemo",
+        url: "https://07a83708.ngrok.io/api/wemo",
         dataType: 'json',
         data: data
     })
