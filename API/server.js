@@ -59,6 +59,7 @@ app.use('/api/gps', require('./app/routes/gps.js'))
 app.use('/api/memoryGame', require('./app/routes/memoryGame.js'))
 app.use('/api/medicineLogger', require('./app/routes/medicineLogger.js'))
 app.use('/api/journal', require('./app/routes/journal.js'))
+app.use('/api/zWaveDoor', require('./app/routes/zWaveDoor.js'));
 
 
 // START THE SERVER
