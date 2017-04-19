@@ -1,7 +1,6 @@
 import time
 import requests
 from requests import *
-from sendMessage import sendStringToHome
 import NotificationRecipientContactInfo
 
 class EventSender():
@@ -43,7 +42,7 @@ class EventSender():
     def sendNotifications(self, message):
         self.sendEmailOrSMS(message, self.phoneNumbers, self.SMSAPIURL)
         self.sendEmailOrSMS(message, self.emailAddresses, self.emailAPIURL)
-        sendStringToHome(message)
+        requests.post("http://pegasus.cs.moravian.edu:5000/googleSend", data={"message": message})
         return
 
     def sendEmailOrSMS(self, message, recipients, APIURL):
