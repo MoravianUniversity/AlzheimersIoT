@@ -1,0 +1,84 @@
+<template name="SchedulerTemplate">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Enter you Phone Number</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  <div class="container">
+    <div class="container">
+      <h3 class="masthead-brand">Event Scheduler</h3>
+      <nav>
+        <ul class="nav masthead-nav">
+          <li><a href="/">Home</a></li>
+          <li><a href="/email">Email</a></li>
+          <li><a href="/phoneNumber">Phone Number</a></li>
+          <li class="active"><a href="/Scheduler">Time Scheduler</a></li>
+        </ul>
+      </nav>
+      <br><br><br>
+      <form class="form-signup" id="submitScheduler">
+        <h2 class="form-signup-heading">Scheduler Form</h2>
+        <label for="url" class="form-signup">API URL</label>
+        <input type="text" id="url" class ="form-control" value="https://6f5b8927.ngrok.io/api/scheduler" size="50">
+        <br><br><br>
+        <label for="medium" class="form-signup">Medium</label>
+        <select id="medium">
+          <option value="SMS">SMS</option>
+          <option value="Email">Email</option>
+          <option value="Google Home">Google Home</option>
+        </select>
+        <br><br><br>
+        <label for="dest" class="form-signup">Destination</label>
+        <input type="text" id="dest" class ="form-control" size="50" placeholder="someone@example.com or 6101234567">
+        <br><br><br>
+        <label for="time" class="form-signup">Time</label>
+        <input type="text" id="time" class ="form-control" size="50" placeholder="2017-12-31 16:06:59 -0400">
+        <br><br><br>
+        <label for="time" class="form-signup">Message</label>
+        <textarea id="msg" class ="form-control" rows="3" cols="50" placeholder="Type your message here..."></textarea>
+        <br><br><br>
+        <label for="queryLatestEntry" class="form-signup">Would you like ot receive the Latest Entry of a Service instead of Setting a Message?</label>
+        <select id="queryLatestEntry">
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+        </select>
+        <br><br><br>
+        <label for="services" class="form-signup">Choose which Services you wish to Get the latest entry of:</label>
+        <select id="services">
+          <option value="GPS">GPS</option>
+          <option value="Journal">Journal</option>
+          <option value="MemoryGame">MemoryGame</option>
+        </select>
+        <br><br><br>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+  </body>
+</template>

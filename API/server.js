@@ -60,7 +60,8 @@ app.use('/api/memoryGame', require('./app/routes/memoryGame.js'))
 app.use('/api/medicineLogger', require('./app/routes/medicineLogger.js'))
 app.use('/api/journal', require('./app/routes/journal.js'))
 app.use('/api/zWaveDoor', require('./app/routes/zWaveDoor.js'));
-
+app.use('/api/PhoneNumber', require('./app/routes/PhoneNumber.js'))
+app.use('/api/Email', require('./app/routes/Email.js'))
 
 // START THE SERVER
 // =============================================================================
