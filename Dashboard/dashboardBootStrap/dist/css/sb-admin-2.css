@@ -523,6 +523,8 @@ table.dataTable thead .sorting:after {
 }
 
 /* Google Map Holder */
-#mapholder {
-    
+#map {
+    width: 100%;
+    height: 450px;
+    float: left;
 }

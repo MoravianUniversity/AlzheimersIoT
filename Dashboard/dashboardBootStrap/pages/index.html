@@ -35,7 +35,7 @@
 
 </head>
 
-<body>
+<body onload="geoloc()">
     <div id="wrapper">
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -542,9 +542,7 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <mapholder>
-                                None
-                            </mapholder>
+                            <div id="map"></div>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -759,14 +757,101 @@
     <!-- Metis Menu Plugin JavaScript -->
     <script src="../vendor/metisMenu/metisMenu.min.js"></script>
     
-    <!-- Google Map Script -->
-    <script src="https://maps.google.com/maps/api/js?sensor=false&key=AIzaSyBT54YdJdkBN2Ucsyw7N7VCVwHzf7n759o"></script>
-
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
     
-    <!-- Custom JavaScript 2 -->
+    <!-- Custom API JavaScript -->
     <script src="../dist/js/api.js"></script>
+    
+    <!-- Google Map Script -->
+    <!--<script src="https://maps.google.com/maps/api/js?key=AIzaSyBT54YdJdkBN2Ucsyw7N7VCVwHzf7n759o"></script>-->
+    
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKsDWrUoG0f4NpnIVLY-AW2IA1ROIWAMQ&callback=initMap">
+    </script>
+    
+    <script>
+        var watchId = null;
+        function geoloc() {
+            if (navigator.geolocation) {
+                var optn = {
+                        enableHighAccuracy : true,
+                        timeout : Infinity,
+                        maximumAge : 0
+                };
+            watchId = navigator.geolocation.watchPosition(showPosition, showError, optn);
+            } 
+            else {
+                    alert('Geolocation is not supported in your browser');
+            }
+        }
+
+        function showPosition(position) {
+            var googlePos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            var mapOptions = {
+                zoom : 15,
+                center : googlePos,
+                mapTypeId : google.maps.MapTypeId.ROADMAP
+            };
+            var mapObj = document.getElementById('map');
+            var googleMap = new google.maps.Map(mapObj, mapOptions);
+            var markerOpt = {
+                map : googleMap,
+                position : googlePos,
+                title : 'Hi , I am here',
+                animation : google.maps.Animation.DROP
+            };
+            var googleMarker = new google.maps.Marker(markerOpt);
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({
+                'latLng' : googlePos
+            }, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[1]) {
+                        var popOpts = {
+                            content : results[1].formatted_address,
+                            position : googlePos
+                        };
+                        $("#location").text(results[1].formatted_address);
+                        var popup = new google.maps.InfoWindow(popOpts);
+                        google.maps.event.addListener(googleMarker, 'click', function() {
+                            popup.open(googleMap);
+                        });
+                    } 
+                    else {
+                        alert('No results found');
+                    }
+                } 
+                else {
+                    alert('Geocoder failed due to: ' + status);
+                }
+            });
+        }
+
+        function stopWatch() {
+            if (watchId) {
+                navigator.geolocation.clearWatch(watchId);
+                watchId = null;
+            }
+        }
+
+        function showError(error) {
+            var err = document.getElementById('map');
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                err.innerHTML = "User denied the request for Geolocation."
+                break;
+                case error.POSITION_UNAVAILABLE:
+                err.innerHTML = "Location information is unavailable."
+                break;
+                case error.TIMEOUT:
+                err.innerHTML = "The request to get user location timed out."
+                break;
+                case error.UNKNOWN_ERROR:
+                err.innerHTML = "An unknown error occurred."
+                break;
+            }
+        }
+    </script>
 
 </body>
 
