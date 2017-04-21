@@ -10,6 +10,7 @@ class EventSender():
         self.phoneNumbers = NotificationRecipientContactInfo.phoneNumbers
         self.emailAPIURL = "http://email_sender:5000/email"
         self.SMSAPIURL = "http://sms_sender:5000/sms"
+        self.GoogleSendURL = "http://google_sender:5000/googleSend"
         self.baseURL = 'http://api:8080/api/'
         self.endpointNames = ['gps', 'wemo', 'journal', 'medicineLogger', 'memoryGame']
 
@@ -42,7 +43,7 @@ class EventSender():
     def sendNotifications(self, message):
         self.sendEmailOrSMS(message, self.phoneNumbers, self.SMSAPIURL)
         self.sendEmailOrSMS(message, self.emailAddresses, self.emailAPIURL)
-        requests.post("http://pegasus.cs.moravian.edu:5000/googleSend", data={"message": message})
+        requests.post(self.GoogleSendURL, data={"message": message})
         return
 
     def sendEmailOrSMS(self, message, recipients, APIURL):

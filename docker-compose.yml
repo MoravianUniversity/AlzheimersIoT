@@ -38,6 +38,7 @@ services:
 
   event_sender:
     build: ./EventSender
+    restart: 'always'
     depends_on:
       - api
     links:
