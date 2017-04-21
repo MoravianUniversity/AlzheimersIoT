@@ -543,6 +543,8 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div id="map"></div>
+                            <div><b>Address: </b></div>
+                            <div id="location"></div>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -760,16 +762,16 @@
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
     
-    <!-- Custom API JavaScript -->
-    <script src="../dist/js/api.js"></script>
-    
     <!-- Google Map Script -->
     <!--<script src="https://maps.google.com/maps/api/js?key=AIzaSyBT54YdJdkBN2Ucsyw7N7VCVwHzf7n759o"></script>-->
     
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKsDWrUoG0f4NpnIVLY-AW2IA1ROIWAMQ&callback=initMap">
     </script>
     
-    <script>
+    <!-- Custom API JavaScript -->
+    <script src="../dist/js/api.js"></script>
+    
+    <!--<script>
         var watchId = null;
         function geoloc() {
             if (navigator.geolocation) {
@@ -851,7 +853,7 @@
                 break;
             }
         }
-    </script>
+    </script>-->
 
 </body>
 
