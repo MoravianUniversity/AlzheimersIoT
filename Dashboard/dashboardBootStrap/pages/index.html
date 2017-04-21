@@ -277,90 +277,6 @@
                         <li>
                             <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
-                        <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="flot.html">Flot Charts</a>
-                                </li>
-                                <li>
-                                    <a href="morris.html">Morris.js Charts</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
-                        </li>
-                        <li>
-                            <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="panels-wells.html">Panels and Wells</a>
-                                </li>
-                                <li>
-                                    <a href="buttons.html">Buttons</a>
-                                </li>
-                                <li>
-                                    <a href="notifications.html">Notifications</a>
-                                </li>
-                                <li>
-                                    <a href="typography.html">Typography</a>
-                                </li>
-                                <li>
-                                    <a href="icons.html"> Icons</a>
-                                </li>
-                                <li>
-                                    <a href="grid.html">Grid</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="#">Second Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Second Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Third Level <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                    </ul>
-                                    <!-- /.nav-third-level -->
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="blank.html">Blank Page</a>
-                                </li>
-                                <li>
-                                    <a href="login.html">Login Page</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -705,32 +621,22 @@
                         <div class="panel-body">
                             <div class="list-group">
                                 <a href="#" class="list-group-item">
-                                    <i class="fa fa-comment fa-fw"></i> New Comment
-                                    <span class="pull-right text-muted small"><em>4 minutes ago</em>
-                                    </span>
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                    <span class="pull-right text-muted small"><em>27 minutes ago</em>
-                                    </span>
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-tasks fa-fw"></i> New Task
+                                    <i class="fa fa-tasks fa-fw"></i> New Location Update
                                     <span class="pull-right text-muted small"><em>43 minutes ago</em>
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                    <i class="fa fa-upload fa-fw"></i> Patient Device Rebooted
                                     <span class="pull-right text-muted small"><em>11:32 AM</em>
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="fa fa-bolt fa-fw"></i> Server Crashed!
+                                    <i class="fa fa-bolt fa-fw"></i> Patient Device Crashed!
                                     <span class="pull-right text-muted small"><em>11:13 AM</em>
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="fa fa-warning fa-fw"></i> Server Not Responding
+                                    <i class="fa fa-warning fa-fw"></i> Patient Device Not Responding
                                     <span class="pull-right text-muted small"><em>10:57 AM</em>
                                     </span>
                                 </a>
@@ -770,91 +676,6 @@
     
     <!-- Custom API JavaScript -->
     <script src="../dist/js/api.js"></script>
-    
-    <!--<script>
-        var watchId = null;
-        function geoloc() {
-            if (navigator.geolocation) {
-                var optn = {
-                        enableHighAccuracy : true,
-                        timeout : Infinity,
-                        maximumAge : 0
-                };
-            watchId = navigator.geolocation.watchPosition(showPosition, showError, optn);
-            } 
-            else {
-                    alert('Geolocation is not supported in your browser');
-            }
-        }
-
-        function showPosition(position) {
-            var googlePos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            var mapOptions = {
-                zoom : 15,
-                center : googlePos,
-                mapTypeId : google.maps.MapTypeId.ROADMAP
-            };
-            var mapObj = document.getElementById('map');
-            var googleMap = new google.maps.Map(mapObj, mapOptions);
-            var markerOpt = {
-                map : googleMap,
-                position : googlePos,
-                title : 'Hi , I am here',
-                animation : google.maps.Animation.DROP
-            };
-            var googleMarker = new google.maps.Marker(markerOpt);
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({
-                'latLng' : googlePos
-            }, function(results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    if (results[1]) {
-                        var popOpts = {
-                            content : results[1].formatted_address,
-                            position : googlePos
-                        };
-                        $("#location").text(results[1].formatted_address);
-                        var popup = new google.maps.InfoWindow(popOpts);
-                        google.maps.event.addListener(googleMarker, 'click', function() {
-                            popup.open(googleMap);
-                        });
-                    } 
-                    else {
-                        alert('No results found');
-                    }
-                } 
-                else {
-                    alert('Geocoder failed due to: ' + status);
-                }
-            });
-        }
-
-        function stopWatch() {
-            if (watchId) {
-                navigator.geolocation.clearWatch(watchId);
-                watchId = null;
-            }
-        }
-
-        function showError(error) {
-            var err = document.getElementById('map');
-            switch(error.code) {
-                case error.PERMISSION_DENIED:
-                err.innerHTML = "User denied the request for Geolocation."
-                break;
-                case error.POSITION_UNAVAILABLE:
-                err.innerHTML = "Location information is unavailable."
-                break;
-                case error.TIMEOUT:
-                err.innerHTML = "The request to get user location timed out."
-                break;
-                case error.UNKNOWN_ERROR:
-                err.innerHTML = "An unknown error occurred."
-                break;
-            }
-        }
-    </script>-->
-
 </body>
 
 </html>
