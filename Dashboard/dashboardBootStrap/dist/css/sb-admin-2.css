@@ -450,6 +450,14 @@ table.dataTable thead .sorting:after {
     display: inline;
 }
 
+.gpsTotal {
+    display: inline;
+}
+
+.gpsDevid {
+    display: inline;
+}
+
 .memScore {
     display: inline;
 }
@@ -463,6 +471,10 @@ table.dataTable thead .sorting:after {
 }
 
 .memEntries {
+    display: inline;
+}
+
+.memTotal {
     display: inline;
 }
 
@@ -486,6 +498,10 @@ table.dataTable thead .sorting:after {
     display: inline;
 }
 
+.jTotal {
+    display: inline;
+}
+
 .wemoEntries {
     display: inline;
 }
@@ -502,6 +518,17 @@ table.dataTable thead .sorting:after {
     display: inline;
 }
 
-#mapholder {
+.wemoTotal {
+   display: inline; 
+}
+
+/* Google Map Holder */
+#map {
+    width: 100%;
+    height: 450px;
+    float: left;
+}
+
+#location {
     
 }
