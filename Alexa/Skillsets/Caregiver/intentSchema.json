@@ -17,6 +17,72 @@
           "type": "PATIENT_LIST"
         }
       ]
+    },
+    {
+      "intent": "GetMemoryGameIntent",
+      "slots": [
+        {
+          "name": "patient",
+          "type": "PATIENT_LIST"
+        }
+      ]
+    },
+    {
+      "intent": "GetMemoryGameTimeIntent",
+      "slots": [
+        {
+          "name": "patient",
+          "type": "PATIENT_LIST"
+        }
+      ]
+    },
+    {
+      "intent": "GetMemoryGameScoreIntent",
+      "slots": [
+        {
+          "name": "patient",
+          "type": "PATIENT_LIST"
+        }
+      ]
+    },
+    {
+      "intent": "GetMemoryGameTimeAndScoreIntent",
+      "slots": [
+        {
+          "name": "patient",
+          "type": "PATIENT_LIST"
+        }
+      ]
+    },
+    {
+      "intent": "GetGPSIntent",
+      "slots": [
+        {
+          "name": "patient",
+          "type": "PATIENT_LIST"
+        }
+      ]
+    },
+    {
+      "intent": "GetWemoIntent",
+      "slots": [
+        {
+          "name": "patient",
+          "type": "PATIENT_LIST"
+        }
+      ]
+    },
+    {
+      "intent": "GetJournalIntent",
+      "slots": [
+        {
+          "name": "patient",
+          "type": "PATIENT_LIST"
+        }
+      ]
+    },
+    {
+      "intent": "EndCaregiver"
     }
   ]
 }
