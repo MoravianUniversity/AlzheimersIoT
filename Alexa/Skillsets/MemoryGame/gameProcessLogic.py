@@ -7,13 +7,13 @@ import datetime
 
 mydate = datetime.datetime.now()
 month = mydate.strftime("%B")
-actualmonth = month.lower()
+#actualmonth = month.lower() This is a quick bug fix for month March
 year = mydate.strftime("%Y")
 
 currentQuestionList = questionList
 currentAnswerList = answerList
 currentAnswerList[0] = year
-currentAnswerList[1] = actualmonth
+currentAnswerList[1] = month
 answerTag = ""
 
 counterDictionary = {'roundCounter': 0, 'winCounter': 0}
