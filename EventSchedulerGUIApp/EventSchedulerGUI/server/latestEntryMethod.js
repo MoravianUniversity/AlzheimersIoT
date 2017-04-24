@@ -4,7 +4,7 @@ Meteor.methods({
     var result = HTTP.post(url,{
         data: {
             medium: Data.medium,
-            LatestEntryOf: Data.latestEntryParameter,
+            latestEntryOf: Data.latestEntryParameter,
             dest: Data.dest,
             time: Data.time
         },function(error,response){
