@@ -1,6 +1,6 @@
 Meteor.methods({
     uploadEmailtoDatabase: function(Data){
-           var url = "http://localhost:8080/api/Email";
+           var url = Data.url;
            var result = HTTP.post(url,{
            data: {
                CurrentEmail: Data.emailAddress,
