@@ -1,4 +1,6 @@
 GetMedicineIntent did {patient} take their medicine today
+GetMedicineIntent did {patient} take his medicine today
+GetMedicineIntent did {patient} take her medicine today
 
 GetWakeTimeIntent when did {patient} wake up
 GetWakeTimeIntent what time did {patient} wake up

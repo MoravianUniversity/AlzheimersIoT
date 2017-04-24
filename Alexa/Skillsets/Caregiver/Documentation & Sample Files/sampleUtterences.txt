@@ -1,8 +1,0 @@
-GetMedicineIntent when did {patient} take their medicine
-GetMedicineIntent when did {patient} take his medicine
-GetMedicineIntent when did {patient} take her medicine
-GetMedicineIntent what time did {patient} take their medicine
-GetMedicineIntent what time did {patient} take his medicine
-GetMedicineIntent what time did {patient} take her medicine
-GetWakeTimeIntent when did {patient} wake up
-GetWakeTimeIntent what time did {patient} wake up
