@@ -74,7 +74,7 @@ class MessageScheduler(metaclass=SingletonMetaClass):
 
     def __get_GPS_Message(self):
         try:
-            r = requests.get(os.environ.get('API_BASE') + '/api/GPS')
+            r = requests.get("http://api:8080/api/GPS")
             r.raise_for_status()
 
             rdic = r.json()[0]
@@ -84,7 +84,7 @@ class MessageScheduler(metaclass=SingletonMetaClass):
         except Exception as e:
             return e
 
-        
+
     # General Helper Methods
     def check_time(self, time):
         try:
