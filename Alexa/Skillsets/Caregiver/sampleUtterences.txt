@@ -1,8 +1,32 @@
-GetMedicineIntent when did {patient} take their medicine
-GetMedicineIntent when did {patient} take his medicine
-GetMedicineIntent when did {patient} take her medicine
-GetMedicineIntent what time did {patient} take their medicine
-GetMedicineIntent what time did {patient} take his medicine
-GetMedicineIntent what time did {patient} take her medicine
+GetMedicineIntent did {patient} take their medicine today
+GetMedicineIntent did {patient} take his medicine today
+GetMedicineIntent did {patient} take her medicine today
+
 GetWakeTimeIntent when did {patient} wake up
 GetWakeTimeIntent what time did {patient} wake up
+
+GetMemoryGameIntent how did {patient} do on memory game
+GetMemoryGameIntent how did {patient} do on memory game today
+GetMemoryGameIntent how did {patient} do on the memory game
+GetMemoryGameIntent how did {patient} do on the memory game today
+GetMemoryGameIntent how did {patient} do on memory quiz
+GetMemoryGameIntent how did {patient} do on memory quiz today
+GetMemoryGameIntent how did {patient} do on the memory quiz
+GetMemoryGameIntent how did {patient} do on the memory quiz today
+
+GetMemoryGameTimeIntent did {patient} take the memory game today
+GetMemoryGameTimeIntent what time did {patient} take the memory quiz
+
+GetMemoryGameScoreIntent what was {patient} score on today's memory quiz
+
+GetMemoryGameTimeAndScoreIntent what time did {patient} take the memory quiz today and what was their score
+GetMemoryGameTimeAndScoreIntent what time did {patient} take the memory quiz today and what was his score
+GetMemoryGameTimeAndScoreIntent what time did {patient} take the memory quiz today and what was her score
+
+GetGPSIntent where was {patient} last
+
+GetWemoIntent are {patient} lights on
+
+GetJournalIntent what was {patient} last journal entry
+
+EndCaregiver stop care giver

@@ -7,7 +7,7 @@ var router = express.Router();
 var expect = require('chai').expect;
 var assert = require('chai').assert;
 // Get an instance of our model
-var zWaveDoor = require('../models/zWaveDoor.js')
+var zwaveDoor = require('../models/zWaveDoor.js')
 
 // Middleware
 middlewareCtrl = require('./middleware.js')
@@ -24,7 +24,7 @@ router.route('/')
             return;
         }
 
-        var zWaveDoor = new zWaveDoor();      // create a new instance of the zWaveDoor model
+        var zWaveDoor = new zwaveDoor();      // create a new instance of the zWaveDoor model
         zWaveDoor.date = req.body.date;  // set the zWaveDoor's name (comes from the request)
         zWaveDoor.time = req.body.time;
         zWaveDoor.status = req.body.status;
@@ -40,7 +40,7 @@ router.route('/')
 
     // get all the zWaveDoor (accessed at GET http://localhost:8080/api/zWaveDoor)
     .get(function(req, res) {
-        zWaveDoor.find().sort({'_id': -1}).exec(function(err, zWaveDoors) {
+        zwaveDoor.find().sort({'_id': -1}).exec(function(err, zWaveDoors) {
             if (err)
                 res.send(err);
 
@@ -80,13 +80,14 @@ function postParametersAreMissingOrInvalid(req) {
         // Check for missing and invalid parameters
         expect(req.body).to.have.property('date').that.is.a('string');
         // Check that the date param can be parsed into a Date object correctly
-        expect(Date.parse(req.body.date)).to.not.be.NaN;
+        // expect(Date.parse(req.body.date)).to.not.be.NaN;
 
         expect(req.body).to.have.property('time').that.is.a('string');
         // Check that the date param can be parsed into a Date object correctly
 
         expect(req.body).to.have.property('status');
-        assert.isBoolean(req.body.status);
+        expect(req.body.status).to.be.oneOf(['true', 'false']);
+        // assert.isBoolean(req.body.status);
     } catch (AssertionError) {
         return true;
     }

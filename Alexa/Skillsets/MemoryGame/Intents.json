@@ -1,25 +1,4 @@
 {
-
-    "intents": [{
-
-        "intent": "YesIntent"
-
-    },{
-
-        "intent": "NoIntent"
-
-    },{
-
-        "intent": "PassIntent",
-
-        "slots": [
-            {
-          "name": "Pass",
-
-          "type": "LIST_OF_Pass"
-        }]
-
-    },{
         "intent": "AnswerIntent",
 
         "slots": [
@@ -28,7 +7,4 @@
 
           "type": "LIST_OF_Answers"
         }]
-    }
-]
-
 }

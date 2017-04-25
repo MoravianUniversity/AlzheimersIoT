@@ -80,14 +80,16 @@ function postParametersAreMissingOrInvalid(req) {
         // Check for missing and invalid parameters
         expect(req.body).to.have.property('date').that.is.a('string');
         // Check that the date param can be parsed into a Date object correctly
-        expect(Date.parse(req.body.date)).to.not.be.NaN;
+        // expect(Date.parse(req.body.date)).to.not.be.NaN;
 
         expect(req.body).to.have.property('time').that.is.a('string');
         // Check that the date param can be parsed into a Date object correctly
 
         expect(req.body).to.have.property('status');
-        assert.isBoolean(req.body.status);
+        expect(req.body.status).to.be.oneOf(['true', 'false']);
+        // assert.isBoolean(req.body.status);
     } catch (AssertionError) {
+        console.log(AssertionError.stack);
         return true;
     }
 

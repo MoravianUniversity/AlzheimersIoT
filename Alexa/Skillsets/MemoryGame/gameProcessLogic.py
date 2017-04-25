@@ -3,9 +3,17 @@ from getOauthInfo import *
 from answersQuestion import *
 from flask import Flask, render_template
 from flask_ask import session
+import datetime
+
+mydate = datetime.datetime.now()
+month = mydate.strftime("%B")
+actualmonth = month.lower()
+year = mydate.strftime("%Y")
 
 currentQuestionList = questionList
 currentAnswerList = answerList
+currentAnswerList[0] = year
+currentAnswerList[1] = actualmonth
 answerTag = ""
 
 counterDictionary = {'roundCounter': 0, 'winCounter': 0}
