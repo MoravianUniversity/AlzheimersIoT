@@ -7,7 +7,7 @@ import datetime
 
 mydate = datetime.datetime.now()
 month = mydate.strftime("%B")
-actualmonth = month.lower()
+actualmonth = month.lower() 
 year = mydate.strftime("%Y")
 
 currentQuestionList = questionList
@@ -45,8 +45,8 @@ def quitQuiz():
     authToken = "fake token"
     UploadAPI(user, win, authToken)
     message = "The game is over. You answered "\
-           + str(counterDictionary.get('roundCounter')) \
-           + "out of "+ str(counterDictionary.get('winCounter'))\
+           + str(counterDictionary.get('winCounter')) \
+           + "out of "+ str(counterDictionary.get('roundCounter'))\
            + "questions correct. "
     return message
 
