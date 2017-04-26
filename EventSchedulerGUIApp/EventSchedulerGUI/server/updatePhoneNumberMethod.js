@@ -1,6 +1,6 @@
 Meteor.methods({
     uploadPhoneNumbertoDatabase: function(Data){
-        var url = Data.url;
+        var url = "localhost:8080/api/PhoneNumber";
         var result = HTTP.post(url,{
         data: {
             PhoneNumber: Data.PhoneNumber,
