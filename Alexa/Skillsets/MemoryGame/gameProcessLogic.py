@@ -6,14 +6,13 @@ from flask_ask import session
 import datetime
 
 mydate = datetime.datetime.now()
-month = mydate.strftime("%B")
-actualmonth = month.lower() 
+month = mydate.strftime("%B") 
 year = mydate.strftime("%Y")
-
+print(month)
 currentQuestionList = questionList
 currentAnswerList = answerList
 currentAnswerList[0] = year
-currentAnswerList[1] = actualmonth
+currentAnswerList[1] = month #warning March is buggy and Amazon may incorrectly parse it as "march"
 answerTag = ""
 
 counterDictionary = {'roundCounter': 0, 'winCounter': 0}

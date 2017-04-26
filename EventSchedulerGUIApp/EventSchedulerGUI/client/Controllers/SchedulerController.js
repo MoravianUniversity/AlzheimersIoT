@@ -2,7 +2,6 @@ Template.SchedulerTemplate.events({
     "submit #submitScheduler": function (event){
         event.preventDefault();
         var Data ={
-            url: event.target.url.value,
             medium: event.target.medium.value,
             msg: event.target.msg.value,
             dest: event.target.dest.value,

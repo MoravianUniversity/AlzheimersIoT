@@ -1,6 +1,6 @@
 Meteor.methods({
     latestEntry: function(Data){
-    var url = Data.url;
+    var url = "http://localhost:5050/api/scheduler";
     var result = HTTP.post(url,{
         data: {
             medium: Data.medium,

@@ -2,7 +2,6 @@ Template.emailTemplate.events({
     "submit #submitEmail": function (event){
         event.preventDefault();
         var email ={
-            url: event.target.url.value,
             emailAddress: event.target.Email.value,
             services: event.target.services.value
         };
