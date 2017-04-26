@@ -4,14 +4,18 @@ from requests import *
 import NotificationRecipientContactInfo
 
 class EventSender():
-
+        
     def __init__(self):
-        self.emailAddresses = NotificationRecipientContactInfo.emailAddresses
-        self.phoneNumbers = NotificationRecipientContactInfo.phoneNumbers
-        self.emailAPIURL = "https://8beafd1d.ngrok.io/email"
-        self.SMSAPIURL = "https://dedb1b05.ngrok.io/sms"
-        self.baseURL = 'http://pegasus.cs.moravian.edu:8080/api/'
-        self.endpointNames = ['gps', 'wemo', 'journal', 'medicineLogger', 'memoryGame']
+        self.emailAPIURL = "http://email_sender:5000/email"
+        self.SMSAPIURL = "http://sms_sender:5000/sms"
+        self.GoogleSendURL = "http://google_sender:5000/googleSend"
+        self.baseURL = 'http://api:8080/api/'
+
+        self.phoneAPIIURLGet = "https://20d0fc48.ngrok.io/api/PhoneNumber"
+        self.emailAPIURLGet = "https://20d0fc48.ngrok.io/api/Email"
+
+        self.endpointNames = ['gps', 'wemo', 'journal', 'medicineLogger', 'memoryGame', 'zWaveDoor']
+
 
     def loopForever(self):
         while(True):
@@ -40,16 +44,50 @@ class EventSender():
         return
 
     def sendNotifications(self, message):
-        self.sendEmailOrSMS(message, self.phoneNumbers, self.SMSAPIURL)
-        self.sendEmailOrSMS(message, self.emailAddresses, self.emailAPIURL)
-        requests.post("http://pegasus.cs.moravian.edu:5000/googleSend", data={"message": message})
+
+        self.sendSMS(message, self.phoneAPIIURLGet, self.SMSAPIURL)
+        self.sendEmail(message, self.emailAPIURLGet, self.emailAPIURL)
+        requests.post(self.GoogleSendURL, data={"message": message})
+        return
+        
+    def sendEmail(self, message, APIURLLookUp, APIURLSend):
+        recipients = requests.get(APIURLLookUp).content.decode()
+        recipients = recipients.replace("[", "").replace("]", "").replace("\"", "")
+        
+        if (len(recipients) == 0):
+            return
+        
+        recipients = recipients.split("},")
+        
+        for recipient in recipients:
+            recipient = recipient.replace("}", "").replace("{", "")
+            emailAddress = recipient.split(",")[1].split(":")[1]
+            self.postEmailOrSMSMessage(message, APIURLSend, emailAddress)
         return
 
-    def sendEmailOrSMS(self, message, recipients, APIURL):
+    def sendSMS(self, message, APIURLLookUp, APIURLSend):
+        recipients = requests.get(APIURLLookUp).content.decode()
+        recipients = recipients.replace("[", "").replace("]", "").replace("\"", "")
+        
+        if (len(recipients) == 0):
+            return
+        
+        recipients = recipients.split(",")
+         
         for recipient in recipients:
-            payload = {"message":message,"recipient":recipient}
-            requests.post(APIURL, data=payload)
+            recipient = recipient.replace("[", "").replace("]", "").replace("\"", "")
+            phoneNumber = recipient.split(":")[1]
+            self.postEmailOrSMSMessage(message, APIURLSend, phoneNumber)
         return
+        
+    def postEmailOrSMSMessage(self, message, APIURLSend, contactInfo):
+        payload = {"message":message,"recipient":contactInfo}
+        requests.post(APIURLSend, data=payload)
+        return
+
+if __name__ == "__main__":
+    eventSender = EventSender()
+    eventSender.loopForever()
 
 if __name__ == "__main__":
     eventSender = EventSender()
