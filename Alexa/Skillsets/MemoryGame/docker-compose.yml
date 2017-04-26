@@ -1,0 +1,9 @@
+# docker-compose.yml
+
+version: '2'
+services:
+  caregiver: 
+    build: .
+    ports:
+      - "5000:5000"
+
