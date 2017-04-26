@@ -2,8 +2,8 @@ import homeassistant.remote as remote
 import time
 import requests
 
-#url = "http://localhost:8080/api/zWaveDoor" #Enter url here
-url = "http://pegasus.cs.moravian.edu:8080/api/zWaveDoor" #Enter url here
+url = "http://localhost:8080/api/zWaveDoor" #Enter url here
+#url = "http://pegasus.cs.moravian.edu:8080/api/zWaveDoor" #Enter url here
 api = remote.API('http://homeassistant.cs.moravian.edu:8123/states', 'raspberry')
 
 
