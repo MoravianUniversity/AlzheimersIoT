@@ -57,6 +57,14 @@ services:
       - email_sender
       - google_sender
 
+  caregiver:
+    build: ./Alexa/Skillsets/Caregiver
+    ports:
+      - "5001:5000"
+    links:
+      - api
+    depends_on:
+      - api
 
 
 # Notifiers

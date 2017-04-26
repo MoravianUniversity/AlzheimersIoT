@@ -14,7 +14,8 @@ logging.getLogger("flask_ask").setLevel(logging.DEBUG)
 local_url = 'http://localhost:8080/api'
 pegasus_ngrok_url = 'http://20d0fc48.ngrok.io/api'
 pegasus_url = 'pegasus.cs.moravian.edu/api'
-url_to_use = pegasus_ngrok_url
+unified_docker = 'http://api:8080/api'
+url_to_use = unified_docker
 questionMsg = 'Any other questions?'
 
 def print_response(webPage):
@@ -187,4 +188,4 @@ def convertDate(date):
     return months[int(month)-1] + " " + day + ", " + year
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run(debug=True,host="0.0.0.0",port=5000)
