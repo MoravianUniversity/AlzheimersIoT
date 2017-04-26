@@ -18,9 +18,9 @@ url_to_use = pegasus_ngrok_url
 questionMsg = 'Any other questions?'
 
 def print_response(webPage):
-    print "Request Url: ", webPage.url
-    print "Response Status: ", webPage.status_code
-    print "Response JSON: ", webPage.json()
+    print("Request Url: ", webPage.url)
+    print("Response Status: ", webPage.status_code)
+    print("Response JSON: ", webPage.json())
 
 @ask.launch
 def start_caregiver():
@@ -117,7 +117,7 @@ def memGameTimeAndScore(patient):
 @ask.intent("GetGPSIntent")
 def gps(patient):
 	gpsMsg = patient
-	gpsDictArray = getData('gps') 
+	gpsDictArray = getData('gps')
 	# data available: deviceID(string), time(timestamp(ISO 8601 date)), lat(number), lon(number) address(string)
 	if "lat" in gpsDictArray[0] and "lon" in gpsDictArray[0] and "time" in gpsDictArray[0]:
 		lat = str(gpsDictArray[0].get("lat"))
@@ -132,7 +132,7 @@ def gps(patient):
 @ask.intent("GetWemoIntent")
 def wemo(patient):
 	wemoMsg = patient
-	wemoDictArray = getData('wemo') 
+	wemoDictArray = getData('wemo')
 	# data available: date(string), time(string), status(boolean) off
 	# status: true = on, false = off
 	if "status" in wemoDictArray[0] and "time" in wemoDictArray[0] and "date" in wemoDictArray[0]:
@@ -187,4 +187,4 @@ def convertDate(date):
     return months[int(month)-1] + " " + day + ", " + year
 
 if __name__ == '__main__':
-	app.run(debug=True)  
+	app.run(debug=True)

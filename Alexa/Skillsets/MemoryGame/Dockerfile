@@ -1,14 +1,13 @@
-# Base image
-FROM ubuntu:latest
-
-RUN apt-get update -y
-RUN apt-get install -y build-essential libssl-dev libffi-dev python-dev
-RUN apt-get install -y python3-pip python3.5
+# Base python image
+FROM python:3
 
 # Get flask-ask
-RUN pip3 install --upgrade pip
-RUN pip3 install flask-ask
-RUN pip3 install requests
+RUN pip3 install flask-ask requests
+
 COPY . /usr/src/MemoryGame
+<<<<<<< HEAD
 # EXPOSE  5000
+=======
+
+>>>>>>> master
 CMD ["python3", "/usr/src/MemoryGame/main.py"]
