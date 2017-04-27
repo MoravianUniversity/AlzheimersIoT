@@ -448,6 +448,7 @@ table.dataTable thead .sorting:after {
 
 .gpsEntries {
     display: inline;
+    font-size: 28px;
 }
 
 .gpsTotal {
@@ -472,6 +473,7 @@ table.dataTable thead .sorting:after {
 
 .memEntries {
     display: inline;
+    font-size: 28px;
 }
 
 .memTotal {
@@ -496,6 +498,7 @@ table.dataTable thead .sorting:after {
 
 .jEntries {
     display: inline;
+    font-size: 28px;
 }
 
 .jTotal {
@@ -504,6 +507,7 @@ table.dataTable thead .sorting:after {
 
 .wemoEntries {
     display: inline;
+    font-size: 28px;
 }
 
 .wemoStatus {
@@ -531,4 +535,8 @@ table.dataTable thead .sorting:after {
 
 #location {
     
+}
+
+.panel-container {
+    display: none;
 }
