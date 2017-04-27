@@ -10,7 +10,7 @@ Template.removeEmailTemplate.events({
                 console.log("error occured on sending data to server. ",err);
             }
             else{
-                console.log("Response: ", response);
+                console.log("Response: ", respJson);
                 window.alert("successfully deleted your email");
             }
         })

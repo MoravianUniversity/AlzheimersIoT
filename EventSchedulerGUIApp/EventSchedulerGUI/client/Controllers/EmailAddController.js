@@ -11,7 +11,7 @@ Template.emailTemplate.events({
                 console.log("error occured on sending data to server. ",err);
             }
             else{
-                console.log("Response: ", response);
+                console.log("Response: ", respJson);
                 window.alert("successfully added your email");
             }
         })
