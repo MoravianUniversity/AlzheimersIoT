@@ -12,7 +12,7 @@ Template.emailTemplate.events({
             }
             else{
                 console.log("Response: ", response);
-                window.alert(response);
+                window.alert("successfully added your email");
             }
         })
 

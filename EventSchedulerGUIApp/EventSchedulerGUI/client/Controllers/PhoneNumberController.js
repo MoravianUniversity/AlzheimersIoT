@@ -12,7 +12,7 @@ Template.phoneNumberTemplate.events({
             }
             else{
                 console.log("Response: ", response);
-                window.alert(response);
+                window.alert("Successfully added your phone number");
             }
         })
 
