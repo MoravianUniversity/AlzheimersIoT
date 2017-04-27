@@ -1,4 +1,4 @@
-<template name="emailTemplate">
+<template name="removeEmailTemplate">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -35,29 +35,18 @@
   <nav>
     <ul class="nav masthead-nav">
       <li><a href="/">Home</a></li>
-      <li class="active"><a href="/email">Email</a></li>
+      <li><a href="/email">Email</a></li>
       <li><a href="/phoneNumber">Phone Number</a></li>
       <li><a href="/Scheduler">Time Scheduler</a></li>
       <li><a href="/removePhoneNumber">Remove PhoneNumber</a></li>
-      <li><a href="/removeEmail">Remove Email</a></li>
+      <li class="active"><a href="/removeEmail">Remove Email</a></li>
     </ul>
   </nav>
   <br><br><br>
-  <form class="form-signup" id="submitEmail">
+  <form class="form-signup" id="removeEmail">
     <h2 class="form-signup-heading">Please Enter Your Email</h2>
     <label for="Email" class="form-signup">Email address</label>
     <input type="email" id="Email" class="form-control" placeholder="Email address" required autofocus>
-    <br><br><br>
-    <label for="services" class="form-signup">Choose which Services you wish to be Notified about:</label>
-    <select id="services">
-      <option value="GPS">GPS</option>
-      <option value="Journal">Journal</option>
-      <option value="MemoryGame">MemoryGame</option>
-      <option value="GPS,Journal">GPS,Journal</option>
-      <option value="Journal,MemoryGame">Journal,MemoryGame</option>
-      <option value="MemoryGame,GPS">MemoryGame,GPS</option>
-      <option value="All">All</option>
-    </select>
     <br><br><br>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
   </form>
