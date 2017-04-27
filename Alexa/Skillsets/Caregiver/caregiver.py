@@ -57,6 +57,7 @@ def journal(patient):
 	else:
 		journalMsg = "There is insufficient data available in " + journalMsg + " most recent journal entry."
 	return question(journalMsg).reprompt(questionMsg)
+	
 
 @ask.intent("GetWakeTimeIntent")
 def wakeTime(patient):
