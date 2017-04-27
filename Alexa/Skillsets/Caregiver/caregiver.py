@@ -4,9 +4,6 @@ from flask_ask import Ask, statement, question, session
 import requests
 import time
 
-# TODO: PEGASUS URL IS DEAD, FIX
-# TODO: SEE IF wakeTime intent can be improved by data from Journal
-
 app = Flask(__name__)
 ask = Ask(app, "/")
 noEndpointMsg = 'no endpoint exists'
@@ -49,21 +46,18 @@ def journal(patient):
 	# data available: medication(boolean), message(string), datetime(timestamp), activities(String[])
 	if "medication" in journalDictArray[0] and "message" in journalDictArray[0] \
 			and "datetime" in journalDictArray[0] and "activities" in journalDictArray[0]:
+		activities = ""
+		for x in journalDictArray[0].get("activities"):
+    		activities = activities + x + ", and "
+    	journalMsgLatterHalf = " Their message was: " + journalDictArray[0].get("message") + " and their listed activities were: " + activities.strip(", and ") + "."
 		if journalDictArray[0].get("medication") == True:
-			journalMsg = "On " + journalDictArray[0].get("datetime") \
-			+ " " + journalMsg \
-			+ " journal entry stated that they took their medicine today, " \
-			+ " their message was: " + journalDictArray[0].get("message") \
-			+ " and their activities were: " + journalDictArray[0].get("activities")
+			journalMsg = journalMsg + "'s most recent journal entry stated that they took their medicine today. " + journalMsgLatterHalf
 		else:
-			journalMsg = "On " + journalDictArray[0].get("datetime") \
-				+ " " + journalMsg \
-				+ " journal entry stated that they did not take their medicine today, " \
-				+ " their message was: " + journalDictArray[0].get("message") \
-				+ " and their activities were: " + journalDictArray[0].get("activities")
+			journalMsg = journalMsg + "'s most recent journal entry stated that they did not take their medicine today. " + journalMsgLatterHalf
 	else:
 		journalMsg = "There is insufficient data available in " + journalMsg + " most recent journal entry."
 	return question(journalMsg).reprompt(questionMsg)
+	
 
 @ask.intent("GetWakeTimeIntent")
 def wakeTime(patient):

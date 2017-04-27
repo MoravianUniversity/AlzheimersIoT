@@ -28,5 +28,6 @@ GetGPSIntent where was {patient} last
 GetWemoIntent are {patient} lights on
 
 GetJournalIntent what was {patient} last journal entry
+GetJournalIntent tell me the last journal entry
 
 EndCaregiver stop care giver

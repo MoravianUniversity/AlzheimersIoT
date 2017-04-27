@@ -5,9 +5,57 @@ var data;
 var lati;
 var long;
 
-var ngrokAddress = "https://20d0fc48.ngrok.io/api/"; 
+var ngrokAddress = "https://apialzheimersiot.ngrok.io/api/"; 
 
 $(function() {
+    //$.when(apiCall()).then(showPosition());
+});
+
+function showMap() {
+    // DEBUG
+    console.log("DEBUG: showMap");
+    var googlePos = new google.maps.LatLng(lati, long);
+    var mapOptions = {
+        zoom : 15,
+        center : googlePos,
+        mapTypeId : google.maps.MapTypeId.ROADMAP
+    };
+    var mapObj = document.getElementById('map');
+    var googleMap = new google.maps.Map(mapObj, mapOptions);
+    var markerOpt = {
+        map : googleMap,
+        position : googlePos,
+        title : 'Hi , I am here',
+        animation : google.maps.Animation.DROP
+    };
+    var googleMarker = new google.maps.Marker(markerOpt);
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+        'latLng' : googlePos
+    }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            if (results[1]) {
+                var popOpts = {
+                    content : results[1].formatted_address,
+                    position : googlePos
+                };
+                $("#location").text(results[1].formatted_address);
+                var popup = new google.maps.InfoWindow(popOpts);
+                google.maps.event.addListener(googleMarker, 'click', function() {
+                    popup.open(googleMap);
+                });
+            } 
+            else {
+                alert('No results found');
+            }
+        } 
+        else {
+            alert('Geocoder failed due to: ' + status);
+        }
+    });
+}
+
+function apiCall(_callback){
 
     // Local Storage Variables to check whether new entries exist
     var localGps = localStorage.getItem("gpsEntries");
@@ -94,7 +142,15 @@ $(function() {
             var medicationTaken = data[0].medication;
             var message = data[0].message;
             var timeD = data[0].datetime;
-            var activities = data[0].activities;
+            var activities = "";
+            for (i=0; i<data[0].activities.length; i++) {
+                if (i==data[0].activities.length-1) {
+                    activities += data[0].activities[i] + ".";
+                }
+                else {
+                    activities += data[0].activities[i] + ", ";
+                } 
+            }
             $(".jMed").html(medicationTaken);
             $(".jMessage").html(message);
             $(".jTime").html(timeD);
@@ -143,88 +199,22 @@ $(function() {
             }
         })
         .fail(function(data) {
-            console.log("Failed WeMo Retrieval");
+            // DEBUG
+            console.log("DEBUG: Failed WeMo Retrieval");
         });
-});
-
-var watchId = null;
-function geoloc() {
-    if (navigator.geolocation) {
-        var optn = {
-                enableHighAccuracy : true,
-                timeout : Infinity,
-                maximumAge : 0
-        };
-    watchId = navigator.geolocation.watchPosition(showPosition, showError, optn);
-    } 
-    else {
-            alert('Geolocation is not supported in your browser');
-    }
+    // DEBUG
+    console.log("DEBUG: apiCall");
+    _callback(); 
 }
 
-function showPosition(position) {
-    var googlePos = new google.maps.LatLng(lati, long);
-    var mapOptions = {
-        zoom : 15,
-        center : googlePos,
-        mapTypeId : google.maps.MapTypeId.ROADMAP
-    };
-    var mapObj = document.getElementById('map');
-    var googleMap = new google.maps.Map(mapObj, mapOptions);
-    var markerOpt = {
-        map : googleMap,
-        position : googlePos,
-        title : 'Hi , I am here',
-        animation : google.maps.Animation.DROP
-    };
-    var googleMarker = new google.maps.Marker(markerOpt);
-    var geocoder = new google.maps.Geocoder();
-    geocoder.geocode({
-        'latLng' : googlePos
-    }, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            if (results[1]) {
-                var popOpts = {
-                    content : results[1].formatted_address,
-                    position : googlePos
-                };
-                $("#location").text(results[1].formatted_address);
-                var popup = new google.maps.InfoWindow(popOpts);
-                google.maps.event.addListener(googleMarker, 'click', function() {
-                    popup.open(googleMap);
-                });
-            } 
-            else {
-                alert('No results found');
-            }
-        } 
-        else {
-            alert('Geocoder failed due to: ' + status);
-        }
-    });
-}
-
-function stopWatch() {
-    if (watchId) {
-        navigator.geolocation.clearWatch(watchId);
-        watchId = null;
-    }
-}
-
-function showError(error) {
-    var err = document.getElementById('map');
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-        err.innerHTML = "User denied the request for Geolocation."
-        break;
-        case error.POSITION_UNAVAILABLE:
-        err.innerHTML = "Location information is unavailable."
-        break;
-        case error.TIMEOUT:
-        err.innerHTML = "The request to get user location timed out."
-        break;
-        case error.UNKNOWN_ERROR:
-        err.innerHTML = "An unknown error occurred."
-        break;
-    }
+function mainFunction(){
+    // call first function and pass in a callback function which
+    // first function runs when it has completed
+    // DEBUG
+    console.log("DEBUG: mainFunction");
+    apiCall(function() {
+        // DEBUG
+        console.log("DEBUG: Waiting 10 seconds before starting showMap()");
+        setTimeout(function() { showMap(); }, 7000);
+    });    
 }
