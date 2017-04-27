@@ -23,7 +23,9 @@ a:hover {
 /*
  * Base structure
  */
-
+option,select{
+color:#000;
+}
 html,
 body {
   height: 100%;
