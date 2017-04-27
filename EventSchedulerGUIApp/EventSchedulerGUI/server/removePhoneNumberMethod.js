@@ -1,6 +1,6 @@
 Meteor.methods({
     removePhoneNumberfromDatabase: function(Data){
-        var url = "http://localhost:8080/api/PhoneNumber";
+        var url = "http://localhost:8080/api/PhoneNumber/:services";
         var result = HTTP.del(url,{
         data: {
             PhoneNumber: Data.PhoneNumber,

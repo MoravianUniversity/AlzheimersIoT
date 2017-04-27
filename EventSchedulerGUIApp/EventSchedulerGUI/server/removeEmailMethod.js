@@ -1,6 +1,6 @@
 Meteor.methods({
    removeEmailfromDatabase: function(Data){
-           var url = "http://localhost:8080/api/Email";
+           var url = "http://localhost:8080/api/Email/:services";
            var result = HTTP.del(url,{
            data: {
                Email: Data.emailAddress,
