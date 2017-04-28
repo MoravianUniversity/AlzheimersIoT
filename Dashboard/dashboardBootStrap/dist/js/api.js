@@ -62,6 +62,7 @@ function apiCall(_callback){
     var localJourn = localStorage.getItem("journalEntries");
     var localWemo = localStorage.getItem("wemoEntries");
     var localMem = localStorage.getItem("memtestEntries");
+    var localZwave = localStorage.getItem("zwaveEntries");
 
     // Request info from API
 
@@ -201,6 +202,38 @@ function apiCall(_callback){
         .fail(function(data) {
             // DEBUG
             console.log("DEBUG: Failed WeMo Retrieval");
+        });
+    // WeMo
+    $.ajax({
+            url: ngrokAddress + "zWaveDoor",
+            dataType: 'json',
+            data: data
+        })
+        .done(function(data) {
+            console.log("Acquired zWave");
+            console.log(data[0]);
+            var numEntries = data.length;
+            var prevEntries = localStorage.getItem("zwaveEntries");
+            var status = data[0].status;
+            var time = data[0].time;
+            var date = data[0].date;
+            $(".zwaveStatus").html(status);
+            $(".zwaveTime").html(time);
+            $(".zwaveDate").html(date);
+            $(".zwaveEntries").html(numEntries);
+            $(".zwaveTotal").html(numEntries);
+
+            if (numEntries>=localZwave) {
+                $(".zwaveEntries").html(numEntries-localZwave);
+                localStorage.setItem("zwaveEntries", numEntries);
+            }
+            if (numEntries<localZwave) {
+                /*This shouldn't happen*/
+            }
+        })
+        .fail(function(data) {
+            // DEBUG
+            console.log("DEBUG: Failed zWave Retrieval");
         });
     // DEBUG
     console.log("DEBUG: apiCall");

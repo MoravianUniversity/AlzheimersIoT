@@ -526,6 +526,26 @@ table.dataTable thead .sorting:after {
    display: inline; 
 }
 
+.zwaveStatus {
+    display: inline;
+}
+
+.zwaveTime {
+    display: inline;
+}
+
+.zwaveDate {
+    display: inline;
+}
+
+.zwaveEntries {
+    display: inline;
+}
+
+.zwaveTotal {
+   display: inline; 
+}
+
 /* Google Map Holder */
 #map {
     width: 100%;
