@@ -13,11 +13,11 @@ Template.SchedulerTemplate.events({
             Meteor.call('Scheduler',Data, function(err, respJson){
                 if(err){
                     window.alert("Error: "+err.reason);
-                    console.log("error occured on sending data to server. ",err);
+                    console.log("error occurred on sending data to server. ",err);
                 }
                 else{
-                    console.log("Response: ", response);
-                    window.alert(response);
+                    console.log("Response: ", respJson);
+                    window.alert("Successfully schedule a push notification");
                 }
             })
         }
@@ -25,11 +25,11 @@ Template.SchedulerTemplate.events({
         Meteor.call('latestEntry',Data, function(err, respJson){
                         if(err){
                             window.alert("Error: "+err.reason);
-                            console.log("error occured on sending data to server. ",err);
+                            console.log("error occurred on sending data to server. ",err);
                         }
                         else{
-                            console.log("Response: ", response);
-                            window.alert(response);
+                            console.log("Response: ", respJson);
+                            window.alert("Successfully scheduled an update notification");
                         }
                     })
         }

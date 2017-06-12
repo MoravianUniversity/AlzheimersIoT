@@ -1,0 +1,84 @@
+# docker-compose.yml
+
+version: '2'
+services:
+# Producers
+  journal:
+    build: ./GoogleHome/Actions/Journal
+    links:
+      - api
+    ports:
+      - "8000:80"
+
+  memory_game:
+    build: ./Alexa/Skillsets/MemoryGame
+    links:
+      - api
+    ports:
+      - "5000:5000"
+
+  # wemo:
+  #   build:
+
+
+# Services
+  api:
+    depends_on:
+      - db
+    links:
+      - db
+    build: ./API
+    ports:
+      - "8080:8080"
+
+  db:
+    image: mongo
+    volumes:
+      - db_data:/data/db
+
+  event_sender:
+    build: ./EventSender
+    restart: 'always'
+    depends_on:
+      - api
+    links:
+      - api
+      - sms_sender
+      - email_sender
+      - google_sender
+
+  scheduler:
+    build: ./Scheduler
+    ports:
+      - "5050:5000"
+    links:
+      - api
+      - sms_sender
+      - email_sender
+      - google_sender
+
+  caregiver:
+    build: ./Alexa/Skillsets/Caregiver
+    ports:
+      - "5001:5000"
+    links:
+      - api
+    depends_on:
+      - api
+
+
+# Notifiers
+  sms_sender:
+    build: ./SMSSender
+
+  email_sender:
+    build: ./EmailSender
+
+  google_sender:
+    build: ./GoogleSender
+
+
+# This volume is used to persist data in the mongodb inbetween re-building the
+# containers (deploying a new version of the API)
+volumes:
+  db_data:

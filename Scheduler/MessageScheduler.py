@@ -46,8 +46,7 @@ class MessageScheduler(metaclass=SingletonMetaClass):
 
     def __send_SMS(self, dest='UNDEFINED', msg=None, latestEntryOf=None):
         payload = {'recipient': dest, 'message': self.__generate_message(msg, latestEntryOf)}
-        requests.post(os.environ.get('SMS_API_URL'), data=payload)
-
+        requests.post("http://sms_sender:5000/sms", data=payload)
 
     # Email Methods
     def __add_Email_notification(self, args):
@@ -55,8 +54,7 @@ class MessageScheduler(metaclass=SingletonMetaClass):
 
     def __send_Email(self, dest='UNDEFINED', msg=None, latestEntryOf=None):
         payload = {'recipient': dest, 'message': self.__generate_message(msg, latestEntryOf)}
-        requests.post(os.environ.get('EMAIL_API_URL'), data=payload)
-
+        requests.post("http://email_sender:5000/email", data=payload)
 
     # Google Home Methods
     def __add_Google_Home_notification(self, args):
@@ -64,21 +62,19 @@ class MessageScheduler(metaclass=SingletonMetaClass):
 
     def __send_Google_Home_TTS(self, dest=None, msg=None, latestEntryOf=None):
         payload = {'message': self.__generate_message(msg, latestEntryOf)}
-        requests.post(os.environ.get('GOOGLE_HOME_API_URL'), data=payload)
-
+        requests.post("http://google_sender:5000/googleSend", data=payload)
 
     # Message Generation Methods
     def __generate_message(self, msg, latestEntryOf):
         if msg is not None:
             return msg
 
-
         if latestEntryOf == 'GPS':
             return self.__get_GPS_Message()
 
     def __get_GPS_Message(self):
         try:
-            r = requests.get(os.environ.get('API_BASE') + '/api/GPS')
+            r = requests.get("http://api:8080/api/GPS")
             r.raise_for_status()
 
             rdic = r.json()[0]
@@ -88,7 +84,7 @@ class MessageScheduler(metaclass=SingletonMetaClass):
         except Exception as e:
             return e
 
-        
+
     # General Helper Methods
     def check_time(self, time):
         try:

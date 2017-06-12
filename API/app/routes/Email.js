@@ -65,7 +65,7 @@ router.route('/:services')
     // delete the Email with this id (accessed at DELETE http://localhost:8080/api/Email/:Email)
     .delete(function(req, res) {
         Email.remove({
-            _id: req.params.Email
+            emailAddress: req.body.Email
         }, function(err, Email) {
             if (err)
                 res.send(err);

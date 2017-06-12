@@ -64,7 +64,7 @@ router.route('/:services')
     // delete the PhoneNumber with this id (accessed at DELETE http://localhost:8080/api/PhoneNumber/:PhoneNumber)
     .delete(function(req, res) {
         PhoneNumber.remove({
-            _id: req.params.PhoneNumber
+            CurrentPhoneNumber: req.body.PhoneNumber
         }, function(err, PhoneNumber) {
             if (err)
                 res.send(err);

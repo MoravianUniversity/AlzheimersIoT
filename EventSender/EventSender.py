@@ -11,11 +11,10 @@ class EventSender():
         self.GoogleSendURL = "http://google_sender:5000/googleSend"
         self.baseURL = 'http://api:8080/api/'
 
-        self.phoneAPIIURLGet = "https://20d0fc48.ngrok.io/api/PhoneNumber"
-        self.emailAPIURLGet = "https://20d0fc48.ngrok.io/api/Email"
+        self.phoneAPIIURLGet = self.baseURL + "PhoneNumber"
+        self.emailAPIURLGet = self.baseURL + "Email"
 
         self.endpointNames = ['gps', 'wemo', 'journal', 'medicineLogger', 'memoryGame', 'zWaveDoor']
-
 
     def loopForever(self):
         while(True):
@@ -44,10 +43,9 @@ class EventSender():
         return
 
     def sendNotifications(self, message):
-
         self.sendSMS(message, self.phoneAPIIURLGet, self.SMSAPIURL)
         self.sendEmail(message, self.emailAPIURLGet, self.emailAPIURL)
-        requests.post(self.GoogleSendURL, data={"message": message})
+        #requests.post(self.GoogleSendURL, data={"message": message})
         return
         
     def sendEmail(self, message, APIURLLookUp, APIURLSend):
@@ -65,6 +63,7 @@ class EventSender():
             self.postEmailOrSMSMessage(message, APIURLSend, emailAddress)
         return
 
+
     def sendSMS(self, message, APIURLLookUp, APIURLSend):
         recipients = requests.get(APIURLLookUp).content.decode()
         recipients = recipients.replace("[", "").replace("]", "").replace("\"", "")
@@ -79,7 +78,7 @@ class EventSender():
             phoneNumber = recipient.split(":")[1]
             self.postEmailOrSMSMessage(message, APIURLSend, phoneNumber)
         return
-        
+
     def postEmailOrSMSMessage(self, message, APIURLSend, contactInfo):
         payload = {"message":message,"recipient":contactInfo}
         requests.post(APIURLSend, data=payload)
@@ -89,6 +88,4 @@ if __name__ == "__main__":
     eventSender = EventSender()
     eventSender.loopForever()
 
-if __name__ == "__main__":
-    eventSender = EventSender()
-    eventSender.loopForever()
+

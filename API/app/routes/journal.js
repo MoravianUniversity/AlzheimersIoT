@@ -18,10 +18,10 @@ router.route('/')
 
     // create a journal entry (accessed at POST http://localhost:8080/api/journal)
     .post(function(req, res) {
-	if (postParametersAreMissingOrInvalid(req)) {
-            res.status(400).json({error: 'There are missing or invalid parameters in the request.'});
-            return;
-        }
+	//if (postParametersAreMissingOrInvalid(req)) {
+    //        res.status(400).json({error: 'There are missing or invalid parameters in the request.'});
+    //        return;
+    //    }
 
         var journal = new Journal();      // create a new instance of the Journal model
         journal.datetime = Date.parse(req.body.datetime);
