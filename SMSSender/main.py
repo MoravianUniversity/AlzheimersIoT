@@ -4,8 +4,9 @@ from flask import Flask, request
 app = Flask(__name__)
 
 # Twilio Credentials
-ACCOUNT_SID = "AC864dbb66d4cedade1f9c1331475c7d96"
-AUTH_TOKEN = "97554434c12f7a45c4151763ee99f27b"
+ACCOUNT_SID = "FIXME"  # These two lines were changed to this value after Twilio
+AUTH_TOKEN = "FIXME"   # notified us the token was compromised.  A new one was generated
+# But this should be changed to load the values securely.
 
 # Create REST Client
 client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
